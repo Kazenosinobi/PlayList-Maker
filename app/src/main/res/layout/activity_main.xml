@@ -18,7 +18,7 @@
     <Button
         android:id="@+id/searchButton"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="@dimen/_0dp"
         android:layout_marginTop="@dimen/_24dp"
         android:layout_weight="1"
         android:backgroundTint="@color/white"
@@ -38,7 +38,7 @@
     <Button
         android:id="@+id/mediaButton"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="@dimen/_0dp"
         android:layout_marginTop="@dimen/_24dp"
         android:layout_weight="1"
         android:backgroundTint="@color/white"
@@ -58,7 +58,7 @@
     <Button
         android:id="@+id/optionButton"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="@dimen/_0dp"
         android:layout_marginTop="@dimen/_24dp"
         android:layout_weight="1"
         android:backgroundTint="@color/white"
