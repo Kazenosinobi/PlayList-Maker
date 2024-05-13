@@ -19,7 +19,7 @@
         android:id="@+id/searchButton"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="@dimen/_24dp"
         android:layout_weight="1"
         android:backgroundTint="@color/white"
         android:foreground="?android:attr/selectableItemBackground"
@@ -29,17 +29,17 @@
         android:textColor="@color/gray"
         android:textFontWeight="500"
         android:textSize="@dimen/_22sp"
-        app:cornerRadius="16dp"
+        app:cornerRadius="@dimen/_16dp"
         app:icon="@drawable/search"
         app:iconGravity="textStart"
-        app:iconPadding="3dp"
+        app:iconPadding="@dimen/_4dp"
         app:iconTint="@color/gray" />
 
     <Button
         android:id="@+id/mediaButton"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="@dimen/_24dp"
         android:layout_weight="1"
         android:backgroundTint="@color/white"
         android:foreground="?android:attr/selectableItemBackground"
@@ -49,17 +49,17 @@
         android:textColor="@color/gray"
         android:textFontWeight="500"
         android:textSize="@dimen/_22sp"
-        app:cornerRadius="16dp"
+        app:cornerRadius="@dimen/_16dp"
         app:icon="@drawable/media"
         app:iconGravity="textStart"
-        app:iconPadding="3dp"
+        app:iconPadding="@dimen/_4dp"
         app:iconTint="@color/gray" />
 
     <Button
         android:id="@+id/optionButton"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="@dimen/_24dp"
         android:layout_weight="1"
         android:backgroundTint="@color/white"
         android:foreground="?android:attr/selectableItemBackground"
@@ -69,10 +69,10 @@
         android:textColor="@color/gray"
         android:textFontWeight="500"
         android:textSize="@dimen/_22sp"
-        app:cornerRadius="16dp"
+        app:cornerRadius="@dimen/_16dp"
         app:icon="@drawable/option"
         app:iconGravity="textStart"
-        app:iconPadding="3.4dp"
+        app:iconPadding="@dimen/_4dp"
         app:iconTint="@color/gray" />
 
 </LinearLayout>

@@ -21,7 +21,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingStart="24dp"
+            android:paddingStart="@dimen/_24dp"
             android:text="@string/text_options"
             android:textColor="@color/gray"
             android:textFontWeight="500"
@@ -38,7 +38,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingHorizontal="@dimen/_16dp"
-            android:paddingVertical="@dimen/_21dp"
+            android:paddingVertical="@dimen/_24dp"
             android:text="@string/black_topic"
             android:textColor="@color/black"
             android:textFontWeight="400"
@@ -48,8 +48,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end"
-            android:paddingVertical="@dimen/_21dp"
-            android:paddingHorizontal="@dimen/_6dp"
+            android:paddingVertical="@dimen/_24dp"
+            android:paddingHorizontal="@dimen/_4dp"
             app:ignore="UseSwitchCompatOrMaterialXml" />
 
     </FrameLayout>
@@ -62,7 +62,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingHorizontal="@dimen/_16dp"
-            android:paddingVertical="@dimen/_21dp"
+            android:paddingVertical="@dimen/_24dp"
             android:text="@string/share"
             android:textColor="@color/black"
             android:textFontWeight="400"
@@ -73,7 +73,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="end"
             android:contentDescription="@string/share"
-            android:paddingVertical="@dimen/_21dp"
+            android:paddingVertical="@dimen/_24dp"
             android:paddingHorizontal="@dimen/_16dp"
             android:src="@drawable/share" />
 
@@ -87,7 +87,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingHorizontal="@dimen/_16dp"
-            android:paddingVertical="@dimen/_21dp"
+            android:paddingVertical="@dimen/_24dp"
             android:text="@string/support"
             android:textColor="@color/black"
             android:textFontWeight="400"
@@ -98,7 +98,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="end"
             android:contentDescription="@string/support"
-            android:paddingVertical="@dimen/_21dp"
+            android:paddingVertical="@dimen/_24dp"
             android:paddingHorizontal="@dimen/_16dp"
             android:src="@drawable/support" />
 
@@ -112,7 +112,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingHorizontal="@dimen/_16dp"
-            android:paddingVertical="@dimen/_21dp"
+            android:paddingVertical="@dimen/_24dp"
             android:text="@string/terms_of_use"
             android:textColor="@color/black"
             android:textFontWeight="400"
