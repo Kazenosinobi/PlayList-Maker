@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical"
+    app:ignore="NamespaceTypo">
+
+    <androidx.appcompat.widget.Toolbar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/backButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/back_button"
+            android:src="@drawable/arrow_back" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingStart="@dimen/_24dp"
+            android:text="@string/text_options"
+            android:textColor="@color/gray"
+            android:textFontWeight="500"
+            android:textSize="@dimen/_22sp"
+            app:ignore="RtlSymmetry" />
+    </androidx.appcompat.widget.Toolbar>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_24dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="@dimen/_16dp"
+            android:paddingVertical="@dimen/_24dp"
+            android:text="@string/black_topic"
+            android:textColor="@color/black"
+            android:textFontWeight="400"
+            android:textSize="@dimen/_16sp" />
+
+        <Switch
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:paddingVertical="@dimen/_24dp"
+            android:paddingHorizontal="@dimen/_4dp"
+            app:ignore="UseSwitchCompatOrMaterialXml" />
+
+    </FrameLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="@dimen/_16dp"
+            android:paddingVertical="@dimen/_24dp"
+            android:text="@string/share"
+            android:textColor="@color/black"
+            android:textFontWeight="400"
+            android:textSize="@dimen/_16sp" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:contentDescription="@string/share"
+            android:paddingVertical="@dimen/_24dp"
+            android:paddingHorizontal="@dimen/_16dp"
+            android:src="@drawable/share" />
+
+    </FrameLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="@dimen/_16dp"
+            android:paddingVertical="@dimen/_24dp"
+            android:text="@string/support"
+            android:textColor="@color/black"
+            android:textFontWeight="400"
+            android:textSize="@dimen/_16sp" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:contentDescription="@string/support"
+            android:paddingVertical="@dimen/_24dp"
+            android:paddingHorizontal="@dimen/_16dp"
+            android:src="@drawable/support" />
+
+    </FrameLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="@dimen/_16dp"
+            android:paddingVertical="@dimen/_24dp"
+            android:text="@string/terms_of_use"
+            android:textColor="@color/black"
+            android:textFontWeight="400"
+            android:textSize="@dimen/_16sp" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:contentDescription="@string/terms_of_use"
+            android:paddingVertical="@dimen/_24dp"
+            android:paddingHorizontal="@dimen/_16dp"
+            android:src="@drawable/terms_of_use" />
+
+    </FrameLayout>
+
+
+</LinearLayout>
