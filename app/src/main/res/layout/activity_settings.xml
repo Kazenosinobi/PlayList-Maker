@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
+    android:background="?attr/settingsBackgroundColor"
     android:orientation="vertical"
     app:ignore="NamespaceTypo">
 
@@ -19,13 +19,10 @@
             android:src="@drawable/arrow_back" />
 
         <TextView
+            style="@style/TextViewToolbarStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingStart="@dimen/_24dp"
             android:text="@string/text_options"
-            android:textColor="@color/gray"
-            android:textFontWeight="500"
-            android:textSize="@dimen/_22sp"
             app:ignore="RtlSymmetry" />
     </androidx.appcompat.widget.Toolbar>
 
@@ -35,21 +32,15 @@
         android:layout_marginTop="@dimen/_24dp">
 
         <TextView
+            style="@style/TextViewStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingHorizontal="@dimen/_16dp"
-            android:paddingVertical="@dimen/_24dp"
-            android:text="@string/black_topic"
-            android:textColor="@color/black"
-            android:textFontWeight="400"
-            android:textSize="@dimen/_16sp" />
+            android:text="@string/black_topic" />
 
-        <Switch
+        <androidx.appcompat.widget.SwitchCompat
+            style="@style/SwitchStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="end"
-            android:paddingVertical="@dimen/_24dp"
-            android:paddingHorizontal="@dimen/_4dp"
             app:ignore="UseSwitchCompatOrMaterialXml" />
 
     </FrameLayout>
@@ -59,22 +50,17 @@
         android:layout_height="wrap_content">
 
         <TextView
+            style="@style/TextViewStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingHorizontal="@dimen/_16dp"
-            android:paddingVertical="@dimen/_24dp"
-            android:text="@string/share"
-            android:textColor="@color/black"
-            android:textFontWeight="400"
-            android:textSize="@dimen/_16sp" />
+            android:text="@string/share" />
 
         <ImageView
+            android:id="@+id/imageViewShare"
+            style="@style/ImageViewStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="end"
             android:contentDescription="@string/share"
-            android:paddingVertical="@dimen/_24dp"
-            android:paddingHorizontal="@dimen/_16dp"
             android:src="@drawable/share" />
 
     </FrameLayout>
@@ -84,22 +70,17 @@
         android:layout_height="wrap_content">
 
         <TextView
+            style="@style/TextViewStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingHorizontal="@dimen/_16dp"
-            android:paddingVertical="@dimen/_24dp"
-            android:text="@string/support"
-            android:textColor="@color/black"
-            android:textFontWeight="400"
-            android:textSize="@dimen/_16sp" />
+            android:text="@string/support" />
 
         <ImageView
+            android:id="@+id/imageViewSupport"
+            style="@style/ImageViewStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="end"
             android:contentDescription="@string/support"
-            android:paddingVertical="@dimen/_24dp"
-            android:paddingHorizontal="@dimen/_16dp"
             android:src="@drawable/support" />
 
     </FrameLayout>
@@ -109,22 +90,17 @@
         android:layout_height="wrap_content">
 
         <TextView
+            style="@style/TextViewStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingHorizontal="@dimen/_16dp"
-            android:paddingVertical="@dimen/_24dp"
-            android:text="@string/terms_of_use"
-            android:textColor="@color/black"
-            android:textFontWeight="400"
-            android:textSize="@dimen/_16sp" />
+            android:text="@string/terms_of_use" />
 
         <ImageView
+            android:id="@+id/imageViewTerms"
+            style="@style/ImageViewStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="end"
             android:contentDescription="@string/terms_of_use"
-            android:paddingVertical="@dimen/_24dp"
-            android:paddingHorizontal="@dimen/_16dp"
             android:src="@drawable/terms_of_use" />
 
     </FrameLayout>

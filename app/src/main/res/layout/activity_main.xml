@@ -3,76 +3,41 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/blue"
     android:orientation="vertical"
+    android:background="?attr/mainBackgroundColor"
     android:padding="@dimen/_16dp">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/playlist_maker"
-        android:textColor="@color/white"
+        android:textColor="?attr/mainTextColor"
         android:textFontWeight="500"
-        android:textSize="@dimen/_22sp" />
+        android:textSize="@dimen/_22sp"
+        android:fontFamily="@font/ys_display_medium"/>
 
     <Button
         android:id="@+id/searchButton"
+        style="@style/ButtonStyle"
         android:layout_width="match_parent"
         android:layout_height="@dimen/_0dp"
-        android:layout_marginTop="@dimen/_24dp"
-        android:layout_weight="1"
-        android:backgroundTint="@color/white"
-        android:foreground="?android:attr/selectableItemBackground"
         android:text="@string/text_search"
-        android:textAlignment="center"
-        android:textAllCaps="false"
-        android:textColor="@color/gray"
-        android:textFontWeight="500"
-        android:textSize="@dimen/_22sp"
-        app:cornerRadius="@dimen/_16dp"
-        app:icon="@drawable/search"
-        app:iconGravity="textStart"
-        app:iconPadding="@dimen/_4dp"
-        app:iconTint="@color/gray" />
+        app:icon="@drawable/search" />
 
     <Button
         android:id="@+id/mediaButton"
+        style="@style/ButtonStyle"
         android:layout_width="match_parent"
         android:layout_height="@dimen/_0dp"
-        android:layout_marginTop="@dimen/_24dp"
-        android:layout_weight="1"
-        android:backgroundTint="@color/white"
-        android:foreground="?android:attr/selectableItemBackground"
         android:text="@string/text_media"
-        android:textAlignment="center"
-        android:textAllCaps="false"
-        android:textColor="@color/gray"
-        android:textFontWeight="500"
-        android:textSize="@dimen/_22sp"
-        app:cornerRadius="@dimen/_16dp"
-        app:icon="@drawable/media"
-        app:iconGravity="textStart"
-        app:iconPadding="@dimen/_4dp"
-        app:iconTint="@color/gray" />
+        app:icon="@drawable/media" />
 
     <Button
         android:id="@+id/optionButton"
+        style="@style/ButtonStyle"
         android:layout_width="match_parent"
         android:layout_height="@dimen/_0dp"
-        android:layout_marginTop="@dimen/_24dp"
-        android:layout_weight="1"
-        android:backgroundTint="@color/white"
-        android:foreground="?android:attr/selectableItemBackground"
         android:text="@string/text_options"
-        android:textAlignment="center"
-        android:textAllCaps="false"
-        android:textColor="@color/gray"
-        android:textFontWeight="500"
-        android:textSize="@dimen/_22sp"
-        app:cornerRadius="@dimen/_16dp"
-        app:icon="@drawable/option"
-        app:iconGravity="textStart"
-        app:iconPadding="@dimen/_4dp"
-        app:iconTint="@color/gray" />
+        app:icon="@drawable/option" />
 
 </LinearLayout>
