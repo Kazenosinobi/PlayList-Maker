@@ -20,6 +20,10 @@
         <item name="iconColor">@color/deep_white</item>
         <item name="searchIconColor">@color/dark_grey</item>
         <item name="searchTextHintColor">@color/dark_grey</item>
+        <item name="searchTextColor">@color/black</item>
         <item name="clearColor">@color/dark_grey</item>
+
+        <item name="colorPrimaryDark">@color/dark_grey</item>
+        <item name="colorAccent">@color/blue</item>
     </style>
 </resources>

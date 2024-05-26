@@ -46,6 +46,7 @@
     </FrameLayout>
 
     <FrameLayout
+        android:id="@+id/frameLayoutShare"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -56,7 +57,6 @@
             android:text="@string/share" />
 
         <ImageView
-            android:id="@+id/imageViewShare"
             style="@style/ImageViewStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -66,6 +66,7 @@
     </FrameLayout>
 
     <FrameLayout
+        android:id="@+id/frameLayoutSupport"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -76,7 +77,6 @@
             android:text="@string/support" />
 
         <ImageView
-            android:id="@+id/imageViewSupport"
             style="@style/ImageViewStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -86,6 +86,7 @@
     </FrameLayout>
 
     <FrameLayout
+        android:id="@+id/frameLayoutTerms"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -96,7 +97,6 @@
             android:text="@string/terms_of_use" />
 
         <ImageView
-            android:id="@+id/imageViewTerms"
             style="@style/ImageViewStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

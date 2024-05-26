@@ -17,5 +17,6 @@
     <attr name="iconColor" format="reference"/>
     <attr name="searchIconColor" format="reference"/>
     <attr name="searchTextHintColor" format="reference"/>
+    <attr name="searchTextColor" format="reference"/>
     <attr name="clearColor" format="reference"/>
 </resources>

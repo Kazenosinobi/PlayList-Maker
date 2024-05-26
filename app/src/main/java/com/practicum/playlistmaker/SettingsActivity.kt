@@ -3,6 +3,7 @@ package com.practicum.playlistmaker
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.widget.FrameLayout
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 
@@ -12,16 +13,16 @@ class SettingsActivity : AppCompatActivity() {
         setContentView(R.layout.activity_settings)
 
         val backButton = findViewById<ImageView>(R.id.backButton)
-        val imageViewShare = findViewById<ImageView>(R.id.imageViewShare)
-        val imageViewSupport = findViewById<ImageView>(R.id.imageViewSupport)
-        val imageViewTerms = findViewById<ImageView>(R.id.imageViewTerms)
+        val frameLayoutShare = findViewById<FrameLayout>(R.id.frameLayoutShare)
+        val frameLayoutSupport = findViewById<FrameLayout>(R.id.frameLayoutSupport)
+        val frameLayoutTerms = findViewById<FrameLayout>(R.id.frameLayoutTerms)
 
         backButton.setOnClickListener {
                 onBackPressedDispatcher.onBackPressed()
         }
 
-        imageViewShare.setOnClickListener {
-            val url = Uri.parse(getString(R.string.share_uri))
+        frameLayoutShare.setOnClickListener {
+            val url = getString(R.string.share_uri)
             val intent = Intent(Intent.ACTION_SEND).apply {
                 type = "text/plain"
                 putExtra(Intent.EXTRA_TEXT, url)
@@ -30,7 +31,7 @@ class SettingsActivity : AppCompatActivity() {
             startActivity(chooser)
         }
 
-        imageViewSupport.setOnClickListener {
+        frameLayoutSupport.setOnClickListener {
             val message = getString(R.string.support_message)
             val subject = getString(R.string.support_subject)
             val intent = Intent(Intent.ACTION_SENDTO)
@@ -41,7 +42,7 @@ class SettingsActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-        imageViewTerms.setOnClickListener {
+        frameLayoutTerms.setOnClickListener {
             val url = Uri.parse(getString(R.string.terms_uri))
             val intent = Intent(Intent.ACTION_VIEW, url)
             val chooser = Intent.createChooser(intent, getString(R.string.browser_choose))

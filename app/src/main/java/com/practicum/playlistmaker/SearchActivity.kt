@@ -14,6 +14,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.isVisible
 
 class SearchActivity : AppCompatActivity() {
 
@@ -42,7 +43,7 @@ class SearchActivity : AppCompatActivity() {
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                imageViewSearchClear.visibility = imageViewSearchClearVisibility(s)
+                imageViewSearchClear.isVisible = s.isNullOrEmpty().not()
             }
 
             override fun afterTextChanged(s: Editable?) {
@@ -63,14 +64,6 @@ class SearchActivity : AppCompatActivity() {
         super.onRestoreInstanceState(savedInstanceState)
         searchTextValue = savedInstanceState.getString(SEARCH_TEXT_KEY, SEARCH_TEXT_VALUE)
         editTextSearch.setText(searchTextValue)
-    }
-
-    private fun imageViewSearchClearVisibility(text: CharSequence?): Int {
-        return if (text.isNullOrEmpty()) {
-            View.GONE
-        } else {
-            View.VISIBLE
-        }
     }
 
     private fun hideKeyBoard() {
