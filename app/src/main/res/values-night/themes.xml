@@ -1,7 +1,29 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Base.Theme.PlaylistMaker" parent="Theme.Material3.DayNight.NoActionBar">
+    <style name="Base.Theme.PlaylistMaker" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Customize your dark theme here. -->
         <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
+        <item name="buttonBackgroundColor">@color/deep_white</item>
+        <item name="buttonTextColor">@color/dark_grey</item>
+        <item name="mainBackgroundColor">@color/dark_grey</item>
+        <item name="settingsBackgroundColor">@color/dark_grey</item>
+        <item name="searchBackgroundColor">@color/dark_grey</item>
+        <item name="editTextSearchBackgroundColor">@color/deep_white</item>
+        <item name="thumbColorSelected">@color/blue</item>
+        <item name="thumbColorNormal">@color/light_grey</item>
+        <item name="trackColorSelected">@color/light_blue</item>
+        <item name="trackColorNormal">@color/white</item>
+        <item name="mainTextColor">@color/deep_white</item>
+        <item name="settingsTextColor">@color/deep_white</item>
+        <item name="settingsToolbarTextColor">@color/deep_white</item>
+        <item name="arrowBackColor">@color/deep_white</item>
+        <item name="iconColor">@color/deep_white</item>
+        <item name="searchIconColor">@color/dark_grey</item>
+        <item name="searchTextHintColor">@color/dark_grey</item>
+        <item name="searchTextColor">@color/black</item>
+        <item name="clearColor">@color/dark_grey</item>
+
+        <item name="colorPrimaryDark">@color/dark_grey</item>
+        <item name="colorAccent">@color/blue</item>
     </style>
 </resources>

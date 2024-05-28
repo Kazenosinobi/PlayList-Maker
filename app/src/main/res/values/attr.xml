@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <attr name="thumbColorSelected" format="reference"/>
+    <attr name="thumbColorNormal" format="reference"/>
+    <attr name="trackColorSelected" format="reference"/>
+    <attr name="trackColorNormal" format="reference"/>
+    <attr name="mainBackgroundColor" format="reference"/>
+    <attr name="settingsBackgroundColor" format="reference"/>
+    <attr name="searchBackgroundColor" format="reference"/>
+    <attr name="editTextSearchBackgroundColor" format="reference"/>
+    <attr name="buttonBackgroundColor" format="reference"/>
+    <attr name="buttonTextColor" format="reference"/>
+    <attr name="mainTextColor" format="reference"/>
+    <attr name="settingsTextColor" format="reference"/>
+    <attr name="settingsToolbarTextColor" format="reference"/>
+    <attr name="arrowBackColor" format="reference"/>
+    <attr name="iconColor" format="reference"/>
+    <attr name="searchIconColor" format="reference"/>
+    <attr name="searchTextHintColor" format="reference"/>
+    <attr name="searchTextColor" format="reference"/>
+    <attr name="clearColor" format="reference"/>
+</resources>
