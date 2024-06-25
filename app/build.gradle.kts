@@ -1,6 +1,8 @@
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
+    alias(libs.plugins.plugin.serialization)
+
 }
 
 android {
@@ -43,7 +45,19 @@ dependencies {
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
     testImplementation(libs.junit)
+
     implementation(libs.glide)
+
+    implementation (libs.okhttp)
+    implementation (libs.logging.interceptor)
+
+    implementation (libs.gson)
+
+    implementation (libs.retrofit)
+    implementation (libs.converter.gson)
+
+    implementation (libs.serialization.json)
+
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 }

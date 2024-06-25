@@ -1,13 +1,14 @@
-package com.practicum.playlistmaker
+package com.practicum.playlistmaker.recycler
 
 import android.view.LayoutInflater
-import android.view.RoundedCorner
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.practicum.playlistmaker.R
+import com.practicum.playlistmaker.models.Track
 
 class TrackViewHolder(parent: ViewGroup) : RecyclerView.ViewHolder(
     LayoutInflater.from(parent.context).inflate(R.layout.track_item, parent, false)
@@ -20,10 +21,12 @@ class TrackViewHolder(parent: ViewGroup) : RecyclerView.ViewHolder(
     fun bind(item: Track) {
         textViewTrackName.text = item.trackName
         textViewArtistName.text = item.artistName
-        textViewTrackTime.text = item.trackTime
+        textViewTrackTime.text = item.getTrackTime()
+        textViewArtistName.invalidate()
+        textViewArtistName.requestLayout()
         Glide.with(imageViewAlbum.context)
             .load(item.artworkUrl100)
-            .placeholder(R.drawable.cap)
+            .placeholder(R.drawable.place_holder)
             .fitCenter()
             .transform(RoundedCorners(4))
             .into(imageViewAlbum)

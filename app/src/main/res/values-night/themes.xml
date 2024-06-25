@@ -26,6 +26,10 @@
         <item name="SearchArtistNameTextColor">@color/deep_white</item>
         <item name="SearchTrackTimeTextColor">@color/deep_white</item>
         <item name="SearchDotColor">@color/deep_white</item>
+        <item name="errorTextViewColor">@color/deep_white</item>
+        <item name="placeholderColor">@color/deep_white</item>
+        <item name="reconnectButtonBackGroundColor">@color/deep_white</item>
+        <item name="reconnectButtonTextColor">@color/dark_grey</item>
 
         <item name="colorPrimaryDark">@color/dark_grey</item>
         <item name="colorAccent">@color/blue</item>

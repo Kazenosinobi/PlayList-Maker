@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="horizontal">
 
     <ImageView
@@ -24,7 +25,7 @@
             style="@style/SearchTrackNameTextViewStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/track_name1" />
+            tools:text="Трек 1" />
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -37,7 +38,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/artist_name1" />
+                tools:text="Трек 1" />
 
             <ImageView
                 android:layout_width="wrap_content"
@@ -53,7 +54,7 @@
                 android:id="@+id/textViewTrackTime"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/track_time1" />
+                tools:text="Трек 1" />
 
         </LinearLayout>
     </LinearLayout>
