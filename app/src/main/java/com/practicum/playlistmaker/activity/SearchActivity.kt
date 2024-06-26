@@ -37,7 +37,6 @@ class SearchActivity : AppCompatActivity() {
     private var llErrors: LinearLayout? = null
     private var llNotInternet: LinearLayout? = null
     private var reconnectButton: Button? = null
-    private val iTunesBaseUrl = "https://itunes.apple.com"
 
     private val logging = HttpLoggingInterceptor().apply {
         level = HttpLoggingInterceptor.Level.BODY
@@ -46,7 +45,7 @@ class SearchActivity : AppCompatActivity() {
         .addInterceptor(logging)
         .build()
     private val iTunesService = Retrofit.Builder()
-        .baseUrl(iTunesBaseUrl)
+        .baseUrl(ITUNES_BASE_URL)
         .addConverterFactory(GsonConverterFactory.create())
         .client(client)
         .build()
@@ -109,12 +108,12 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun initViews() {
-        searchBackButton = findViewById<ImageView>(R.id.searchBackButton)
-        editTextSearch = findViewById<EditText>(R.id.editTextSearch)
-        imageViewSearchClear = findViewById<ImageView>(R.id.imageViewSearchClear)
-        rwTrack = findViewById<RecyclerView>(R.id.rwTrack)
-        llErrors = findViewById<LinearLayout>(R.id.llErrors)
-        llNotInternet = findViewById<LinearLayout>(R.id.llNotInternet)
+        searchBackButton = findViewById(R.id.searchBackButton)
+        editTextSearch = findViewById(R.id.editTextSearch)
+        imageViewSearchClear = findViewById(R.id.imageViewSearchClear)
+        rwTrack = findViewById(R.id.rwTrack)
+        llErrors = findViewById(R.id.llErrors)
+        llNotInternet = findViewById(R.id.llNotInternet)
         reconnectButton = findViewById(R.id.reconnectButton)
     }
 
@@ -132,9 +131,9 @@ class SearchActivity : AppCompatActivity() {
                                 if (result.isNotEmpty()) {
                                     trackAdapter?.tracks = result
                                     trackAdapter?.notifyDataSetChanged()
-                                    rwTrack?.visibility = View.VISIBLE
-                                    llErrors?.visibility = View.GONE
-                                    llNotInternet?.visibility = View.GONE
+                                    rwTrack?.isVisible = true
+                                    llErrors?.isVisible = false
+                                    llNotInternet?.isVisible = false
                                 } else {
                                     showEmpty()
                                 }
@@ -155,13 +154,15 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun showEmpty() {
-        rwTrack?.visibility = View.GONE
-        llErrors?.visibility = View.VISIBLE
+        rwTrack?.isVisible = false
+        llErrors?.isVisible = true
+        llNotInternet?.isVisible = false
     }
 
     private fun showError() {
-        rwTrack?.visibility = View.GONE
-        llNotInternet?.visibility = View.VISIBLE
+        rwTrack?.isVisible = false
+        llNotInternet?.isVisible = true
+        llErrors?.isVisible = false
     }
 
     private fun hideKeyBoard() {
@@ -174,5 +175,6 @@ class SearchActivity : AppCompatActivity() {
     companion object {
         const val SEARCH_TEXT_VALUE = ""
         const val SEARCH_TEXT_KEY = "SEARCH_TEXT_KEY"
+        const val ITUNES_BASE_URL = "https://itunes.apple.com"
     }
 }
