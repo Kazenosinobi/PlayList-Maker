@@ -21,21 +21,9 @@
     <string name="max_lines_one">1</string>
     <string name="max_length">20</string>
     <string name="album_image">Изображение альбома</string>
-    <string name="track_name1">Smells Like Teen Spirit</string>
-    <string name="artist_name1">Nirvana</string>
-    <string name="track_time1">5:01</string>
-    <string name="track_name2">Billie Jean</string>
-    <string name="artist_name2">Michael Jackson</string>
-    <string name="track_time2">4:35</string>
-    <string name="track_name3">Stayin\' Alive</string>
-    <string name="artist_name3">Bee Gees</string>
-    <string name="track_time3">4:10</string>
-    <string name="track_name4">Whole Lotta Love</string>
-    <string name="artist_name4">Led Zeppelin</string>
-    <string name="track_time4">5:33</string>
-    <string name="track_name5">Sweet Child O\'Mine</string>
-    <string name="artist_name5">Guns N\' Roses</string>
-    <string name="track_time5">5:03</string>
     <string name="dot">dot</string>
     <string name="play">play</string>
+    <string name="nothing_was_found">Ничего не нашлось</string>
+    <string name="connection_error">Проблемы со связью&#10;&#10;Загрузка не удалась. Проверте подключение к интернету</string>
+    <string name="update">Обновить</string>
 </resources>

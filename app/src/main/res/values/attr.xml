@@ -23,4 +23,8 @@
     <attr name="SearchArtistNameTextColor" format="reference"/>
     <attr name="SearchTrackTimeTextColor" format="reference"/>
     <attr name="SearchDotColor" format="reference"/>
+    <attr name="errorTextViewColor" format="reference"/>
+    <attr name="placeholderColor" format="reference"/>
+    <attr name="reconnectButtonBackGroundColor" format="reference"/>
+    <attr name="reconnectButtonTextColor" format="reference"/>
 </resources>
