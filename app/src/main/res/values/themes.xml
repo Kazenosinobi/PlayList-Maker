@@ -30,6 +30,9 @@
         <item name="placeholderColor">@color/dark_grey</item>
         <item name="reconnectButtonBackGroundColor">@color/dark_grey</item>
         <item name="reconnectButtonTextColor">@color/deep_white</item>
+        <item name="searchHistoryTextViewColor">@color/dark_grey</item>
+        <item name="searchHistoryButtonBackGroundColor">@color/dark_grey</item>
+        <item name="searchHistoryButtonTextColor">@color/deep_white</item>
 
         <item name="colorPrimaryDark">@color/blue</item>
         <item name="colorAccent">@color/blue</item>

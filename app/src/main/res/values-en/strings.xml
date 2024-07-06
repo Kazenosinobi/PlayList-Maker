@@ -27,4 +27,6 @@
     <string name="nothing_was_found">Nothing was found</string>
     <string name="connection_error">Connection error&#10;&#10;Upload failed. Check your internet connection</string>
     <string name="update">Update</string>
+    <string name="u_searched">You searched</string>
+    <string name="clear_history">Clear the history</string>
 </resources>
