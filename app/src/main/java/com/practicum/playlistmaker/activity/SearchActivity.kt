@@ -173,6 +173,7 @@ class SearchActivity : AppCompatActivity() {
                         when (response.code()) {
                             200 -> {
                                 if (result.isNotEmpty()) {
+                                    trackAdapter?.tracks?.clear()
                                     trackAdapter?.tracks?.addAll(result)
                                     trackAdapter?.notifyDataSetChanged()
                                     rwTrack?.isVisible = true
