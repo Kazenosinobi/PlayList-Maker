@@ -22,7 +22,6 @@ import com.practicum.playlistmaker.data.SearchHistory
 import com.practicum.playlistmaker.models.Track
 import com.practicum.playlistmaker.models.TracksResponse
 import com.practicum.playlistmaker.recycler.TrackAdapter
-import com.practicum.playlistmaker.recycler.TrackHistoryAdapter
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Call
@@ -50,7 +49,7 @@ class SearchActivity : AppCompatActivity() {
     private var buttonClearHistory: Button? = null
 
     private var trackAdapter: TrackAdapter? = null
-    private var trackHistoryAdapter: TrackHistoryAdapter? = null
+    private var trackHistoryAdapter: TrackAdapter? = null
 
     private var searchHistory: SearchHistory? = null
 
@@ -71,9 +70,9 @@ class SearchActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
         trackAdapter = TrackAdapter { track -> addToTrackHistory(track) }
-        trackHistoryAdapter = TrackHistoryAdapter()
+        trackHistoryAdapter = TrackAdapter()
         searchHistory = SearchHistory(getSharedPreferences(PREFERENCES, MODE_PRIVATE))
-        trackHistoryAdapter?.tracksHistory?.addAll(
+        trackHistoryAdapter?.tracks?.addAll(
             searchHistory?.getSearchHistory() ?: emptyArray()
         )
         initViews()
@@ -84,7 +83,7 @@ class SearchActivity : AppCompatActivity() {
         imageViewSearchClear?.setOnClickListener {
             editTextSearch?.setText("")
             hideKeyBoard()
-            trackAdapter?.tracks = emptyList()
+            trackAdapter?.tracks?.clear()
             showHistory()
             trackAdapter?.notifyDataSetChanged()
         }
@@ -96,8 +95,9 @@ class SearchActivity : AppCompatActivity() {
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 imageViewSearchClear?.isVisible = s.isNullOrEmpty().not()
-                groupHistory?.isVisible =
-                    editTextSearch?.hasFocus() == true && s?.isEmpty() == true
+                if (editTextSearch?.hasFocus() == true) {
+                    showHistory()
+                }
             }
 
             override fun afterTextChanged(s: Editable?) {
@@ -132,7 +132,7 @@ class SearchActivity : AppCompatActivity() {
     override fun onStop() {
         super.onStop()
         searchHistory?.saveSearchTrackHistory(
-            trackHistoryAdapter?.tracksHistory?.toTypedArray() ?: emptyArray()
+            trackHistoryAdapter?.tracks?.toTypedArray() ?: emptyArray()
         )
     }
 
@@ -173,7 +173,7 @@ class SearchActivity : AppCompatActivity() {
                         when (response.code()) {
                             200 -> {
                                 if (result.isNotEmpty()) {
-                                    trackAdapter?.tracks = result
+                                    trackAdapter?.tracks?.addAll(result)
                                     trackAdapter?.notifyDataSetChanged()
                                     rwTrack?.isVisible = true
                                     llErrors?.isVisible = false
@@ -198,7 +198,10 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun clearHistory() {
-        trackHistoryAdapter?.tracksHistory?.clear()
+        trackHistoryAdapter?.tracks?.clear()
+        searchHistory?.saveSearchTrackHistory(
+            trackHistoryAdapter?.tracks?.toTypedArray() ?: emptyArray())
+        trackHistoryAdapter?.notifyDataSetChanged()
         groupHistory?.isVisible = false
     }
 
@@ -219,7 +222,7 @@ class SearchActivity : AppCompatActivity() {
     private fun showHistory() {
         groupHistory?.isVisible =
             editTextSearch?.text.isNullOrEmpty()
-                    && trackHistoryAdapter?.tracksHistory.isNullOrEmpty().not()
+                    && trackHistoryAdapter?.tracks.isNullOrEmpty().not()
         rwTrack?.isVisible = false
         llErrors?.isVisible = false
         llNotInternet?.isVisible = false
@@ -232,7 +235,7 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun addToTrackHistory(track: Track) {
-        val tracks = trackHistoryAdapter?.tracksHistory ?: return
+        val tracks = trackHistoryAdapter?.tracks ?: return
         val existingTrackIndex = tracks.indexOfFirst { it.trackId == track.trackId }
         if (existingTrackIndex != -1) {
             tracks.removeAt(existingTrackIndex)
@@ -244,6 +247,8 @@ class SearchActivity : AppCompatActivity() {
         }
         tracks.add(0, track)
         trackHistoryAdapter?.notifyItemInserted(0)
+        searchHistory?.saveSearchTrackHistory(
+            trackHistoryAdapter?.tracks?.toTypedArray() ?: emptyArray())
     }
 
     companion object {

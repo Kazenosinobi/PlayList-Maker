@@ -10,7 +10,7 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.models.Track
 
-class TrackViewHolder(parent: ViewGroup) : RecyclerView.ViewHolder(
+class TrackViewHolder(private val parent: ViewGroup) : RecyclerView.ViewHolder(
     LayoutInflater.from(parent.context).inflate(R.layout.track_item, parent, false)
 ) {
     private val imageViewAlbum: ImageView = itemView.findViewById(R.id.imageViewAlbum)
@@ -19,6 +19,7 @@ class TrackViewHolder(parent: ViewGroup) : RecyclerView.ViewHolder(
     private val textViewTrackTime: TextView = itemView.findViewById(R.id.textViewTrackTime)
 
     fun bind(item: Track) {
+        val cornerRadius = parent.context.resources.getDimensionPixelSize(R.dimen._4dp)
         textViewTrackName.text = item.trackName
         textViewArtistName.text = item.artistName
         textViewTrackTime.text = item.getTrackTime()
@@ -28,7 +29,7 @@ class TrackViewHolder(parent: ViewGroup) : RecyclerView.ViewHolder(
             .load(item.artworkUrl100)
             .placeholder(R.drawable.place_holder)
             .fitCenter()
-            .transform(RoundedCorners(4))
+            .transform(RoundedCorners(cornerRadius))
             .into(imageViewAlbum)
     }
 }
