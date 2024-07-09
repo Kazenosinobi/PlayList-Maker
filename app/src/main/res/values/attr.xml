@@ -27,4 +27,7 @@
     <attr name="placeholderColor" format="reference"/>
     <attr name="reconnectButtonBackGroundColor" format="reference"/>
     <attr name="reconnectButtonTextColor" format="reference"/>
+    <attr name="searchHistoryTextViewColor" format="reference"/>
+    <attr name="searchHistoryButtonBackGroundColor" format="reference"/>
+    <attr name="searchHistoryButtonTextColor" format="reference"/>
 </resources>

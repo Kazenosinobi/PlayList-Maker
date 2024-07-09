@@ -20,6 +20,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:contentDescription="@string/back_button"
+            android:background="?android:attr/selectableItemBackgroundBorderless"
             android:src="@drawable/arrow_back" />
 
         <TextView
@@ -67,6 +68,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:contentDescription="@string/clear_button"
+            android:foreground="?android:attr/selectableItemBackgroundBorderless"
             android:src="@drawable/clear"
             android:visibility="gone"
             app1:layout_constraintBottom_toBottomOf="parent"
@@ -85,6 +87,46 @@
         app1:layout_constraintTop_toBottomOf="@+id/clSearch"
         tools:itemCount="9"
         tools:listitem="@layout/track_item" />
+
+    <TextView
+        android:id="@+id/textViewSearchHistory"
+        style="@style/SearchHistoryTextViewStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/u_searched"
+        app1:layout_constraintTop_toBottomOf="@+id/clSearch" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rwSearchHistory"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app1:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app1:layout_constrainedHeight="true"
+        app1:layout_constraintBottom_toTopOf="@+id/buttonClearHistory"
+        app1:layout_constraintTop_toBottomOf="@+id/textViewSearchHistory"
+        app1:layout_constraintVertical_bias="0"
+        app1:layout_constraintVertical_chainStyle="packed"
+        tools:itemCount="3"
+        tools:listitem="@layout/track_item" />
+
+    <Button
+        android:id="@+id/buttonClearHistory"
+        style="@style/clearHistoryButtonStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/clear_history"
+        app1:layout_constraintBottom_toBottomOf="parent"
+        app1:layout_constraintEnd_toEndOf="parent"
+        app1:layout_constraintStart_toStartOf="parent"
+        app1:layout_constraintTop_toBottomOf="@+id/rwSearchHistory" />
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/groupHistory"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app1:constraint_referenced_ids="textViewSearchHistory, rwSearchHistory, buttonClearHistory" />
 
     <LinearLayout
         android:id="@+id/llErrors"
@@ -137,16 +179,14 @@
             style="@style/ErrorTextViewStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center"
             android:text="@string/connection_error" />
 
         <Button
-            style="@style/reconnectButtonStyle"
             android:id="@+id/reconnectButton"
+            style="@style/reconnectButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/update"
-            android:layout_gravity="center"/>
+            android:text="@string/update" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
