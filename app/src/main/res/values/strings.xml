@@ -28,4 +28,12 @@
     <string name="update">Обновить</string>
     <string name="u_searched">Вы искали</string>
     <string name="clear_history">Очистить историю</string>
+    <string name="add_to_catalog">Добавить в каталог</string>
+    <string name="play_pause">Воспроизвести</string>
+    <string name="add_to_favourite">Добавить в избранное</string>
+    <string name="duration">Длительность</string>
+    <string name="album">Альбом</string>
+    <string name="year">Год</string>
+    <string name="genre">Жанр</string>
+    <string name="country">Страна</string>
 </resources>

@@ -30,4 +30,8 @@
     <attr name="searchHistoryTextViewColor" format="reference"/>
     <attr name="searchHistoryButtonBackGroundColor" format="reference"/>
     <attr name="searchHistoryButtonTextColor" format="reference"/>
+    <attr name="playButtonTextColor" format="reference"/>
+    <attr name="playTimeTextColor" format="reference"/>
+    <attr name="mediaDescriptionsTextColor" format="reference"/>
+    <attr name="mediaDescriptionsDataTextColor" format="reference"/>
 </resources>
