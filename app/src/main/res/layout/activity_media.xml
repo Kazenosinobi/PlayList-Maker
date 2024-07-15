@@ -40,15 +40,14 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginHorizontal="@dimen/_24dp"
-        android:layout_marginTop="@dimen/_48dp"
         android:contentDescription="@string/back_button"
         android:scaleType="centerCrop"
         android:src="@drawable/place_holder"
-        app:layout_constraintBottom_toTopOf="@+id/textViewTrackName"
         app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintEnd_toEndOf="@id/rightBorder"
         app:layout_constraintStart_toStartOf="@id/leftBorder"
-        app:layout_constraintTop_toBottomOf="@+id/backButton" />
+        app:layout_constraintTop_toBottomOf="@+id/backButton"
+        tools:layout_editor_absoluteY="92dp" />
 
     <TextView
         android:id="@+id/textViewTrackName"
@@ -59,6 +58,7 @@
         app:layout_constraintEnd_toEndOf="@id/rightBorder"
         app:layout_constraintStart_toStartOf="@id/leftBorder"
         app:layout_constraintTop_toBottomOf="@+id/imageViewAlbum"
+        app:layout_constraintVertical_chainStyle="spread"
         tools:text="Track name" />
 
     <TextView
@@ -113,22 +113,22 @@
         style="@style/PlayTimeTextViewStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="@string/playback_progress"
         app:layout_constraintBottom_toTopOf="@+id/textViewDuration"
         app:layout_constraintEnd_toEndOf="@id/rightBorder"
         app:layout_constraintStart_toStartOf="@id/leftBorder"
-        app:layout_constraintTop_toBottomOf="@+id/imageViewPlay"
-        android:text="@string/playback_progress" />
+        app:layout_constraintTop_toBottomOf="@+id/imageViewPlay" />
 
     <TextView
         android:id="@+id/textViewDuration"
         style="@style/MediaDescriptionsTextViewStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintVertical_chainStyle="packed"
         android:text="@string/duration"
         app:layout_constraintBottom_toTopOf="@+id/textViewAlbum"
         app:layout_constraintStart_toEndOf="@id/leftBorder"
-        app:layout_constraintTop_toBottomOf="@+id/textViewPlayTime" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewPlayTime"
+        app:layout_constraintVertical_chainStyle="spread_inside" />
 
     <TextView
         android:id="@+id/textViewAlbum"
@@ -212,9 +212,9 @@
         style="@style/MediaDescriptionsDataTextViewStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        tools:text="@string/country"
         app:layout_constraintBaseline_toBaselineOf="@+id/textViewCountry"
-        app:layout_constraintEnd_toStartOf="@id/rightBorder" />
+        app:layout_constraintEnd_toStartOf="@id/rightBorder"
+        tools:text="@string/country" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -261,6 +261,7 @@ class SearchActivity : AppCompatActivity() {
         }
         tracks.add(0, track)
         trackHistoryAdapter?.notifyItemInserted(0)
+        trackHistoryAdapter?.notifyItemRangeChanged(0, tracks.size)
         searchHistory?.saveSearchTrackHistory(
             trackHistoryAdapter?.tracks?.toTypedArray() ?: emptyArray()
         )

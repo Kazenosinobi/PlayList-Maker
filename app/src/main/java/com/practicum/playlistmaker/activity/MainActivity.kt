@@ -15,7 +15,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         val searchButton = findViewById<Button>(R.id.searchButton)
-        val mediaButton = findViewById<Button>(R.id.mediaButton)
+        val mediaLibraryButton = findViewById<Button>(R.id.mediaLibraryButton)
         val optionButton = findViewById<Button>(R.id.optionButton)
 
         val searchButtonClickListener: View.OnClickListener = object : View.OnClickListener {
@@ -26,9 +26,9 @@ class MainActivity : AppCompatActivity() {
         }
         searchButton.setOnClickListener(searchButtonClickListener)
 
-        mediaButton.setOnClickListener {
-            val mediaButtonIntent = Intent(this, MediaActivity::class.java)
-            startActivity(mediaButtonIntent)
+        mediaLibraryButton.setOnClickListener {
+            val mediaLibraryButtonIntent = Intent(this, MediaLibraryActivity::class.java)
+            startActivity(mediaLibraryButtonIntent)
         }
 
         optionButton.setOnClickListener {

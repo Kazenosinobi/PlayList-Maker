@@ -25,7 +25,7 @@
         app:icon="@drawable/search" />
 
     <Button
-        android:id="@+id/mediaButton"
+        android:id="@+id/mediaLibraryButton"
         style="@style/ButtonStyle"
         android:layout_width="match_parent"
         android:layout_height="@dimen/_0dp"
