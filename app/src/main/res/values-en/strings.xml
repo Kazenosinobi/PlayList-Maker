@@ -29,4 +29,13 @@
     <string name="update">Update</string>
     <string name="u_searched">You searched</string>
     <string name="clear_history">Clear the history</string>
+    <string name="add_to_catalog">Add to catalog</string>
+    <string name="play_pause">Play</string>
+    <string name="add_to_favourite">Add to favourite</string>
+    <string name="duration">Duration</string>
+    <string name="album">Album</string>
+    <string name="year">Year</string>
+    <string name="genre">Genre</string>
+    <string name="country">Country</string>
+    <string name="playback_progress">0:30</string>
 </resources>

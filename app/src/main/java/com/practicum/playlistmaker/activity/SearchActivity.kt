@@ -1,9 +1,11 @@
 package com.practicum.playlistmaker.activity
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.Button
@@ -18,10 +20,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.api.iTunesApi
 import com.practicum.playlistmaker.application.App.Companion.PREFERENCES
+import com.practicum.playlistmaker.data.IntentFactory
 import com.practicum.playlistmaker.data.SearchHistory
 import com.practicum.playlistmaker.models.Track
 import com.practicum.playlistmaker.models.TracksResponse
 import com.practicum.playlistmaker.recycler.TrackAdapter
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Call
@@ -69,13 +74,19 @@ class SearchActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
-        trackAdapter = TrackAdapter { track -> addToTrackHistory(track) }
-        trackHistoryAdapter = TrackAdapter()
+        initViews()
+        trackAdapter = TrackAdapter { track ->
+            addToTrackHistory(track)
+            startMediaActivity(track)
+        }
+        trackHistoryAdapter = TrackAdapter { track ->
+            addToTrackHistory(track)
+            startMediaActivity(track)
+        }
         searchHistory = SearchHistory(getSharedPreferences(PREFERENCES, MODE_PRIVATE))
         trackHistoryAdapter?.tracks?.addAll(
             searchHistory?.getSearchHistory() ?: emptyArray()
         )
-        initViews()
         searchBackButton?.setOnClickListener {
             finish()
         }
@@ -183,8 +194,9 @@ class SearchActivity : AppCompatActivity() {
                                     showEmpty()
                                 }
                             }
-
-                            else -> showError()
+                            else -> {
+                                showError()
+                            }
                         }
                     } else {
                         showEmpty()
@@ -201,7 +213,8 @@ class SearchActivity : AppCompatActivity() {
     private fun clearHistory() {
         trackHistoryAdapter?.tracks?.clear()
         searchHistory?.saveSearchTrackHistory(
-            trackHistoryAdapter?.tracks?.toTypedArray() ?: emptyArray())
+            trackHistoryAdapter?.tracks?.toTypedArray() ?: emptyArray()
+        )
         trackHistoryAdapter?.notifyDataSetChanged()
         groupHistory?.isVisible = false
     }
@@ -249,12 +262,21 @@ class SearchActivity : AppCompatActivity() {
         tracks.add(0, track)
         trackHistoryAdapter?.notifyItemInserted(0)
         searchHistory?.saveSearchTrackHistory(
-            trackHistoryAdapter?.tracks?.toTypedArray() ?: emptyArray())
+            trackHistoryAdapter?.tracks?.toTypedArray() ?: emptyArray()
+        )
+    }
+
+    private fun startMediaActivity(track: Track) {
+        val mediaActivityIntent = IntentFactory.createMediaActivityIntent(this)
+        val jsonString = Json.encodeToString(track)
+        mediaActivityIntent.putExtra(TRACK_KEY, jsonString)
+        startActivity(mediaActivityIntent)
     }
 
     companion object {
         const val SEARCH_TEXT_VALUE = ""
         const val SEARCH_TEXT_KEY = "SEARCH_TEXT_KEY"
+        const val TRACK_KEY = "TRACK_KEY"
         const val ITUNES_BASE_URL = "https://itunes.apple.com"
         const val TRACKS_HISTORY_MAX_SIZE = 10
     }

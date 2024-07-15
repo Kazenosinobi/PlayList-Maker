@@ -2,9 +2,12 @@ package com.practicum.playlistmaker.recycler
 
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.practicum.playlistmaker.activity.MediaActivity
 import com.practicum.playlistmaker.models.Track
 
-class TrackAdapter (private val onClick: (Track) -> Unit = {}) : RecyclerView.Adapter<TrackViewHolder> () {
+class TrackAdapter(
+    private val onClick: (Track) -> Unit = {}
+) : RecyclerView.Adapter<TrackViewHolder>() {
 
     val tracks: ArrayList<Track> = arrayListOf()
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TrackViewHolder {

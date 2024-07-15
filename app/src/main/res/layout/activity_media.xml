@@ -81,7 +81,7 @@
         app:layout_constraintBottom_toBottomOf="@+id/imageViewPlay"
         app:layout_constraintStart_toEndOf="@id/leftBorder"
         app:layout_constraintTop_toTopOf="@+id/imageViewPlay"
-        tools:src="@drawable/catalog" />
+        app:srcCompat="@drawable/catalog" />
 
     <ImageView
         android:id="@+id/imageViewPlay"
@@ -106,7 +106,7 @@
         app:layout_constraintEnd_toStartOf="@id/rightBorder"
         app:layout_constraintTop_toBottomOf="@+id/textViewArtistName"
         app:layout_constraintTop_toTopOf="@+id/imageViewPlay"
-        tools:src="@drawable/favourite" />
+        app:srcCompat="@drawable/favourite" />
 
     <TextView
         android:id="@+id/textViewPlayTime"
@@ -117,13 +117,14 @@
         app:layout_constraintEnd_toEndOf="@id/rightBorder"
         app:layout_constraintStart_toStartOf="@id/leftBorder"
         app:layout_constraintTop_toBottomOf="@+id/imageViewPlay"
-        tools:text="0:30" />
+        android:text="@string/playback_progress" />
 
     <TextView
         android:id="@+id/textViewDuration"
         style="@style/MediaDescriptionsTextViewStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        app:layout_constraintVertical_chainStyle="packed"
         android:text="@string/duration"
         app:layout_constraintBottom_toTopOf="@+id/textViewAlbum"
         app:layout_constraintStart_toEndOf="@id/leftBorder"
@@ -176,9 +177,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintBaseline_toBaselineOf="@+id/textViewDuration"
-        app:layout_constraintBottom_toTopOf="@+id/textViewAlbum"
         app:layout_constraintEnd_toStartOf="@id/rightBorder"
-        app:layout_constraintTop_toBottomOf="@+id/textViewPlayTime"
         tools:text="5:35" />
 
     <TextView
@@ -187,9 +186,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintBaseline_toBaselineOf="@+id/textViewAlbum"
-        app:layout_constraintBottom_toTopOf="@+id/textViewAlbum"
         app:layout_constraintEnd_toStartOf="@id/rightBorder"
-        app:layout_constraintTop_toBottomOf="@+id/textViewDurationData"
         tools:text="Album name" />
 
     <TextView
@@ -198,9 +195,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintBaseline_toBaselineOf="@+id/textViewYear"
-        app:layout_constraintBottom_toTopOf="@+id/textViewGenre"
         app:layout_constraintEnd_toStartOf="@id/rightBorder"
-        app:layout_constraintTop_toBottomOf="@+id/textViewAlbumData"
         tools:text="2004" />
 
     <TextView
@@ -209,9 +204,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintBaseline_toBaselineOf="@+id/textViewGenre"
-        app:layout_constraintBottom_toTopOf="@+id/textViewCountry"
         app:layout_constraintEnd_toStartOf="@id/rightBorder"
-        app:layout_constraintTop_toBottomOf="@+id/textViewYearData"
         tools:text="Rock" />
 
     <TextView
@@ -219,12 +212,9 @@
         style="@style/MediaDescriptionsDataTextViewStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/_20dp"
-        android:text="@string/country"
+        tools:text="@string/country"
         app:layout_constraintBaseline_toBaselineOf="@+id/textViewCountry"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/rightBorder"
-        app:layout_constraintTop_toBottomOf="@+id/textViewGenreData" />
+        app:layout_constraintEnd_toStartOf="@id/rightBorder" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
