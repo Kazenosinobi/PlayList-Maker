@@ -6,6 +6,7 @@ import android.view.View
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import com.practicum.playlistmaker.R
+import com.practicum.playlistmaker.data.IntentFactory
 
 class MainActivity : AppCompatActivity() {
 
@@ -20,19 +21,19 @@ class MainActivity : AppCompatActivity() {
 
         val searchButtonClickListener: View.OnClickListener = object : View.OnClickListener {
             override fun onClick(v: View?) {
-                val searchButtonIntent = Intent(this@MainActivity, SearchActivity::class.java)
+                val searchButtonIntent = IntentFactory.createSearchActivityIntent(this@MainActivity)
                 startActivity(searchButtonIntent)
             }
         }
         searchButton.setOnClickListener(searchButtonClickListener)
 
         mediaLibraryButton.setOnClickListener {
-            val mediaLibraryButtonIntent = Intent(this, MediaLibraryActivity::class.java)
+            val mediaLibraryButtonIntent = IntentFactory.createMediaLibraryActivityIntent(this)
             startActivity(mediaLibraryButtonIntent)
         }
 
         optionButton.setOnClickListener {
-            val optionButtonIntent = Intent(this, SettingsActivity::class.java)
+            val optionButtonIntent = IntentFactory.createSettingsActivityIntent(this)
             startActivity(optionButtonIntent)
         }
     }
