@@ -18,7 +18,23 @@ data class Track(
     val artworkUrl100: String,
     @SerialName("trackId")
     val trackId: Int,
+    @SerialName("collectionName")
+    val collectionName: String,
+    @SerialName("releaseDate")
+    val releaseDate: String,
+    @SerialName("primaryGenreName")
+    val primaryGenreName: String,
+    @SerialName("country")
+    val country: String,
 ) {
     fun getTrackTime(): String =
         SimpleDateFormat("mm:ss", Locale.getDefault()).format(trackTimeMillis)
+
+    fun getCoverArtwork() = artworkUrl100.replaceAfterLast('/',"512x512bb.jpg")
+
+    fun getReleaseYear() = releaseDate.take(TAKE_YEAR)
+
+    companion object {
+        const val TAKE_YEAR = 4
+    }
 }

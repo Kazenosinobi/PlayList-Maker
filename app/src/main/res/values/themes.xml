@@ -33,6 +33,10 @@
         <item name="searchHistoryTextViewColor">@color/dark_grey</item>
         <item name="searchHistoryButtonBackGroundColor">@color/dark_grey</item>
         <item name="searchHistoryButtonTextColor">@color/deep_white</item>
+        <item name="playButtonTextColor">@color/dark_grey</item>
+        <item name="playTimeTextColor">@color/dark_grey</item>
+        <item name="mediaDescriptionsTextColor">@color/light_grey</item>
+        <item name="mediaDescriptionsDataTextColor">@color/dark_grey</item>
 
         <item name="colorPrimaryDark">@color/blue</item>
         <item name="colorAccent">@color/blue</item>
