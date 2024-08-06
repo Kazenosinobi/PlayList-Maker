@@ -1,6 +1,7 @@
 package com.practicum.playlistmaker.activity
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -20,7 +21,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.api.iTunesApi
 import com.practicum.playlistmaker.application.App.Companion.PREFERENCES
-import com.practicum.playlistmaker.data.IntentFactory
 import com.practicum.playlistmaker.data.SearchHistory
 import com.practicum.playlistmaker.models.Track
 import com.practicum.playlistmaker.models.TracksResponse
@@ -304,7 +304,7 @@ class SearchActivity : AppCompatActivity() {
 
     private fun startMediaActivity(track: Track) {
         if (clickDebounce()) {
-            val mediaActivityIntent = IntentFactory.createMediaActivityIntent(this)
+            val mediaActivityIntent = MediaActivity.createMediaActivityIntent(this)
             val jsonString = Json.encodeToString(track)
             mediaActivityIntent.putExtra(TRACK_KEY, jsonString)
             startActivity(mediaActivityIntent)
@@ -319,5 +319,9 @@ class SearchActivity : AppCompatActivity() {
         const val TRACKS_HISTORY_MAX_SIZE = 10
         const val SEARCH_DEBOUNCE_DELAY = 2000L
         const val CLICK_DEBOUNCE_DELAY = 1000L
+
+        fun createSearchActivityIntent(context: Context): Intent {
+            return Intent(context, SearchActivity::class.java)
+        }
     }
 }

@@ -1,5 +1,7 @@
 package com.practicum.playlistmaker.activity
 
+import android.content.Context
+import android.content.Intent
 import android.media.MediaPlayer
 import android.os.Bundle
 import android.os.Handler
@@ -79,8 +81,6 @@ class MediaActivity : AppCompatActivity() {
 
     private fun getImageAlbum() {
         val cornerRadius = resources.getDimensionPixelSize(R.dimen._8dp)
-        val coverUrl = track?.getCoverArtwork()
-        Log.d("MediaActivity", "Cover URL: $coverUrl")
         imageViewAlbum?.let {
             Glide.with(this).load(track?.getCoverArtwork()).placeholder(R.drawable.place_holder)
                 .fitCenter().transform(RoundedCorners(cornerRadius)).into(it)
@@ -191,5 +191,9 @@ class MediaActivity : AppCompatActivity() {
         private const val STATE_PAUSED = 3
         private const val PLAY_TIME_DELAY = 500L
         private const val START_TIME = "00:00"
+
+        fun createMediaActivityIntent(context: Context): Intent {
+            return Intent(context, MediaActivity::class.java)
+        }
     }
 }

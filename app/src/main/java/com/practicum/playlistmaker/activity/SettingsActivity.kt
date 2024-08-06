@@ -1,5 +1,6 @@
 package com.practicum.playlistmaker.activity
 
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -63,6 +64,12 @@ class SettingsActivity : AppCompatActivity() {
         flThemeSwitcher.setOnClickListener {
             themeSwitcher.isChecked = !themeSwitcher.isChecked
             (applicationContext as App).switchTheme(themeSwitcher.isChecked)
+        }
+    }
+
+    companion object {
+        fun createSettingsActivityIntent(context: Context): Intent {
+            return Intent(context, SettingsActivity::class.java)
         }
     }
 }
