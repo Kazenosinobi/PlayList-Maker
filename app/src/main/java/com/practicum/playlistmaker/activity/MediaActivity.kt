@@ -31,11 +31,15 @@ class MediaActivity : AppCompatActivity() {
     private var textViewTrackName: TextView? = null
     private var textViewArtistName: TextView? = null
     private var textViewPlayTime: TextView? = null
+    private var textViewDuration: TextView? = null
     private var textViewDurationData: TextView? = null
     private var textViewAlbum: TextView? = null
     private var textViewAlbumData: TextView? = null
+    private var textViewYear: TextView? = null
     private var textViewYearData: TextView? = null
+    private var textViewGenre: TextView? = null
     private var textViewGenreData: TextView? = null
+    private var textViewCountry: TextView? = null
     private var textViewCountryData: TextView? = null
 
     private var track: Track? = null
@@ -65,7 +69,6 @@ class MediaActivity : AppCompatActivity() {
         imageViewPlay?.setOnClickListener {
             playbackControl()
         }
-        textViewPlayTime?.text = START_TIME
     }
 
     override fun onPause() {
@@ -90,17 +93,50 @@ class MediaActivity : AppCompatActivity() {
     private fun setText() {
         textViewTrackName?.text = track?.trackName
         textViewArtistName?.text = track?.artistName
-        textViewDurationData?.text = track?.getTrackTime()
+        textViewDurationData?.text = getTrackTime()
         textViewAlbumData?.text = getCollectionName()
-        textViewYearData?.text = track?.getReleaseYear()
-        textViewGenreData?.text = track?.primaryGenreName
-        textViewCountryData?.text = track?.country
+        textViewYearData?.text = getReleaseDate()
+        textViewGenreData?.text = getPrimaryGenreName()
+        textViewCountryData?.text = getCountry()
+        textViewPlayTime?.text = START_TIME
     }
 
     private fun getCollectionName(): String {
         return track?.collectionName ?: run {
             textViewAlbum?.isVisible = false
             textViewAlbumData?.isVisible = false
+            ""
+        }
+    }
+
+    private fun getPrimaryGenreName(): String {
+        return track?.primaryGenreName ?: run {
+            textViewGenre?.isVisible = false
+            textViewGenreData?.isVisible = false
+            ""
+        }
+    }
+
+    private fun getCountry(): String {
+        return track?.country ?: run {
+            textViewCountry?.isVisible = false
+            textViewCountryData?.isVisible = false
+            ""
+        }
+    }
+
+    private fun getReleaseDate(): String {
+        return track?.getReleaseYear() ?: run {
+            textViewYear?.isVisible = false
+            textViewYearData?.isVisible = false
+            ""
+        }
+    }
+
+    private fun getTrackTime(): String {
+        return track?.getTrackTime() ?: run {
+            textViewDuration?.isVisible = false
+            textViewDurationData?.isVisible = false
             ""
         }
     }
@@ -176,11 +212,15 @@ class MediaActivity : AppCompatActivity() {
         imageViewPlay = findViewById(R.id.imageViewPlay)
         imageViewFavourite = findViewById(R.id.imageViewFavourite)
         textViewPlayTime = findViewById(R.id.textViewPlayTime)
+        textViewDuration = findViewById(R.id.textViewDuration)
         textViewDurationData = findViewById(R.id.textViewDurationData)
         textViewAlbum = findViewById(R.id.textViewAlbum)
         textViewAlbumData = findViewById(R.id.textViewAlbumData)
+        textViewYear = findViewById(R.id.textViewYear)
         textViewYearData = findViewById(R.id.textViewYearData)
+        textViewGenre = findViewById(R.id.textViewGenre)
         textViewGenreData = findViewById(R.id.textViewGenreData)
+        textViewCountry = findViewById(R.id.textViewCountry)
         textViewCountryData = findViewById(R.id.textViewCountryData)
     }
 

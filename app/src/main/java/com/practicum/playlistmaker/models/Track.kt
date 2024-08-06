@@ -29,7 +29,7 @@ data class Track(
     @SerialName("previewUrl")
     val previewUrl: String?,
 ) {
-    fun getTrackTime(): String =
+    fun getTrackTime(): String? =
         SimpleDateFormat("mm:ss", Locale.getDefault()).format(trackTimeMillis)
 
     fun getCoverArtwork() = artworkUrl100?.replaceAfterLast('/',"512x512bb.jpg")

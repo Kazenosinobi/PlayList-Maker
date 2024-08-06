@@ -134,6 +134,8 @@
         android:layout_height="wrap_content"
         android:text="@string/duration"
         app:layout_constraintBottom_toTopOf="@+id/textViewAlbum"
+        app:layout_constraintEnd_toStartOf="@+id/textViewDurationData"
+        app:layout_constraintHorizontal_chainStyle="spread_inside"
         app:layout_constraintStart_toEndOf="@id/leftBorder"
         app:layout_constraintTop_toBottomOf="@+id/centerBorder"
         app:layout_constraintVertical_bias="0"
@@ -146,6 +148,8 @@
         android:layout_height="wrap_content"
         android:text="@string/album"
         app:layout_constraintBottom_toTopOf="@+id/textViewYear"
+        app:layout_constraintEnd_toStartOf="@+id/textViewAlbumData"
+        app:layout_constraintHorizontal_chainStyle="spread_inside"
         app:layout_constraintStart_toEndOf="@id/leftBorder"
         app:layout_constraintTop_toBottomOf="@+id/textViewDuration" />
 
@@ -156,6 +160,8 @@
         android:layout_height="wrap_content"
         android:text="@string/year"
         app:layout_constraintBottom_toTopOf="@+id/textViewGenre"
+        app:layout_constraintEnd_toStartOf="@+id/textViewYearData"
+        app:layout_constraintHorizontal_chainStyle="spread_inside"
         app:layout_constraintStart_toEndOf="@id/leftBorder"
         app:layout_constraintTop_toBottomOf="@+id/textViewAlbum" />
 
@@ -166,6 +172,8 @@
         android:layout_height="wrap_content"
         android:text="@string/genre"
         app:layout_constraintBottom_toTopOf="@+id/textViewCountry"
+        app:layout_constraintEnd_toStartOf="@+id/textViewGenreData"
+        app:layout_constraintHorizontal_chainStyle="spread_inside"
         app:layout_constraintStart_toEndOf="@id/leftBorder"
         app:layout_constraintTop_toBottomOf="@+id/textViewYear" />
 
@@ -176,52 +184,59 @@
         android:layout_height="wrap_content"
         android:text="@string/country"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/textViewCountryData"
+        app:layout_constraintHorizontal_chainStyle="spread_inside"
         app:layout_constraintStart_toEndOf="@id/leftBorder"
         app:layout_constraintTop_toBottomOf="@+id/textViewGenre" />
 
     <TextView
         android:id="@+id/textViewDurationData"
         style="@style/MediaDescriptionsDataTextViewStyle"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintBaseline_toBaselineOf="@+id/textViewDuration"
         app:layout_constraintEnd_toStartOf="@id/rightBorder"
+        app:layout_constraintStart_toEndOf="@+id/textViewDuration"
         tools:text="5:35" />
 
     <TextView
         android:id="@+id/textViewAlbumData"
         style="@style/MediaDescriptionsDataTextViewStyle"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintBaseline_toBaselineOf="@+id/textViewAlbum"
         app:layout_constraintEnd_toStartOf="@id/rightBorder"
-        tools:text="Album name" />
+        app:layout_constraintStart_toEndOf="@+id/textViewAlbum"
+        tools:text="Album nameAlbum nameAlbum nameAlbum nameAlbum nameAlbum name" />
 
     <TextView
         android:id="@+id/textViewYearData"
         style="@style/MediaDescriptionsDataTextViewStyle"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintBaseline_toBaselineOf="@+id/textViewYear"
         app:layout_constraintEnd_toStartOf="@id/rightBorder"
+        app:layout_constraintStart_toEndOf="@+id/textViewYear"
         tools:text="2004" />
 
     <TextView
         android:id="@+id/textViewGenreData"
         style="@style/MediaDescriptionsDataTextViewStyle"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintBaseline_toBaselineOf="@+id/textViewGenre"
         app:layout_constraintEnd_toStartOf="@id/rightBorder"
+        app:layout_constraintStart_toEndOf="@+id/textViewGenre"
         tools:text="Rock" />
 
     <TextView
         android:id="@+id/textViewCountryData"
         style="@style/MediaDescriptionsDataTextViewStyle"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintBaseline_toBaselineOf="@+id/textViewCountry"
         app:layout_constraintEnd_toStartOf="@id/rightBorder"
+        app:layout_constraintStart_toEndOf="@+id/textViewCountry"
         tools:text="@string/country" />
 
 
