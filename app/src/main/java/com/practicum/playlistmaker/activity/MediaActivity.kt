@@ -45,7 +45,7 @@ class MediaActivity : AppCompatActivity() {
         val jsonString = intent.getStringExtra(TRACK_KEY)
         track = jsonString?.let { Json.decodeFromString<Track>(it) }
 
-        url = track?.previewUrl
+//        url = track?.previewUrl
         Log.d("MediaActivity", "$url")
 
         backButton?.setOnClickListener {
@@ -100,6 +100,7 @@ class MediaActivity : AppCompatActivity() {
     }
 
     private fun preparePlayer() {
+        if (url.isNullOrEmpty()) return
             mediaPlayer.setDataSource(url)
             mediaPlayer.prepareAsync()
             mediaPlayer.setOnPreparedListener {
@@ -124,6 +125,9 @@ class MediaActivity : AppCompatActivity() {
     }
 
     private fun playbackControl() {
+        if (url.isNullOrEmpty()) {
+            Toast.makeText(this, "not found", Toast.LENGTH_SHORT).show()
+        } else {
             when (playerState) {
                 STATE_PLAYING -> {
                     pausePlayer()
@@ -132,6 +136,7 @@ class MediaActivity : AppCompatActivity() {
                 STATE_PREPARED, STATE_PAUSED -> {
                     startPlayer()
                 }
+            }
         }
     }
 
