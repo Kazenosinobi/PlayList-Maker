@@ -3,16 +3,17 @@ package com.practicum.playlistmaker.activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.LinearLayout
-import android.widget.Toast
+import android.widget.ProgressBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.Group
 import androidx.core.view.isVisible
@@ -20,7 +21,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.api.iTunesApi
 import com.practicum.playlistmaker.application.App.Companion.PREFERENCES
-import com.practicum.playlistmaker.data.IntentFactory
 import com.practicum.playlistmaker.data.SearchHistory
 import com.practicum.playlistmaker.models.Track
 import com.practicum.playlistmaker.models.TracksResponse
@@ -41,6 +41,8 @@ class SearchActivity : AppCompatActivity() {
 
     private var editTextSearch: EditText? = null
 
+    private var progressBar: ProgressBar? = null
+
     private var imageViewSearchClear: ImageView? = null
     private var searchBackButton: ImageView? = null
 
@@ -57,6 +59,10 @@ class SearchActivity : AppCompatActivity() {
     private var trackHistoryAdapter: TrackAdapter? = null
 
     private var searchHistory: SearchHistory? = null
+
+    private val searchRunnable = Runnable { search() }
+    private var isClickAllowed = true
+    private val handler = Handler(Looper.getMainLooper())
 
     private val logging = HttpLoggingInterceptor().apply {
         level = HttpLoggingInterceptor.Level.BODY
@@ -109,6 +115,7 @@ class SearchActivity : AppCompatActivity() {
                 if (editTextSearch?.hasFocus() == true) {
                     showHistory()
                 }
+                searchDebounce()
             }
 
             override fun afterTextChanged(s: Editable?) {
@@ -169,15 +176,17 @@ class SearchActivity : AppCompatActivity() {
         groupHistory = findViewById(R.id.groupHistory)
         rwSearchHistory = findViewById(R.id.rwSearchHistory)
         buttonClearHistory = findViewById(R.id.buttonClearHistory)
+        progressBar = findViewById(R.id.progressBar)
     }
 
     private fun search() {
         if (editTextSearch?.text.isNullOrEmpty()) return
+        showProgressBar()
         iTunesService.searchTracks(editTextSearch?.text.toString().trim())
             .enqueue(object : Callback<TracksResponse> {
                 override fun onResponse(
                     call: Call<TracksResponse>,
-                    response: Response<TracksResponse>
+                    response: Response<TracksResponse>,
                 ) {
                     val result = response.body()?.results
                     if (result != null) {
@@ -190,10 +199,12 @@ class SearchActivity : AppCompatActivity() {
                                     rwTrack?.isVisible = true
                                     llErrors?.isVisible = false
                                     llNotInternet?.isVisible = false
+                                    progressBar?.isVisible = false
                                 } else {
                                     showEmpty()
                                 }
                             }
+
                             else -> {
                                 showError()
                             }
@@ -210,6 +221,20 @@ class SearchActivity : AppCompatActivity() {
             })
     }
 
+    private fun searchDebounce() {
+        handler.removeCallbacks(searchRunnable)
+        handler.postDelayed(searchRunnable, SEARCH_DEBOUNCE_DELAY)
+    }
+
+    private fun clickDebounce(): Boolean {
+        val current = isClickAllowed
+        if (isClickAllowed) {
+            isClickAllowed = false
+            handler.postDelayed({ isClickAllowed = true }, CLICK_DEBOUNCE_DELAY)
+        }
+        return current
+    }
+
     private fun clearHistory() {
         trackHistoryAdapter?.tracks?.clear()
         searchHistory?.saveSearchTrackHistory(
@@ -219,11 +244,20 @@ class SearchActivity : AppCompatActivity() {
         groupHistory?.isVisible = false
     }
 
+    private fun showProgressBar() {
+        rwTrack?.isVisible = false
+        llErrors?.isVisible = false
+        llNotInternet?.isVisible = false
+        groupHistory?.isVisible = false
+        progressBar?.isVisible = true
+    }
+
     private fun showEmpty() {
         rwTrack?.isVisible = false
         llErrors?.isVisible = true
         llNotInternet?.isVisible = false
         groupHistory?.isVisible = false
+        progressBar?.isVisible = false
     }
 
     private fun showError() {
@@ -231,6 +265,7 @@ class SearchActivity : AppCompatActivity() {
         llNotInternet?.isVisible = true
         llErrors?.isVisible = false
         groupHistory?.isVisible = false
+        progressBar?.isVisible = false
     }
 
     private fun showHistory() {
@@ -268,10 +303,12 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun startMediaActivity(track: Track) {
-        val mediaActivityIntent = IntentFactory.createMediaActivityIntent(this)
-        val jsonString = Json.encodeToString(track)
-        mediaActivityIntent.putExtra(TRACK_KEY, jsonString)
-        startActivity(mediaActivityIntent)
+        if (clickDebounce()) {
+            val mediaActivityIntent = MediaActivity.createMediaActivityIntent(this)
+            val jsonString = Json.encodeToString(track)
+            mediaActivityIntent.putExtra(TRACK_KEY, jsonString)
+            startActivity(mediaActivityIntent)
+        }
     }
 
     companion object {
@@ -280,5 +317,11 @@ class SearchActivity : AppCompatActivity() {
         const val TRACK_KEY = "TRACK_KEY"
         const val ITUNES_BASE_URL = "https://itunes.apple.com"
         const val TRACKS_HISTORY_MAX_SIZE = 10
+        const val SEARCH_DEBOUNCE_DELAY = 2000L
+        const val CLICK_DEBOUNCE_DELAY = 1000L
+
+        fun createSearchActivityIntent(context: Context): Intent {
+            return Intent(context, SearchActivity::class.java)
+        }
     }
 }

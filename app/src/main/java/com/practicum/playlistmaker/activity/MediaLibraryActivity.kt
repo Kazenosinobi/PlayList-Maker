@@ -1,5 +1,7 @@
 package com.practicum.playlistmaker.activity
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -16,6 +18,12 @@ class MediaLibraryActivity : AppCompatActivity() {
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
+        }
+    }
+
+    companion object {
+        fun createMediaLibraryActivityIntent(context: Context): Intent {
+            return Intent(context, MediaLibraryActivity::class.java)
         }
     }
 }

@@ -15,24 +15,26 @@ data class Track(
     @SerialName("trackTimeMillis")
     val trackTimeMillis: Long,
     @SerialName("artworkUrl100")
-    val artworkUrl100: String,
+    val artworkUrl100: String?,
     @SerialName("trackId")
     val trackId: Int,
     @SerialName("collectionName")
-    val collectionName: String,
+    val collectionName: String?,
     @SerialName("releaseDate")
-    val releaseDate: String,
+    val releaseDate: String?,
     @SerialName("primaryGenreName")
-    val primaryGenreName: String,
+    val primaryGenreName: String?,
     @SerialName("country")
-    val country: String,
+    val country: String?,
+    @SerialName("previewUrl")
+    val previewUrl: String?,
 ) {
-    fun getTrackTime(): String =
+    fun getTrackTime(): String? =
         SimpleDateFormat("mm:ss", Locale.getDefault()).format(trackTimeMillis)
 
-    fun getCoverArtwork() = artworkUrl100.replaceAfterLast('/',"512x512bb.jpg")
+    fun getCoverArtwork() = artworkUrl100?.replaceAfterLast('/',"512x512bb.jpg")
 
-    fun getReleaseYear() = releaseDate.take(TAKE_YEAR)
+    fun getReleaseYear() = releaseDate?.take(TAKE_YEAR)
 
     companion object {
         const val TAKE_YEAR = 4
