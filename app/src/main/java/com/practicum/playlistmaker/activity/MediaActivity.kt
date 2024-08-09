@@ -6,7 +6,6 @@ import android.media.MediaPlayer
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
@@ -15,8 +14,8 @@ import androidx.core.view.isVisible
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.practicum.playlistmaker.R
-import com.practicum.playlistmaker.activity.SearchActivity.Companion.TRACK_KEY
 import com.practicum.playlistmaker.models.Track
+import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import java.text.SimpleDateFormat
 import java.util.Locale
@@ -53,7 +52,7 @@ class MediaActivity : AppCompatActivity() {
         setContentView(R.layout.activity_media)
         initViews()
 
-        val jsonString = intent.getStringExtra(TRACK_KEY)
+        val jsonString = intent.getStringExtra(EXTRA_TRACK)
         track = jsonString?.let { Json.decodeFromString<Track>(it) }
 
         url = track?.previewUrl
@@ -231,9 +230,13 @@ class MediaActivity : AppCompatActivity() {
         private const val STATE_PAUSED = 3
         private const val PLAY_TIME_DELAY = 500L
         private const val START_TIME = "00:00"
+        private const val EXTRA_TRACK = "extra_track"
 
-        fun createMediaActivityIntent(context: Context): Intent {
-            return Intent(context, MediaActivity::class.java)
+        fun createMediaActivityIntent(context: Context, track: Track): Intent {
+            val intent = Intent(context, MediaActivity::class.java)
+            val jsonString = Json.encodeToString(track)
+            intent.putExtra(EXTRA_TRACK, jsonString)
+            return intent
         }
     }
 }

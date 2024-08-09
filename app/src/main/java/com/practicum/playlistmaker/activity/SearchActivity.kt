@@ -57,6 +57,7 @@ class SearchActivity : AppCompatActivity() {
 
     private var trackAdapter: TrackAdapter? = null
     private var trackHistoryAdapter: TrackAdapter? = null
+    private var track: Track? = null
 
     private var searchHistory: SearchHistory? = null
 
@@ -81,6 +82,10 @@ class SearchActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
         initViews()
+
+//        val jsonString = intent.getStringExtra(TRACK_KEY)
+//        track = jsonString?.let { Json.decodeFromString<Track>(it) }
+
         trackAdapter = TrackAdapter { track ->
             addToTrackHistory(track)
             startMediaActivity(track)
@@ -304,9 +309,7 @@ class SearchActivity : AppCompatActivity() {
 
     private fun startMediaActivity(track: Track) {
         if (clickDebounce()) {
-            val mediaActivityIntent = MediaActivity.createMediaActivityIntent(this)
-            val jsonString = Json.encodeToString(track)
-            mediaActivityIntent.putExtra(TRACK_KEY, jsonString)
+            val mediaActivityIntent = MediaActivity.createMediaActivityIntent(this, track)
             startActivity(mediaActivityIntent)
         }
     }
