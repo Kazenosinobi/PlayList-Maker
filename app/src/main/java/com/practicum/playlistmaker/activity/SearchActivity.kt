@@ -25,8 +25,6 @@ import com.practicum.playlistmaker.data.SearchHistory
 import com.practicum.playlistmaker.models.Track
 import com.practicum.playlistmaker.models.TracksResponse
 import com.practicum.playlistmaker.recycler.TrackAdapter
-import kotlinx.serialization.encodeToString
-import kotlinx.serialization.json.Json
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Call
@@ -57,7 +55,6 @@ class SearchActivity : AppCompatActivity() {
 
     private var trackAdapter: TrackAdapter? = null
     private var trackHistoryAdapter: TrackAdapter? = null
-    private var track: Track? = null
 
     private var searchHistory: SearchHistory? = null
 
@@ -82,9 +79,6 @@ class SearchActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
         initViews()
-
-//        val jsonString = intent.getStringExtra(TRACK_KEY)
-//        track = jsonString?.let { Json.decodeFromString<Track>(it) }
 
         trackAdapter = TrackAdapter { track ->
             addToTrackHistory(track)
@@ -317,7 +311,6 @@ class SearchActivity : AppCompatActivity() {
     companion object {
         const val SEARCH_TEXT_VALUE = ""
         const val SEARCH_TEXT_KEY = "SEARCH_TEXT_KEY"
-        const val TRACK_KEY = "TRACK_KEY"
         const val ITUNES_BASE_URL = "https://itunes.apple.com"
         const val TRACKS_HISTORY_MAX_SIZE = 10
         const val SEARCH_DEBOUNCE_DELAY = 2000L
