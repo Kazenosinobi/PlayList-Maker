@@ -1,4 +1,4 @@
-package com.practicum.playlistmaker.recycler
+package com.practicum.playlistmaker.ui.activity.recycler
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.practicum.playlistmaker.R
-import com.practicum.playlistmaker.models.Track
+import com.practicum.playlistmaker.domain.models.Track
 
 class TrackViewHolder(private val parent: ViewGroup) : RecyclerView.ViewHolder(
     LayoutInflater.from(parent.context).inflate(R.layout.track_item, parent, false)

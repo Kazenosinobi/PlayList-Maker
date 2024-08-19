@@ -1,4 +1,4 @@
-package com.practicum.playlistmaker.models
+package com.practicum.playlistmaker.domain.models
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable

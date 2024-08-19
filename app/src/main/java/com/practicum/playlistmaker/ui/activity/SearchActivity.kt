@@ -1,4 +1,4 @@
-package com.practicum.playlistmaker.activity
+package com.practicum.playlistmaker.ui.activity
 
 import android.content.Context
 import android.content.Intent
@@ -19,12 +19,12 @@ import androidx.constraintlayout.widget.Group
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.practicum.playlistmaker.R
-import com.practicum.playlistmaker.api.iTunesApi
-import com.practicum.playlistmaker.application.App.Companion.PREFERENCES
-import com.practicum.playlistmaker.data.SearchHistory
-import com.practicum.playlistmaker.models.Track
-import com.practicum.playlistmaker.models.TracksResponse
-import com.practicum.playlistmaker.recycler.TrackAdapter
+import com.practicum.playlistmaker.data.network.iTunesApi
+import com.practicum.playlistmaker.data.network.App.Companion.PREFERENCES
+import com.practicum.playlistmaker.data.network.SearchHistory
+import com.practicum.playlistmaker.domain.models.Track
+import com.practicum.playlistmaker.data.dto.TracksResponse
+import com.practicum.playlistmaker.ui.activity.recycler.TrackAdapter
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Call

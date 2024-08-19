@@ -1,9 +1,9 @@
-package com.practicum.playlistmaker.recycler
+package com.practicum.playlistmaker.ui.activity.recycler
 
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.practicum.playlistmaker.activity.MediaActivity
-import com.practicum.playlistmaker.models.Track
+import com.practicum.playlistmaker.ui.activity.MediaActivity
+import com.practicum.playlistmaker.domain.models.Track
 
 class TrackAdapter(
     private val onClick: (Track) -> Unit = {}
