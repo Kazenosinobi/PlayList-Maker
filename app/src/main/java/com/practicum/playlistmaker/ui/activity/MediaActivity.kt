@@ -14,7 +14,7 @@ import androidx.core.view.isVisible
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.practicum.playlistmaker.R
-import com.practicum.playlistmaker.domain.models.Track
+import com.practicum.playlistmaker.search.domain.models.Track
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import java.text.SimpleDateFormat
@@ -55,7 +55,7 @@ class MediaActivity : AppCompatActivity() {
         val jsonString = intent.getStringExtra(EXTRA_TRACK)
         track = jsonString?.let { Json.decodeFromString<Track>(it) }
 
-        url = track?.previewUrl
+        url = track?.trackUrl
 
         backButton?.setOnClickListener {
             finish()
@@ -84,7 +84,7 @@ class MediaActivity : AppCompatActivity() {
     private fun getImageAlbum() {
         val cornerRadius = resources.getDimensionPixelSize(R.dimen._8dp)
         imageViewAlbum?.let {
-            Glide.with(this).load(track?.getCoverArtwork()).placeholder(R.drawable.place_holder)
+            Glide.with(this).load(track?.coverArtworkMaxi).placeholder(R.drawable.place_holder)
                 .fitCenter().transform(RoundedCorners(cornerRadius)).into(it)
         }
     }
@@ -125,7 +125,7 @@ class MediaActivity : AppCompatActivity() {
     }
 
     private fun getReleaseDate(): String {
-        return track?.getReleaseYear() ?: run {
+        return track?.releaseYear ?: run {
             textViewYear?.isVisible = false
             textViewYearData?.isVisible = false
             ""
@@ -133,7 +133,7 @@ class MediaActivity : AppCompatActivity() {
     }
 
     private fun getTrackTime(): String {
-        return track?.getTrackTime() ?: run {
+        return track?.trackTime ?: run {
             textViewDuration?.isVisible = false
             textViewDurationData?.isVisible = false
             ""
