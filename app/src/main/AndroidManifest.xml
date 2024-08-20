@@ -16,14 +16,14 @@
         android:theme="@style/Base.Theme.PlaylistMaker"
         tools:targetApi="31">
         <activity
-            android:name=".ui.activity.MediaLibraryActivity"
+            android:name=".mediaLibrary.presentation.MediaLibraryActivity"
             android:exported="false" />
         <activity
             android:name=".search.presentation.SearchActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustNothing" />
         <activity
-            android:name=".ui.activity.MediaActivity"
+            android:name=".media.presentation.MediaActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustNothing" />
         <activity

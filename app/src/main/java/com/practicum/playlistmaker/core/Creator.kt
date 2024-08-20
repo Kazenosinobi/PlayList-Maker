@@ -3,6 +3,14 @@ package com.practicum.playlistmaker.core
 import android.content.Context
 import androidx.appcompat.app.AppCompatActivity.MODE_PRIVATE
 import com.practicum.playlistmaker.core.App.Companion.PREFERENCES
+import com.practicum.playlistmaker.media.data.MediaRepositoryImpl
+import com.practicum.playlistmaker.media.domain.api.MediaInteractor
+import com.practicum.playlistmaker.media.domain.api.MediaRepository
+import com.practicum.playlistmaker.media.domain.impl.MediaInteractorImpl
+import com.practicum.playlistmaker.mediaLibrary.data.MediaLibraryRepositoryImpl
+import com.practicum.playlistmaker.mediaLibrary.domain.api.MediaLibraryInteractor
+import com.practicum.playlistmaker.mediaLibrary.domain.api.MediaLibraryRepository
+import com.practicum.playlistmaker.mediaLibrary.domain.impl.MediaLibraryInteractorImpl
 import com.practicum.playlistmaker.search.data.TracksRepositoryImpl
 import com.practicum.playlistmaker.search.data.localStorage.SearchHistory
 import com.practicum.playlistmaker.search.data.network.RetrofitNetworkClient
@@ -24,6 +32,14 @@ object Creator {
         return SettingsInteractorImpl(getSettingsRepository(context))
     }
 
+    fun provideMediaLibraryInteractor(): MediaLibraryInteractor {
+        return MediaLibraryInteractorImpl(getMediaLibraryRepository())
+    }
+
+    fun provideMediaInteractor(): MediaInteractor {
+        return MediaInteractorImpl(getMediaRepository())
+    }
+
     private fun getTracksRepository(context: Context): TracksRepository {
         return TracksRepositoryImpl(
             RetrofitNetworkClient(), SearchHistory(
@@ -36,5 +52,13 @@ object Creator {
 
     private fun getSettingsRepository(context: Context): SettingsRepository {
         return SettingsRepositoryImpl(context)
+    }
+
+    private fun getMediaLibraryRepository(): MediaLibraryRepository {
+        return MediaLibraryRepositoryImpl()
+    }
+
+    private fun getMediaRepository(): MediaRepository {
+        return MediaRepositoryImpl()
     }
 }

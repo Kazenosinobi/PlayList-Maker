@@ -7,7 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.search.presentation.SearchActivity
 import com.practicum.playlistmaker.settings.presentation.SettingsActivity
-import com.practicum.playlistmaker.ui.activity.MediaLibraryActivity
+import com.practicum.playlistmaker.mediaLibrary.presentation.MediaLibraryActivity
 
 class MainActivity : AppCompatActivity() {
 

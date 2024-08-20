@@ -1,8 +1,7 @@
-package com.practicum.playlistmaker.ui.activity
+package com.practicum.playlistmaker.media.presentation
 
 import android.content.Context
 import android.content.Intent
-import android.media.MediaPlayer
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -14,6 +13,8 @@ import androidx.core.view.isVisible
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.practicum.playlistmaker.R
+import com.practicum.playlistmaker.core.Creator
+import com.practicum.playlistmaker.media.domain.model.PlayerState
 import com.practicum.playlistmaker.search.domain.models.Track
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
@@ -42,8 +43,9 @@ class MediaActivity : AppCompatActivity() {
     private var textViewCountryData: TextView? = null
 
     private var track: Track? = null
-    private var mediaPlayer = MediaPlayer()
-    private var playerState = STATE_DEFAULT
+
+    private val interactor by lazy { Creator.provideMediaInteractor() }
+    private var playerState = PlayerState.STATE_DEFAULT
     private var url: String? = null
     private val handler = Handler(Looper.getMainLooper())
 
@@ -77,7 +79,7 @@ class MediaActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        mediaPlayer.release()
+        interactor.getRelease()
         handler.removeCallbacks(createUpdateTimerTask())
     }
 
@@ -142,31 +144,29 @@ class MediaActivity : AppCompatActivity() {
 
     private fun preparePlayer() {
         if (url.isNullOrEmpty()) return
-        mediaPlayer.setDataSource(url)
-        mediaPlayer.prepareAsync()
-        mediaPlayer.setOnPreparedListener {
-            imageViewPlay?.isEnabled = true
-            playerState = STATE_PREPARED
-        }
-        mediaPlayer.setOnCompletionListener {
-            playerState = STATE_PREPARED
-            handler.removeCallbacks(createUpdateTimerTask())
-            textViewPlayTime?.text = START_TIME
-            imageViewPlay?.setImageResource(R.drawable.play_button)
+        interactor.preparePlayer(url ?: "") { state ->
+            if (state == PlayerState.STATE_PREPARED) {
+                playerState = PlayerState.STATE_PREPARED
+                imageViewPlay?.isEnabled = true
+                playerState = PlayerState.STATE_PREPARED
+                handler.removeCallbacks(createUpdateTimerTask())
+                textViewPlayTime?.text = START_TIME
+                imageViewPlay?.setImageResource(R.drawable.play_button)
+            }
         }
     }
 
     private fun startPlayer() {
-        mediaPlayer.start()
+        interactor.startPlayer()
         imageViewPlay?.setImageResource(R.drawable.pause_button)
-        playerState = STATE_PLAYING
+        playerState = PlayerState.STATE_PLAYING
         handler.post(createUpdateTimerTask())
     }
 
     private fun pausePlayer() {
-        mediaPlayer.pause()
+        interactor.pausePlayer()
         imageViewPlay?.setImageResource(R.drawable.play_button)
-        playerState = STATE_PAUSED
+        playerState = PlayerState.STATE_PAUSED
         handler.removeCallbacks(createUpdateTimerTask())
     }
 
@@ -175,12 +175,16 @@ class MediaActivity : AppCompatActivity() {
             Toast.makeText(this, R.string.play_error, Toast.LENGTH_SHORT).show()
         } else {
             when (playerState) {
-                STATE_PLAYING -> {
+                PlayerState.STATE_PLAYING -> {
                     pausePlayer()
                 }
 
-                STATE_PREPARED, STATE_PAUSED -> {
+                PlayerState.STATE_PREPARED, PlayerState.STATE_PAUSED -> {
                     startPlayer()
+                }
+
+                PlayerState.STATE_DEFAULT -> {
+                    preparePlayer()
                 }
             }
         }
@@ -189,11 +193,11 @@ class MediaActivity : AppCompatActivity() {
     private fun createUpdateTimerTask(): Runnable {
         return object : Runnable {
             override fun run() {
-                if (playerState == STATE_PLAYING) {
+                if (playerState == PlayerState.STATE_PLAYING) {
                     val currentPosition = SimpleDateFormat(
                         "mm:ss",
                         Locale.getDefault()
-                    ).format(mediaPlayer.currentPosition)
+                    ).format(interactor.getCurrentPosition())
                     textViewPlayTime?.text = currentPosition
                     handler.postDelayed(this, PLAY_TIME_DELAY)
                 }
@@ -224,10 +228,6 @@ class MediaActivity : AppCompatActivity() {
     }
 
     companion object {
-        private const val STATE_DEFAULT = 0
-        private const val STATE_PREPARED = 1
-        private const val STATE_PLAYING = 2
-        private const val STATE_PAUSED = 3
         private const val PLAY_TIME_DELAY = 500L
         private const val START_TIME = "00:00"
         private const val EXTRA_TRACK = "extra_track"

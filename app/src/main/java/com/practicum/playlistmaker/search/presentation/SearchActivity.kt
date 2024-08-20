@@ -22,7 +22,7 @@ import com.practicum.playlistmaker.core.Creator
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.search.domain.models.Track
 import com.practicum.playlistmaker.search.presentation.recycler.TrackAdapter
-import com.practicum.playlistmaker.ui.activity.MediaActivity
+import com.practicum.playlistmaker.media.presentation.MediaActivity
 
 class SearchActivity : AppCompatActivity() {
 
