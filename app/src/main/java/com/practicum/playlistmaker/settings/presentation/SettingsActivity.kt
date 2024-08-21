@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.widget.FrameLayout
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
@@ -11,46 +12,43 @@ import com.google.android.material.switchmaterial.SwitchMaterial
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.core.App
 import com.practicum.playlistmaker.core.Creator
+import com.practicum.playlistmaker.databinding.ActivitySettingsBinding
 
 class SettingsActivity : AppCompatActivity() {
+    private lateinit var binding: ActivitySettingsBinding
+
     private val interactor by lazy { Creator.provideSettingsInteractor(this) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_settings)
+        binding = ActivitySettingsBinding.inflate(LayoutInflater.from(this))
+        setContentView(binding.root)
 
-        val backButton = findViewById<ImageView>(R.id.backButton)
-        val frameLayoutShare = findViewById<FrameLayout>(R.id.frameLayoutShare)
-        val frameLayoutSupport = findViewById<FrameLayout>(R.id.frameLayoutSupport)
-        val frameLayoutTerms = findViewById<FrameLayout>(R.id.frameLayoutTerms)
-        val themeSwitcher = findViewById<SwitchMaterial>(R.id.themeSwitcher)
-        val flThemeSwitcher = findViewById<FrameLayout>(R.id.flThemeSwitcher)
-
-        backButton.setOnClickListener {
+        binding.backButton.setOnClickListener {
                 onBackPressedDispatcher.onBackPressed()
         }
 
-        frameLayoutShare.setOnClickListener {
+        binding.frameLayoutShare.setOnClickListener {
             interactor.share()
         }
 
-        frameLayoutSupport.setOnClickListener {
+        binding.frameLayoutSupport.setOnClickListener {
             interactor.support()
         }
 
-        frameLayoutTerms.setOnClickListener {
+        binding.frameLayoutTerms.setOnClickListener {
             interactor.termsOfUse()
         }
 
-        themeSwitcher.isChecked = (applicationContext as App).darkTheme
+        binding.themeSwitcher.isChecked = (applicationContext as App).darkTheme
 
-        themeSwitcher.setOnCheckedChangeListener { _, isChecked ->
+        binding.themeSwitcher.setOnCheckedChangeListener { _, isChecked ->
             (applicationContext as App).switchTheme(isChecked)
         }
 
-        flThemeSwitcher.setOnClickListener {
-            themeSwitcher.isChecked = !themeSwitcher.isChecked
-            (applicationContext as App).switchTheme(themeSwitcher.isChecked)
+        binding.flThemeSwitcher.setOnClickListener {
+            binding.themeSwitcher.isChecked = !binding.themeSwitcher.isChecked
+            (applicationContext as App).switchTheme(binding.themeSwitcher.isChecked)
         }
     }
 

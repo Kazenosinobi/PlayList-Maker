@@ -7,19 +7,13 @@ import android.os.Handler
 import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.LayoutInflater
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
-import android.widget.Button
-import android.widget.EditText
-import android.widget.ImageView
-import android.widget.LinearLayout
-import android.widget.ProgressBar
 import androidx.appcompat.app.AppCompatActivity
-import androidx.constraintlayout.widget.Group
 import androidx.core.view.isVisible
-import androidx.recyclerview.widget.RecyclerView
-import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.core.Creator
+import com.practicum.playlistmaker.databinding.ActivitySearchBinding
 import com.practicum.playlistmaker.media.presentation.MediaActivity
 import com.practicum.playlistmaker.search.domain.models.Track
 import com.practicum.playlistmaker.search.presentation.recycler.TrackAdapter
@@ -28,21 +22,7 @@ class SearchActivity : AppCompatActivity() {
 
     private var searchTextValue = SEARCH_TEXT_VALUE
 
-    private var editTextSearch: EditText? = null
-
-    private var progressBar: ProgressBar? = null
-
-    private var imageViewSearchClear: ImageView? = null
-    private var searchBackButton: ImageView? = null
-
-    private var llErrors: LinearLayout? = null
-    private var llNotInternet: LinearLayout? = null
-    private var groupHistory: Group? = null
-
-    private var rwTrack: RecyclerView? = null
-    private var rwSearchHistory: RecyclerView? = null
-    private var reconnectButton: Button? = null
-    private var buttonClearHistory: Button? = null
+    private lateinit var binding: ActivitySearchBinding
 
     private var trackAdapter: TrackAdapter? = null
     private var trackHistoryAdapter: TrackAdapter? = null
@@ -55,8 +35,8 @@ class SearchActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_search)
-        initViews()
+        binding = ActivitySearchBinding.inflate(LayoutInflater.from(this))
+        setContentView(binding.root)
 
         trackAdapter = TrackAdapter { track ->
             addToTrackHistory(track)
@@ -69,12 +49,12 @@ class SearchActivity : AppCompatActivity() {
         trackHistoryAdapter?.submitList(
             interactor.getSearchHistory().toMutableList()
         )
-        searchBackButton?.setOnClickListener {
+        binding.searchBackButton.setOnClickListener {
             finish()
         }
 
-        imageViewSearchClear?.setOnClickListener {
-            editTextSearch?.setText(SEARCH_TEXT_VALUE)
+        binding.imageViewSearchClear.setOnClickListener {
+            binding.editTextSearch.setText(SEARCH_TEXT_VALUE)
             hideKeyBoard()
             trackAdapter?.submitList(emptyList())
             showHistory()
@@ -86,8 +66,8 @@ class SearchActivity : AppCompatActivity() {
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                imageViewSearchClear?.isVisible = s.isNullOrEmpty().not()
-                if (editTextSearch?.hasFocus() == true) {
+                binding.imageViewSearchClear.isVisible = s.isNullOrEmpty().not()
+                if (binding.editTextSearch.hasFocus() == true) {
                     showHistory()
                 }
                 searchDebounce()
@@ -99,15 +79,15 @@ class SearchActivity : AppCompatActivity() {
 
         }
 
-        editTextSearch?.addTextChangedListener(simpleTextWatcher)
+        binding.editTextSearch.addTextChangedListener(simpleTextWatcher)
 
-        editTextSearch?.setOnFocusChangeListener { _, hasFocus ->
+        binding.editTextSearch.setOnFocusChangeListener { _, hasFocus ->
             if (hasFocus) {
                 showHistory()
             }
         }
 
-        editTextSearch?.setOnEditorActionListener { _, actionId, _ ->
+        binding.editTextSearch.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 search()
                 true
@@ -115,11 +95,11 @@ class SearchActivity : AppCompatActivity() {
             false
         }
 
-        reconnectButton?.setOnClickListener { search() }
-        buttonClearHistory?.setOnClickListener { clearHistory() }
+        binding.reconnectButton.setOnClickListener { search() }
+        binding.buttonClearHistory.setOnClickListener { clearHistory() }
 
-        rwTrack?.adapter = trackAdapter
-        rwSearchHistory?.adapter = trackHistoryAdapter
+        binding.rwTrack.adapter = trackAdapter
+        binding.rwSearchHistory.adapter = trackHistoryAdapter
     }
 
     override fun onStop() {
@@ -137,37 +117,27 @@ class SearchActivity : AppCompatActivity() {
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
         super.onRestoreInstanceState(savedInstanceState)
         searchTextValue = savedInstanceState.getString(SEARCH_TEXT_KEY, SEARCH_TEXT_VALUE)
-        editTextSearch?.setText(searchTextValue)
-    }
-
-    private fun initViews() {
-        searchBackButton = findViewById(R.id.searchBackButton)
-        editTextSearch = findViewById(R.id.editTextSearch)
-        imageViewSearchClear = findViewById(R.id.imageViewSearchClear)
-        rwTrack = findViewById(R.id.rwTrack)
-        llErrors = findViewById(R.id.llErrors)
-        llNotInternet = findViewById(R.id.llNotInternet)
-        reconnectButton = findViewById(R.id.reconnectButton)
-        groupHistory = findViewById(R.id.groupHistory)
-        rwSearchHistory = findViewById(R.id.rwSearchHistory)
-        buttonClearHistory = findViewById(R.id.buttonClearHistory)
-        progressBar = findViewById(R.id.progressBar)
+        binding.editTextSearch.setText(searchTextValue)
     }
 
     private fun showListTracks(listTracks: List<Track>) {
         trackAdapter?.submitList(emptyList())
         trackAdapter?.submitList(listTracks)
-        rwTrack?.isVisible = true
-        llErrors?.isVisible = false
-        llNotInternet?.isVisible = false
-        progressBar?.isVisible = false
+        with(binding) {
+            rwTrack.isVisible = true
+            llErrors.isVisible = false
+            llNotInternet.isVisible = false
+            progressBar.isVisible = false
+        }
     }
 
     private fun search() {
-        if (editTextSearch?.text.isNullOrEmpty()) return
+        if (binding.editTextSearch.text.isNullOrEmpty()) return
         showProgressBar()
 
-        interactor.searchTracks(editTextSearch?.text.toString().trim()) { listTracks ->
+        interactor.searchTracks(
+            binding.editTextSearch.text.toString().trim()
+        ) { listTracks ->
             handler.post {
                 if (listTracks.isNotEmpty()) {
                     showListTracks(listTracks)
@@ -200,40 +170,48 @@ class SearchActivity : AppCompatActivity() {
             trackHistoryAdapter?.currentList?.toTypedArray() ?: emptyArray()
         )
         trackHistoryAdapter?.submitList(trackHistoryAdapter?.currentList)
-        groupHistory?.isVisible = false
+        binding.groupHistory.isVisible = false
     }
 
     private fun showProgressBar() {
-        rwTrack?.isVisible = false
-        llErrors?.isVisible = false
-        llNotInternet?.isVisible = false
-        groupHistory?.isVisible = false
-        progressBar?.isVisible = true
+        with(binding) {
+            rwTrack.isVisible = false
+            llErrors.isVisible = false
+            llNotInternet.isVisible = false
+            groupHistory.isVisible = false
+            progressBar.isVisible = true
+        }
     }
 
     private fun showEmpty() {
-        rwTrack?.isVisible = false
-        llErrors?.isVisible = true
-        llNotInternet?.isVisible = false
-        groupHistory?.isVisible = false
-        progressBar?.isVisible = false
+        with(binding) {
+            rwTrack.isVisible = false
+            llErrors.isVisible = true
+            llNotInternet.isVisible = false
+            groupHistory.isVisible = false
+            progressBar.isVisible = false
+        }
     }
 
     private fun showError() {
-        rwTrack?.isVisible = false
-        llNotInternet?.isVisible = true
-        llErrors?.isVisible = false
-        groupHistory?.isVisible = false
-        progressBar?.isVisible = false
+        with(binding) {
+            rwTrack.isVisible = false
+            llNotInternet.isVisible = true
+            llErrors.isVisible = false
+            groupHistory.isVisible = false
+            progressBar.isVisible = false
+        }
     }
 
     private fun showHistory() {
-        groupHistory?.isVisible =
-            editTextSearch?.text.isNullOrEmpty()
+        binding.groupHistory.isVisible =
+            binding.editTextSearch.text.isNullOrEmpty()
                     && trackHistoryAdapter?.currentList.isNullOrEmpty().not()
-        rwTrack?.isVisible = false
-        llErrors?.isVisible = false
-        llNotInternet?.isVisible = false
+        with(binding) {
+            rwTrack.isVisible = false
+            llErrors.isVisible = false
+            llNotInternet.isVisible = false
+        }
     }
 
     private fun hideKeyBoard() {

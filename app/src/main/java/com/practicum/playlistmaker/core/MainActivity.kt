@@ -1,24 +1,23 @@
 package com.practicum.playlistmaker.core
 
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import com.practicum.playlistmaker.R
+import com.practicum.playlistmaker.databinding.ActivityMainBinding
 import com.practicum.playlistmaker.search.presentation.SearchActivity
 import com.practicum.playlistmaker.settings.presentation.SettingsActivity
 import com.practicum.playlistmaker.mediaLibrary.presentation.MediaLibraryActivity
 
 class MainActivity : AppCompatActivity() {
-
+private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-
-        val searchButton = findViewById<Button>(R.id.searchButton)
-        val mediaLibraryButton = findViewById<Button>(R.id.mediaLibraryButton)
-        val optionButton = findViewById<Button>(R.id.optionButton)
+        binding = ActivityMainBinding.inflate(LayoutInflater.from(this))
+        setContentView(binding.root)
 
         val searchButtonClickListener: View.OnClickListener = object : View.OnClickListener {
             override fun onClick(v: View?) {
@@ -27,15 +26,15 @@ class MainActivity : AppCompatActivity() {
                 startActivity(searchButtonIntent)
             }
         }
-        searchButton.setOnClickListener(searchButtonClickListener)
+        binding.searchButton.setOnClickListener(searchButtonClickListener)
 
-        mediaLibraryButton.setOnClickListener {
+        binding.mediaLibraryButton.setOnClickListener {
             val mediaLibraryButtonIntent =
                 MediaLibraryActivity.createMediaLibraryActivityIntent(this)
             startActivity(mediaLibraryButtonIntent)
         }
 
-        optionButton.setOnClickListener {
+        binding.optionButton.setOnClickListener {
             val optionButtonIntent = SettingsActivity.createSettingsActivityIntent(this)
             startActivity(optionButtonIntent)
         }
