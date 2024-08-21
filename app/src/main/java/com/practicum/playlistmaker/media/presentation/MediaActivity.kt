@@ -60,9 +60,9 @@ class MediaActivity : AppCompatActivity() {
     }
 
     override fun onDestroy() {
-        super.onDestroy()
         interactor.getRelease()
         handler.removeCallbacks(createUpdateTimerTask())
+        super.onDestroy()
     }
 
     private fun getImageAlbum() {
