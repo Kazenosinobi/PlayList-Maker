@@ -18,11 +18,11 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.Group
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
-import com.practicum.playlistmaker.core.Creator
 import com.practicum.playlistmaker.R
+import com.practicum.playlistmaker.core.Creator
+import com.practicum.playlistmaker.media.presentation.MediaActivity
 import com.practicum.playlistmaker.search.domain.models.Track
 import com.practicum.playlistmaker.search.presentation.recycler.TrackAdapter
-import com.practicum.playlistmaker.media.presentation.MediaActivity
 
 class SearchActivity : AppCompatActivity() {
 
@@ -66,19 +66,18 @@ class SearchActivity : AppCompatActivity() {
             addToTrackHistory(track)
             startMediaActivity(track)
         }
-        trackHistoryAdapter?.tracks?.addAll(
-            interactor.getSearchHistory() ?: emptyArray()
+        trackHistoryAdapter?.submitList(
+            interactor.getSearchHistory().toMutableList()
         )
         searchBackButton?.setOnClickListener {
             finish()
         }
 
         imageViewSearchClear?.setOnClickListener {
-            editTextSearch?.setText("")
+            editTextSearch?.setText(SEARCH_TEXT_VALUE)
             hideKeyBoard()
-            trackAdapter?.tracks?.clear()
+            trackAdapter?.submitList(emptyList())
             showHistory()
-            trackAdapter?.notifyDataSetChanged()
         }
 
         val simpleTextWatcher = object : TextWatcher {
@@ -126,7 +125,7 @@ class SearchActivity : AppCompatActivity() {
     override fun onStop() {
         super.onStop()
         interactor.saveSearchTrackHistory(
-            trackHistoryAdapter?.tracks?.toTypedArray() ?: emptyArray()
+            trackHistoryAdapter?.currentList?.toTypedArray() ?: emptyArray()
         )
     }
 
@@ -156,9 +155,8 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun showListTracks(listTracks: List<Track>) {
-        trackAdapter?.tracks?.clear()
-        trackAdapter?.tracks?.addAll(listTracks)
-        trackAdapter?.notifyDataSetChanged()
+        trackAdapter?.submitList(emptyList())
+        trackAdapter?.submitList(listTracks)
         rwTrack?.isVisible = true
         llErrors?.isVisible = false
         llNotInternet?.isVisible = false
@@ -170,17 +168,21 @@ class SearchActivity : AppCompatActivity() {
         showProgressBar()
 
         interactor.searchTracks(editTextSearch?.text.toString().trim()) { listTracks ->
-            if (listTracks.isNotEmpty()) {
-                handler.post { showListTracks(listTracks) }
-            } else {
-                handler.post { showError() }
+            handler.post {
+                if (listTracks.isNotEmpty()) {
+                    showListTracks(listTracks)
+                } else {
+                    showError()
+                }
             }
         }
     }
 
     private fun searchDebounce() {
-        handler.removeCallbacks(searchRunnable)
-        handler.postDelayed(searchRunnable, SEARCH_DEBOUNCE_DELAY)
+        with(handler) {
+            removeCallbacks(searchRunnable)
+            postDelayed(searchRunnable, SEARCH_DEBOUNCE_DELAY)
+        }
     }
 
     private fun clickDebounce(): Boolean {
@@ -193,11 +195,11 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun clearHistory() {
-        trackHistoryAdapter?.tracks?.clear()
+        trackHistoryAdapter?.submitList(emptyList())
         interactor.saveSearchTrackHistory(
-            trackHistoryAdapter?.tracks?.toTypedArray() ?: emptyArray()
+            trackHistoryAdapter?.currentList?.toTypedArray() ?: emptyArray()
         )
-        trackHistoryAdapter?.notifyDataSetChanged()
+        trackHistoryAdapter?.submitList(trackHistoryAdapter?.currentList)
         groupHistory?.isVisible = false
     }
 
@@ -228,7 +230,7 @@ class SearchActivity : AppCompatActivity() {
     private fun showHistory() {
         groupHistory?.isVisible =
             editTextSearch?.text.isNullOrEmpty()
-                    && trackHistoryAdapter?.tracks.isNullOrEmpty().not()
+                    && trackHistoryAdapter?.currentList.isNullOrEmpty().not()
         rwTrack?.isVisible = false
         llErrors?.isVisible = false
         llNotInternet?.isVisible = false
@@ -241,21 +243,18 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun addToTrackHistory(track: Track) {
-        val tracks = trackHistoryAdapter?.tracks ?: return
-        val existingTrackIndex = tracks.indexOfFirst { it.trackId == track.trackId }
+        val currentTracks = trackHistoryAdapter?.currentList?.toMutableList() ?: mutableListOf()
+        val existingTrackIndex = currentTracks.indexOfFirst { it.trackId == track.trackId }
         if (existingTrackIndex != -1) {
-            tracks.removeAt(existingTrackIndex)
-            trackHistoryAdapter?.notifyItemRemoved(existingTrackIndex)
+            currentTracks.removeAt(existingTrackIndex)
         }
-        if (tracks.size >= TRACKS_HISTORY_MAX_SIZE) {
-            tracks.removeAt(tracks.lastIndex)
-            trackHistoryAdapter?.notifyItemRemoved(tracks.lastIndex)
+        if (currentTracks.size >= TRACKS_HISTORY_MAX_SIZE) {
+            currentTracks.removeAt(currentTracks.lastIndex)
         }
-        tracks.add(0, track)
-        trackHistoryAdapter?.notifyItemInserted(0)
-        trackHistoryAdapter?.notifyItemRangeChanged(0, tracks.size)
+        currentTracks.add(0, track)
+        trackHistoryAdapter?.submitList(currentTracks)
         interactor.saveSearchTrackHistory(
-            trackHistoryAdapter?.tracks?.toTypedArray() ?: emptyArray()
+            currentTracks.toTypedArray()
         )
     }
 

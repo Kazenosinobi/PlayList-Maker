@@ -1,24 +1,20 @@
 package com.practicum.playlistmaker.search.presentation.recycler
 
 import android.view.ViewGroup
-import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.ListAdapter
 import com.practicum.playlistmaker.search.domain.models.Track
 
 class TrackAdapter(
-    private val onClick: (Track) -> Unit = {}
-) : RecyclerView.Adapter<TrackViewHolder>() {
+    private val onClick: (Track) -> Unit = {},
+) : ListAdapter<Track, TrackViewHolder>(TrackDiffCallback()) {
 
-    val tracks: ArrayList<Track> = arrayListOf()
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TrackViewHolder {
         return TrackViewHolder(parent)
     }
 
-    override fun getItemCount(): Int {
-        return tracks.size
-    }
-
     override fun onBindViewHolder(holder: TrackViewHolder, position: Int) {
-        holder.bind(tracks[position])
-        holder.itemView.setOnClickListener { onClick(tracks[position]) }
+        val track = getItem(position)
+        holder.bind(track)
+        holder.itemView.setOnClickListener { onClick(track) }
     }
 }

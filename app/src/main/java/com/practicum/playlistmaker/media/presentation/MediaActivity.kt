@@ -146,12 +146,13 @@ class MediaActivity : AppCompatActivity() {
         if (url.isNullOrEmpty()) return
         interactor.preparePlayer(url ?: "") { state ->
             if (state == PlayerState.STATE_PREPARED) {
+                with(handler) {
+                    imageViewPlay?.isEnabled = true
+                    textViewPlayTime?.text = START_TIME
+                    imageViewPlay?.setImageResource(R.drawable.play_button)
+                    removeCallbacks(createUpdateTimerTask())
+                }
                 playerState = PlayerState.STATE_PREPARED
-                imageViewPlay?.isEnabled = true
-                playerState = PlayerState.STATE_PREPARED
-                handler.removeCallbacks(createUpdateTimerTask())
-                textViewPlayTime?.text = START_TIME
-                imageViewPlay?.setImageResource(R.drawable.play_button)
             }
         }
     }
