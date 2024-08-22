@@ -9,6 +9,6 @@ interface TracksInteractor {
     fun saveSearchTrackHistory(tracks: Array<Track>)
 
     fun interface TracksConsumer {
-        fun consume(foundTracks: ViewState)
+        fun consume(viewState: ViewState)
     }
 }

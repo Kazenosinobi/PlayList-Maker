@@ -63,7 +63,6 @@ class MediaActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         interactor.getRelease()
-        handler.removeCallbacks(createUpdateTimerTask())
         super.onDestroy()
     }
 

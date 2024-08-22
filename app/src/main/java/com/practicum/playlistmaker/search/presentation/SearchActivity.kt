@@ -141,7 +141,7 @@ class SearchActivity : AppCompatActivity() {
         ) { viewState ->
             handler.post {
                 when(viewState) {
-                    is ViewState.Success -> trackAdapter?.currentList?.let { showListTracks(it) }
+                    is ViewState.Success -> showListTracks(viewState.trackList)
                     is ViewState.EmptyError -> showEmpty()
                     is ViewState.NetworkError -> showError()
                 }
@@ -167,10 +167,7 @@ class SearchActivity : AppCompatActivity() {
 
     private fun clearHistory() {
         trackHistoryAdapter?.submitList(emptyList())
-        interactor.saveSearchTrackHistory(
-            trackHistoryAdapter?.currentList?.toTypedArray() ?: emptyArray()
-        )
-        trackHistoryAdapter?.submitList(trackHistoryAdapter?.currentList)
+        interactor.saveSearchTrackHistory(emptyArray())
         binding.groupHistory.isVisible = false
     }
 
