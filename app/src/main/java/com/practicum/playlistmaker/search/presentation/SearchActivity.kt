@@ -16,6 +16,7 @@ import com.practicum.playlistmaker.core.Creator
 import com.practicum.playlistmaker.databinding.ActivitySearchBinding
 import com.practicum.playlistmaker.media.presentation.MediaActivity
 import com.practicum.playlistmaker.search.domain.models.Track
+import com.practicum.playlistmaker.search.domain.models.ViewState
 import com.practicum.playlistmaker.search.presentation.recycler.TrackAdapter
 
 class SearchActivity : AppCompatActivity() {
@@ -67,7 +68,7 @@ class SearchActivity : AppCompatActivity() {
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 binding.imageViewSearchClear.isVisible = s.isNullOrEmpty().not()
-                if (binding.editTextSearch.hasFocus() == true) {
+                if (binding.editTextSearch.hasFocus()) {
                     showHistory()
                 }
                 searchDebounce()
@@ -137,12 +138,12 @@ class SearchActivity : AppCompatActivity() {
 
         interactor.searchTracks(
             binding.editTextSearch.text.toString().trim()
-        ) { listTracks ->
+        ) { viewState ->
             handler.post {
-                if (listTracks.isNotEmpty()) {
-                    showListTracks(listTracks)
-                } else {
-                    showError()
+                when(viewState) {
+                    is ViewState.Success -> trackAdapter?.currentList?.let { showListTracks(it) }
+                    is ViewState.EmptyError -> showEmpty()
+                    is ViewState.NetworkError -> showError()
                 }
             }
         }

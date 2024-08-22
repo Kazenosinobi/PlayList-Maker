@@ -6,15 +6,16 @@ import com.practicum.playlistmaker.search.data.localStorage.SearchHistory
 import com.practicum.playlistmaker.search.data.network.NetworkClient
 import com.practicum.playlistmaker.search.domain.api.TracksRepository
 import com.practicum.playlistmaker.search.domain.models.Track
+import com.practicum.playlistmaker.search.domain.models.ViewState
 
 class TracksRepositoryImpl(
     private val networkClient: NetworkClient,
     private val localStorage: SearchHistory,
 ) : TracksRepository {
-    override fun searchTracks(expression: String): List<Track> {
+    override fun searchTracks(expression: String): ViewState {
         val response = networkClient.doRequest(TracksRequest(expression))
-        if (response.resultCode == SUCCESS_REQUEST) {
-            return (response as TracksResponse).results.map {
+        when (response.resultCode) {
+            200 -> return ViewState.Success((response as TracksResponse).results.map {
                 Track(
                     trackName = it.trackName,
                     artistName = it.artistName,
@@ -28,9 +29,10 @@ class TracksRepositoryImpl(
                     coverArtworkMaxi = it.getCoverArtwork(),
                     trackUrl = it.previewUrl,
                 )
-            }
-        } else {
-            return emptyList()
+            })
+
+            in 400..499 -> return ViewState.EmptyError
+            else -> return ViewState.NetworkError
         }
     }
 
@@ -40,9 +42,5 @@ class TracksRepositoryImpl(
 
     override fun saveSearchTrackHistory(tracks: Array<Track>) {
         localStorage.saveSearchTrackHistory(tracks)
-    }
-
-    private companion object {
-        private const val SUCCESS_REQUEST = 200
     }
 }

@@ -1,6 +1,7 @@
 package com.practicum.playlistmaker.search.domain.api
 
 import com.practicum.playlistmaker.search.domain.models.Track
+import com.practicum.playlistmaker.search.domain.models.ViewState
 
 interface TracksInteractor {
     fun searchTracks(expression: String, consumer: TracksConsumer)
@@ -8,6 +9,6 @@ interface TracksInteractor {
     fun saveSearchTrackHistory(tracks: Array<Track>)
 
     fun interface TracksConsumer {
-        fun consume(foundTracks: List<Track>)
+        fun consume(foundTracks: ViewState)
     }
 }
