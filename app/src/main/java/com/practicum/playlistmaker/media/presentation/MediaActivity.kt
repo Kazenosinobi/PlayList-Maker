@@ -55,8 +55,10 @@ class MediaActivity : AppCompatActivity() {
     }
 
     override fun onPause() {
+        if (playerState == PlayerState.STATE_PLAYING) {
+            pausePlayer()
+        }
         super.onPause()
-        pausePlayer()
     }
 
     override fun onDestroy() {
@@ -142,13 +144,15 @@ class MediaActivity : AppCompatActivity() {
         if (url.isNullOrEmpty()) return
         interactor.preparePlayer(url ?: "") { state ->
             if (state == PlayerState.STATE_PREPARED) {
-                with(handler) {
-                    with(binding) {
-                        imageViewPlay.isEnabled = true
-                        textViewPlayTime.text = START_TIME
-                        imageViewPlay.setImageResource(R.drawable.play_button)
+                handler.post {
+                    with(handler) {
+                        with(binding) {
+                            imageViewPlay.isEnabled = true
+                            textViewPlayTime.text = START_TIME
+                            imageViewPlay.setImageResource(R.drawable.play_button)
+                        }
+                        removeCallbacks(createUpdateTimerTask())
                     }
-                    removeCallbacks(createUpdateTimerTask())
                 }
                 playerState = PlayerState.STATE_PREPARED
             }
