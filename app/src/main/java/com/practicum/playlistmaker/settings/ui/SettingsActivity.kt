@@ -5,8 +5,8 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import androidx.appcompat.app.AppCompatActivity
-import com.practicum.playlistmaker.creator.App
-import com.practicum.playlistmaker.creator.Creator
+import com.practicum.playlistmaker.core.App
+import com.practicum.playlistmaker.core.Creator
 import com.practicum.playlistmaker.databinding.ActivitySettingsBinding
 
 class SettingsActivity : AppCompatActivity() {

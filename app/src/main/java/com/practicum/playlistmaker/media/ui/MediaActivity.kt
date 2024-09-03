@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
@@ -12,147 +13,160 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.databinding.ActivityMediaBinding
 import com.practicum.playlistmaker.media.MediaViewModel
-import com.practicum.playlistmaker.media.MediaViewModel.Companion.playerState
 import com.practicum.playlistmaker.media.domain.model.PlayerState
 import com.practicum.playlistmaker.search.domain.models.Track
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 
 class MediaActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityMediaBinding
+    private var binding: ActivityMediaBinding? = null
 
-    private lateinit var track: Track
+    private val track by lazy {
+        val jsonString = intent.getStringExtra(EXTRA_TRACK) ?: ""
+        Json.decodeFromString<Track>(jsonString)
+    }
 
-    //    private val interactor by lazy { Creator.provideMediaInteractor() }
-    private lateinit var url: String
-
-    private lateinit var viewModel: MediaViewModel
+    private val viewModel by lazy {
+        ViewModelProvider(
+            this,
+            MediaViewModel.getViewModelFactory()
+        )[MediaViewModel::class.java]
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMediaBinding.inflate(LayoutInflater.from(this))
-        setContentView(binding.root)
+        setContentView(binding?.root)
 
-        url = track.trackUrl.toString()
+        viewModel.getPlayStatusLiveData().observe(this) { state ->
+            when (state) {
+                PlayerState.STATE_DEFAULT -> {
+                    val url = track.trackUrl
+                    if (url.isNullOrBlank()) {
+                        Toast.makeText(this, R.string.play_error, Toast.LENGTH_SHORT)
+                            .show()
+                    } else {
+                        viewModel.preparePlayer(url)
+                    }
+                }
 
-        viewModel = ViewModelProvider(
-            this,
-            MediaViewModel.getViewModelFactory(url, track.trackId)
-        )[MediaViewModel::class.java]
+                PlayerState.STATE_PREPARED -> {
+                    binding?.let {
+                        it.imageViewPlay.isEnabled = true
+                        it.textViewPlayTime.text = START_TIME
+                        it.imageViewPlay.setImageResource(R.drawable.play_button)
+                    }
+                }
 
-        viewModel.getScreenStateLiveData().observe(this) {
-            getImageAlbum()
-            setText()
+                PlayerState.STATE_PLAYING -> binding?.imageViewPlay?.setImageResource(
+                    R.drawable.pause_button
+                )
+
+                PlayerState.STATE_PAUSED -> binding?.imageViewPlay?.setImageResource(
+                    R.drawable.play_button
+                )
+
+                null -> Unit
+            }
         }
 
-        viewModel.getPlayStatusLiveData().observe(this) { playStatus ->
-            changeButtonStyle(playStatus)
-            binding.seekBar.value = playStatus.progress
+        viewModel.getCurrentPositionLiveData().observe(this) {
+            binding?.textViewPlayTime?.text = it
         }
 
-        val jsonString = intent.getStringExtra(EXTRA_TRACK) ?: ""
-        track = Json.decodeFromString<Track>(jsonString)
-
-
-
-        binding.backButton.setOnClickListener {
+        binding?.backButton?.setOnClickListener {
             finish()
         }
 
+        getImageAlbum()
+        setText()
 
-
-        preparePlayer()
-
-        binding.imageViewPlay.setOnClickListener {
-            playbackControl()
+        binding?.imageViewPlay?.setOnClickListener {
+            viewModel.playbackControl(track.trackUrl ?: "")
         }
     }
 
     override fun onPause() {
-        if (playerState == PlayerState.STATE_PLAYING) {
-            pausePlayer()
-        }
+        viewModel.pausePlayer()
         super.onPause()
     }
 
-//    override fun onDestroy() {
-//        interactor.getRelease()
-//        super.onDestroy()
-//    }
-
-    private fun changeButtonStyle(playStatus: PlayStatus) {
-        // Меняем вид кнопки проигрывания в зависимости от того, играет сейчас трек или нет
+    override fun onDestroy() {
+        binding = null
+        super.onDestroy()
     }
 
     private fun getImageAlbum() {
         val cornerRadius = resources.getDimensionPixelSize(R.dimen._8dp)
-        Glide.with(this)
-            .load(track.coverArtworkMaxi)
-            .placeholder(R.drawable.place_holder)
-            .fitCenter()
-            .transform(RoundedCorners(cornerRadius))
-            .into(binding.imageViewAlbum)
+        binding?.let {
+            Glide.with(this)
+                .load(track.coverArtworkMaxi)
+                .placeholder(R.drawable.place_holder)
+                .fitCenter()
+                .transform(RoundedCorners(cornerRadius))
+                .into(it.imageViewAlbum)
+        }
     }
 
     private fun setText() {
-        with(binding) {
-            textViewTrackName.text = track.trackName
-            textViewArtistName.text = track.artistName
-            textViewDurationData.text = getTrackTime()
-            textViewAlbumData.text = getCollectionName()
-            textViewYearData.text = getReleaseDate()
-            textViewGenreData.text = getPrimaryGenreName()
-            textViewCountryData.text = getCountry()
-            textViewPlayTime.text = START_TIME
+        binding.let {
+            it?.textViewTrackName?.text = track.trackName
+            it?.textViewArtistName?.text = track.artistName
+            it?.textViewDurationData?.text = getTrackTime()
+            it?.textViewAlbumData?.text = getCollectionName()
+            it?.textViewYearData?.text = getReleaseDate()
+            it?.textViewGenreData?.text = getPrimaryGenreName()
+            it?.textViewCountryData?.text = getCountry()
+            it?.textViewPlayTime?.text = START_TIME
         }
     }
 
     private fun getCollectionName(): String {
         return track.collectionName ?: run {
-            with(binding) {
-                textViewAlbum.isVisible = false
-                textViewAlbumData.isVisible = false
-                ""
+            binding.let {
+                it?.textViewAlbum?.isVisible = false
+                it?.textViewAlbumData?.isVisible = false
+                EMPTY_STRING
             }
         }
     }
 
     private fun getPrimaryGenreName(): String {
         return track.primaryGenreName ?: run {
-            with(binding) {
-                textViewGenre.isVisible = false
-                textViewGenreData.isVisible = false
-                ""
+            binding.let {
+                it?.textViewGenre?.isVisible = false
+                it?.textViewGenreData?.isVisible = false
+                EMPTY_STRING
             }
         }
     }
 
     private fun getCountry(): String {
         return track.country ?: run {
-            with(binding) {
-                textViewCountry.isVisible = false
-                textViewCountryData.isVisible = false
-                ""
+            binding.let {
+                it?.textViewCountry?.isVisible = false
+                it?.textViewCountryData?.isVisible = false
+                EMPTY_STRING
             }
         }
     }
 
     private fun getReleaseDate(): String {
         return track.releaseYear ?: run {
-            with(binding) {
-                textViewYear.isVisible = false
-                textViewYearData.isVisible = false
-                ""
+            binding.let {
+                it?.textViewYear?.isVisible = false
+                it?.textViewYearData?.isVisible = false
+                EMPTY_STRING
             }
         }
     }
 
     private fun getTrackTime(): String {
         return track.trackTime ?: run {
-            with(binding) {
-                textViewDuration.isVisible = false
-                textViewDurationData.isVisible = false
-                ""
+            binding.let {
+                it?.textViewDuration?.isVisible = false
+                it?.textViewDurationData?.isVisible = false
+                EMPTY_STRING
             }
         }
     }
@@ -160,6 +174,7 @@ class MediaActivity : AppCompatActivity() {
     companion object {
         const val START_TIME = "00:00"
         private const val EXTRA_TRACK = "extra_track"
+        private const val EMPTY_STRING = ""
 
         fun createMediaActivityIntent(context: Context, track: Track): Intent {
             val intent = Intent(context, MediaActivity::class.java)

@@ -1,8 +1,8 @@
-package com.practicum.playlistmaker.creator
+package com.practicum.playlistmaker.core
 
 import android.content.Context
 import androidx.appcompat.app.AppCompatActivity.MODE_PRIVATE
-import com.practicum.playlistmaker.creator.App.Companion.PREFERENCES
+import com.practicum.playlistmaker.core.App.Companion.PREFERENCES
 import com.practicum.playlistmaker.media.data.impl.MediaRepositoryImpl
 import com.practicum.playlistmaker.media.domain.api.MediaInteractor
 import com.practicum.playlistmaker.media.data.api.MediaRepository

@@ -11,11 +11,9 @@ import android.view.LayoutInflater
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import androidx.activity.ComponentActivity
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
-import androidx.lifecycle.SavedStateViewModelFactory
 import androidx.lifecycle.ViewModelProvider
-import com.practicum.playlistmaker.creator.Creator
+import com.practicum.playlistmaker.core.Creator
 import com.practicum.playlistmaker.databinding.ActivitySearchBinding
 import com.practicum.playlistmaker.media.ui.MediaActivity
 import com.practicum.playlistmaker.search.SearchViewModel
