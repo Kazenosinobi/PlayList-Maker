@@ -1,11 +1,11 @@
-package com.practicum.playlistmaker.search.data
+package com.practicum.playlistmaker.search.data.impl
 
 import com.practicum.playlistmaker.search.data.dto.TracksRequest
 import com.practicum.playlistmaker.search.data.dto.TracksResponse
 import com.practicum.playlistmaker.search.data.dto.mapToTrack
 import com.practicum.playlistmaker.search.data.localStorage.SearchHistory
 import com.practicum.playlistmaker.search.data.network.NetworkClient
-import com.practicum.playlistmaker.search.domain.api.TracksRepository
+import com.practicum.playlistmaker.search.data.api.TracksRepository
 import com.practicum.playlistmaker.search.domain.models.Track
 import com.practicum.playlistmaker.search.domain.models.ViewState
 import java.lang.Exception

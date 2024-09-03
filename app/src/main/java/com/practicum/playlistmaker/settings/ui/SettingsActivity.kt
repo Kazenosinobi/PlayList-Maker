@@ -1,17 +1,12 @@
-package com.practicum.playlistmaker.settings.presentation
+package com.practicum.playlistmaker.settings.ui
 
 import android.content.Context
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.widget.FrameLayout
-import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
-import com.google.android.material.switchmaterial.SwitchMaterial
-import com.practicum.playlistmaker.R
-import com.practicum.playlistmaker.core.App
-import com.practicum.playlistmaker.core.Creator
+import com.practicum.playlistmaker.creator.App
+import com.practicum.playlistmaker.creator.Creator
 import com.practicum.playlistmaker.databinding.ActivitySettingsBinding
 
 class SettingsActivity : AppCompatActivity() {

@@ -1,4 +1,4 @@
-package com.practicum.playlistmaker.settings.domain.api
+package com.practicum.playlistmaker.settings.data.api
 
 interface SettingsRepository {
     fun share()

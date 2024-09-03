@@ -1,4 +1,4 @@
-package com.practicum.playlistmaker.search.presentation
+package com.practicum.playlistmaker.search.ui
 
 import android.content.Context
 import android.content.Intent
@@ -10,16 +10,20 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
+import androidx.activity.ComponentActivity
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
-import com.practicum.playlistmaker.core.Creator
+import androidx.lifecycle.SavedStateViewModelFactory
+import androidx.lifecycle.ViewModelProvider
+import com.practicum.playlistmaker.creator.Creator
 import com.practicum.playlistmaker.databinding.ActivitySearchBinding
-import com.practicum.playlistmaker.media.presentation.MediaActivity
+import com.practicum.playlistmaker.media.ui.MediaActivity
+import com.practicum.playlistmaker.search.SearchViewModel
 import com.practicum.playlistmaker.search.domain.models.Track
 import com.practicum.playlistmaker.search.domain.models.ViewState
-import com.practicum.playlistmaker.search.presentation.recycler.TrackAdapter
+import com.practicum.playlistmaker.search.ui.recycler.TrackAdapter
 
-class SearchActivity : AppCompatActivity() {
+class SearchActivity : ComponentActivity() {
 
     private var searchTextValue = SEARCH_TEXT_VALUE
 
@@ -34,10 +38,13 @@ class SearchActivity : AppCompatActivity() {
     private var isClickAllowed = true
     private val handler = Handler(Looper.getMainLooper())
 
+    private lateinit var viewModel: SearchViewModel
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivitySearchBinding.inflate(LayoutInflater.from(this))
         setContentView(binding.root)
+        viewModel = ViewModelProvider(this, SearchViewModel.getViewModelFactory())[SearchViewModel::class.java]
 
         trackAdapter = TrackAdapter { track ->
             addToTrackHistory(track)

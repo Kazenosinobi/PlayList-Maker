@@ -2,7 +2,7 @@ package com.practicum.playlistmaker.search.data.network
 
 import com.practicum.playlistmaker.search.data.dto.Response
 import com.practicum.playlistmaker.search.data.dto.TracksRequest
-import com.practicum.playlistmaker.search.presentation.SearchActivity.Companion.ITUNES_BASE_URL
+import com.practicum.playlistmaker.search.ui.SearchActivity.Companion.ITUNES_BASE_URL
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit

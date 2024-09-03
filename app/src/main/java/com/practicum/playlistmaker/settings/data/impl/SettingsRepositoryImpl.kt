@@ -1,10 +1,10 @@
-package com.practicum.playlistmaker.settings.data
+package com.practicum.playlistmaker.settings.data.impl
 
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import com.practicum.playlistmaker.R
-import com.practicum.playlistmaker.settings.domain.api.SettingsRepository
+import com.practicum.playlistmaker.settings.data.api.SettingsRepository
 
 class SettingsRepositoryImpl(private val context: Context) : SettingsRepository {
     override fun share() {

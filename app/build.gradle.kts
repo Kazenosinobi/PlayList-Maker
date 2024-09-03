@@ -61,6 +61,8 @@ dependencies {
 
     implementation (libs.serialization.json)
 
+    implementation (libs.androidx.core.ktx.v190)
+
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 }
