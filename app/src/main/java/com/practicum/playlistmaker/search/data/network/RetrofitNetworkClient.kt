@@ -2,7 +2,6 @@ package com.practicum.playlistmaker.search.data.network
 
 import com.practicum.playlistmaker.search.data.dto.Response
 import com.practicum.playlistmaker.search.data.dto.TracksRequest
-import com.practicum.playlistmaker.search.ui.SearchActivity.Companion.ITUNES_BASE_URL
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -34,5 +33,6 @@ class RetrofitNetworkClient : NetworkClient {
 
     private companion object {
         private const val BAD_REQUEST = 400
+        private const val ITUNES_BASE_URL = "https://itunes.apple.com"
     }
 }

@@ -1,4 +1,4 @@
-package com.practicum.playlistmaker.media
+package com.practicum.playlistmaker.media.ui
 
 import android.os.Handler
 import android.os.Looper
@@ -17,6 +17,7 @@ import java.util.Locale
 class MediaViewModel(
     private val mediaInteractor: MediaInteractor,
 ) : ViewModel() {
+
     private val handler = Handler(Looper.getMainLooper())
 
     private val playStatusLiveData = MutableLiveData(PlayerState.STATE_DEFAULT)
