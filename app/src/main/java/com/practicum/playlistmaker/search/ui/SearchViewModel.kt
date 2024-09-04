@@ -1,5 +1,6 @@
 package com.practicum.playlistmaker.search.ui
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -19,37 +20,61 @@ class SearchViewModel(
     private val viewStateLiveData = MutableLiveData<ViewState>()
     fun getCurrentPositionLiveData(): LiveData<ViewState> = viewStateLiveData
 
+    private val historyList = arrayListOf<Track>()
+
+    init {
+        getHistory()
+    }
+
+    override fun onCleared() {
+
+        super.onCleared()
+    }
+
     fun search(text: String?) {
         if (text.isNullOrBlank()) return
         viewStateLiveData.value = ViewState.Loading
 
         tracksInteractor.searchTracks(
             text.trim()
-        ) {
-            viewState -> viewStateLiveData.value = viewState
+        ) { viewState ->
+            viewStateLiveData.postValue(viewState)
         }
     }
 
     fun clearHistory() {
-//        trackHistoryAdapter?.submitList(emptyList())
+        historyList.clear()
         tracksInteractor.saveSearchTrackHistory(emptyArray())
-//        binding.groupHistory.isVisible = false
+        viewStateLiveData.value = ViewState.History(historyList)
+        Log.d("MyLog", "clearHistory: $historyList")
+    }
+
+    private fun getHistory() {
+        historyList.addAll(tracksInteractor.getSearchHistory())
+        Log.d("MyLog", "getHistory: $historyList")
     }
 
     fun addToTrackHistory(track: Track) {
-        val currentTracks = trackHistoryAdapter?.currentList?.toMutableList() ?: mutableListOf()
-        val existingTrackIndex = currentTracks.indexOfFirst { it.trackId == track.trackId }
+        val existingTrackIndex = historyList.indexOfFirst { it.trackId == track.trackId }
         if (existingTrackIndex != -1) {
-            currentTracks.removeAt(existingTrackIndex)
+            historyList.removeAt(existingTrackIndex)
         }
-        if (currentTracks.size >= TRACKS_HISTORY_MAX_SIZE) {
-            currentTracks.removeAt(currentTracks.lastIndex)
+        if (historyList.size >= TRACKS_HISTORY_MAX_SIZE) {
+            historyList.removeAt(historyList.lastIndex)
         }
-        currentTracks.add(0, track)
-        trackHistoryAdapter?.submitList(currentTracks)
+        historyList.add(0, track)
         tracksInteractor.saveSearchTrackHistory(
-            currentTracks.toTypedArray()
+            historyList.toTypedArray()
         )
+        tracksInteractor.saveSearchTrackHistory(
+            historyList.toTypedArray()
+        )
+        Log.d("MyLog", "addToTrackHistory: $historyList")
+    }
+
+    fun needToShowHistory() {
+        viewStateLiveData.value = ViewState.History(historyList)
+        Log.d("MyLog", "needToShowHistory: $historyList")
     }
 
     companion object {
