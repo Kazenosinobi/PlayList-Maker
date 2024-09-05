@@ -62,6 +62,7 @@ class SearchActivity : AppCompatActivity() {
         trackHistoryAdapter = TrackAdapter { track ->
             viewModel.addToTrackHistory(track)
             startMediaActivity(track)
+            viewModel.needToShowHistory()
         }
 
         binding?.searchBackButton?.setOnClickListener {
