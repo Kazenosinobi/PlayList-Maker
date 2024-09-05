@@ -1,6 +1,5 @@
 package com.practicum.playlistmaker.search.ui
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -20,60 +19,30 @@ class SearchViewModel(
     private val viewStateLiveData = MutableLiveData<ViewState>()
     fun getCurrentPositionLiveData(): LiveData<ViewState> = viewStateLiveData
 
-    private val historyList = arrayListOf<Track>()
-
-    init {
-        getHistory()
-    }
-
-    override fun onCleared() {
-
-        super.onCleared()
-    }
-
     fun search(text: String?) {
         if (text.isNullOrBlank()) return
         viewStateLiveData.value = ViewState.Loading
 
-        tracksInteractor.searchTracks(
-            text.trim()
-        ) { viewState ->
+        tracksInteractor.searchTracks(text.trim()) { viewState ->
             viewStateLiveData.postValue(viewState)
         }
     }
 
     fun clearHistory() {
-        historyList.clear()
-        tracksInteractor.saveSearchTrackHistory(emptyArray())
-        viewStateLiveData.value = ViewState.History(historyList)
-    }
-
-    private fun getHistory() {
-        historyList.addAll(tracksInteractor.getSearchHistory())
+        tracksInteractor.clearHistory()
+        needToShowHistory()
     }
 
     fun addToTrackHistory(track: Track) {
-        val existingTrackIndex = historyList.indexOfFirst { it.trackId == track.trackId }
-        if (existingTrackIndex != -1) {
-            historyList.removeAt(existingTrackIndex)
-        }
-        if (historyList.size >= TRACKS_HISTORY_MAX_SIZE) {
-            historyList.removeAt(historyList.lastIndex)
-        }
-        historyList.add(0, track)
-
-        tracksInteractor.saveSearchTrackHistory(
-            historyList.toTypedArray()
-        )
+        tracksInteractor.addToTrackHistory(track)
+        needToShowHistory()
     }
 
     fun needToShowHistory() {
-        viewStateLiveData.value = ViewState.History(historyList)
+        viewStateLiveData.value = ViewState.History(tracksInteractor.getSearchHistory().toList())
     }
 
     companion object {
-
-        private const val TRACKS_HISTORY_MAX_SIZE = 10
 
         fun getViewModelFactory(application: App): ViewModelProvider.Factory = viewModelFactory {
             initializer {

@@ -5,14 +5,11 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.text.Editable
-import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
-import androidx.activity.ComponentActivity
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
-import androidx.core.widget.doAfterTextChanged
 import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.ViewModelProvider
 import com.practicum.playlistmaker.core.App
@@ -22,7 +19,7 @@ import com.practicum.playlistmaker.search.domain.models.Track
 import com.practicum.playlistmaker.search.domain.models.ViewState
 import com.practicum.playlistmaker.search.ui.recycler.TrackAdapter
 
-class SearchActivity : ComponentActivity() {
+class SearchActivity : AppCompatActivity() {
 
     private var binding: ActivitySearchBinding? = null
 
@@ -50,7 +47,7 @@ class SearchActivity : ComponentActivity() {
         viewModel.getCurrentPositionLiveData().observe(this) { viewState ->
             when (viewState) {
                 ViewState.EmptyError -> showEmpty()
-                is ViewState.History -> showHistory(viewState.trackList)
+                is ViewState.History -> showHistory(viewState.historyList)
 
                 ViewState.Loading -> showProgressBar()
                 ViewState.NetworkError -> showError()
@@ -101,7 +98,10 @@ class SearchActivity : ComponentActivity() {
         binding?.reconnectButton?.setOnClickListener {
             viewModel.search(binding?.editTextSearch?.text.toString())
         }
-        binding?.buttonClearHistory?.setOnClickListener { viewModel.clearHistory() }
+        binding?.buttonClearHistory?.setOnClickListener {
+            viewModel.clearHistory()
+            trackHistoryAdapter?.submitList(emptyList())
+        }
 
         binding?.rwTrack?.adapter = trackAdapter
         binding?.rwSearchHistory?.adapter = trackHistoryAdapter
@@ -178,11 +178,10 @@ class SearchActivity : ComponentActivity() {
         }
     }
 
-    private fun showHistory(listTracks: List<Track>) {
-        trackHistoryAdapter?.submitList(listTracks)
-        trackHistoryAdapter?.notifyDataSetChanged()
+    private fun showHistory(historyList: List<Track>) {
+        trackHistoryAdapter?.submitList(historyList)
         binding?.groupHistory?.isVisible = binding?.editTextSearch?.text.isNullOrEmpty()
-                && listTracks.isEmpty().not()
+                && historyList.isEmpty().not()
         binding.let {
             it?.rwTrack?.isVisible = false
             it?.llErrors?.isVisible = false

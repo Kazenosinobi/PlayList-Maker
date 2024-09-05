@@ -7,4 +7,6 @@ interface TracksRepository {
     fun searchTracks(expression: String): ViewState
     fun getSearchHistory(): Array<Track>
     fun saveSearchTrackHistory(tracks: Array<Track>)
+    fun addToTrackHistory(track: Track)
+    fun clearHistory()
 }
