@@ -46,12 +46,10 @@ class SearchViewModel(
         historyList.clear()
         tracksInteractor.saveSearchTrackHistory(emptyArray())
         viewStateLiveData.value = ViewState.History(historyList)
-        Log.d("MyLog", "clearHistory: $historyList")
     }
 
     private fun getHistory() {
         historyList.addAll(tracksInteractor.getSearchHistory())
-        Log.d("MyLog", "getHistory: $historyList")
     }
 
     fun addToTrackHistory(track: Track) {
@@ -63,18 +61,14 @@ class SearchViewModel(
             historyList.removeAt(historyList.lastIndex)
         }
         historyList.add(0, track)
+
         tracksInteractor.saveSearchTrackHistory(
             historyList.toTypedArray()
         )
-        tracksInteractor.saveSearchTrackHistory(
-            historyList.toTypedArray()
-        )
-        Log.d("MyLog", "addToTrackHistory: $historyList")
     }
 
     fun needToShowHistory() {
         viewStateLiveData.value = ViewState.History(historyList)
-        Log.d("MyLog", "needToShowHistory: $historyList")
     }
 
     companion object {

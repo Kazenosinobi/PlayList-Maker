@@ -179,15 +179,15 @@ class SearchActivity : ComponentActivity() {
     }
 
     private fun showHistory(listTracks: List<Track>) {
-        trackHistoryAdapter?.submitList(emptyList())
         trackHistoryAdapter?.submitList(listTracks)
-       // trackHistoryAdapter?.notifyDataSetChanged()
+        trackHistoryAdapter?.notifyDataSetChanged()
         binding?.groupHistory?.isVisible = binding?.editTextSearch?.text.isNullOrEmpty()
                 && listTracks.isEmpty().not()
         binding.let {
             it?.rwTrack?.isVisible = false
             it?.llErrors?.isVisible = false
             it?.llNotInternet?.isVisible = false
+            it?.progressBar?.isVisible = false
         }
     }
 
