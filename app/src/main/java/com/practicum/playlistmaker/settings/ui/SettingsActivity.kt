@@ -5,45 +5,52 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
 import com.practicum.playlistmaker.core.App
 import com.practicum.playlistmaker.core.Creator
 import com.practicum.playlistmaker.databinding.ActivitySettingsBinding
+import com.practicum.playlistmaker.search.ui.SearchViewModel
 
 class SettingsActivity : AppCompatActivity() {
-    private lateinit var binding: ActivitySettingsBinding
+    private var binding: ActivitySettingsBinding? = null
 
-    private val interactor by lazy { Creator.provideSettingsInteractor(this) }
+    private val viewModel by lazy {
+        ViewModelProvider(
+            this,
+            SettingsViewModel.getViewModelFactory(application as App)
+        )[SettingsViewModel::class.java]
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivitySettingsBinding.inflate(LayoutInflater.from(this))
-        setContentView(binding.root)
+        setContentView(binding?.root)
 
-        binding.backButton.setOnClickListener {
+        binding?.backButton?.setOnClickListener {
                 onBackPressedDispatcher.onBackPressed()
         }
 
-        binding.frameLayoutShare.setOnClickListener {
-            interactor.share()
+        binding?.frameLayoutShare?.setOnClickListener {
+            viewModel.share()
         }
 
-        binding.frameLayoutSupport.setOnClickListener {
-            interactor.support()
+        binding?.frameLayoutSupport?.setOnClickListener {
+            viewModel.support()
         }
 
-        binding.frameLayoutTerms.setOnClickListener {
-            interactor.termsOfUse()
+        binding?.frameLayoutTerms?.setOnClickListener {
+            viewModel.termsOfUse()
         }
 
-        binding.themeSwitcher.isChecked = (applicationContext as App).darkTheme
+        binding?.themeSwitcher?.isChecked = viewModel.isDarkTheme()
 
-        binding.themeSwitcher.setOnCheckedChangeListener { _, isChecked ->
-            (applicationContext as App).switchTheme(isChecked)
+        binding?.themeSwitcher?.setOnCheckedChangeListener { _, isChecked ->
+            viewModel.updateTheme(isChecked)
         }
 
-        binding.flThemeSwitcher.setOnClickListener {
-            binding.themeSwitcher.isChecked = !binding.themeSwitcher.isChecked
-            (applicationContext as App).switchTheme(binding.themeSwitcher.isChecked)
+        binding?.flThemeSwitcher?.setOnClickListener {
+            binding?.themeSwitcher?.isChecked = binding?.themeSwitcher?.isChecked?.not() == true
+            viewModel.updateTheme(binding?.themeSwitcher?.isChecked?.not() == true)
         }
     }
 
