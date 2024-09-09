@@ -1,6 +1,6 @@
 package com.practicum.playlistmaker.sharing.domain.impl
 
-import com.practicum.playlistmaker.sharing.data.api.SharingRepository
+import com.practicum.playlistmaker.sharing.domain.api.SharingRepository
 import com.practicum.playlistmaker.sharing.domain.api.SharingInteractor
 
 class SharingInteractorImpl(private val repository: SharingRepository) : SharingInteractor{

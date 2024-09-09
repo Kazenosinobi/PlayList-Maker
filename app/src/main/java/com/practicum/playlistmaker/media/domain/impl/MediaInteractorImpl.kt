@@ -1,7 +1,7 @@
 package com.practicum.playlistmaker.media.domain.impl
 
 import com.practicum.playlistmaker.media.domain.api.MediaInteractor
-import com.practicum.playlistmaker.media.data.api.MediaRepository
+import com.practicum.playlistmaker.media.domain.api.MediaRepository
 import com.practicum.playlistmaker.media.domain.model.PlayerState
 
 class MediaInteractorImpl(private val repository: MediaRepository) : MediaInteractor {

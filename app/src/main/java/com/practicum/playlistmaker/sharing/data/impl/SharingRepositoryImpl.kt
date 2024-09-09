@@ -1,12 +1,10 @@
 package com.practicum.playlistmaker.sharing.data.impl
 
-import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import android.util.Log
 import com.practicum.playlistmaker.R
-import com.practicum.playlistmaker.sharing.data.api.SharingRepository
+import com.practicum.playlistmaker.sharing.domain.api.SharingRepository
 
 class SharingRepositoryImpl(private val context: Context) : SharingRepository {
     override fun share() {

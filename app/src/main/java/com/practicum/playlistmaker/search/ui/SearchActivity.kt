@@ -89,13 +89,6 @@ class SearchActivity : AppCompatActivity() {
             }
         }
 
-        binding?.editTextSearch?.setOnEditorActionListener { _, actionId, _ ->
-            if (actionId == EditorInfo.IME_ACTION_DONE) {
-                viewModel.search(binding?.editTextSearch?.text.toString())
-            }
-            false
-        }
-
         binding?.reconnectButton?.setOnClickListener {
             viewModel.search(binding?.editTextSearch?.text.toString())
         }

@@ -1,4 +1,4 @@
-package com.practicum.playlistmaker.settings.data.api
+package com.practicum.playlistmaker.settings.domain.api
 
 interface SettingsRepository {
     fun updateTheme(isChecked: Boolean)
