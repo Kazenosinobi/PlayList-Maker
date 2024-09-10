@@ -5,9 +5,9 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
-import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.practicum.playlistmaker.R
@@ -25,11 +25,8 @@ class MediaActivity : AppCompatActivity() {
         Json.decodeFromString<Track>(jsonString)
     }
 
-    private val viewModel by lazy {
-        ViewModelProvider(
-            this,
-            MediaViewModel.getViewModelFactory()
-        )[MediaViewModel::class.java]
+    private val viewModel: MediaViewModel by viewModels {
+        MediaViewModel.getViewModelFactory()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

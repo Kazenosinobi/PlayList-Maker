@@ -6,12 +6,11 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.view.LayoutInflater
-import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
-import androidx.lifecycle.ViewModelProvider
 import com.practicum.playlistmaker.core.App
 import com.practicum.playlistmaker.databinding.ActivitySearchBinding
 import com.practicum.playlistmaker.media.ui.MediaActivity
@@ -32,11 +31,8 @@ class SearchActivity : AppCompatActivity() {
     private var isClickAllowed = true
     private val handler = Handler(Looper.getMainLooper())
 
-    private val viewModel by lazy {
-        ViewModelProvider(
-            this,
-            SearchViewModel.getViewModelFactory(application as App)
-        )[SearchViewModel::class.java]
+    private val viewModel: SearchViewModel by viewModels {
+        SearchViewModel.getViewModelFactory(application as App)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
