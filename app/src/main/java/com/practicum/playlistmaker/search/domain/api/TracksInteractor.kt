@@ -7,6 +7,8 @@ interface TracksInteractor {
     fun searchTracks(expression: String, consumer: TracksConsumer)
     fun getSearchHistory(): Array<Track>
     fun saveSearchTrackHistory(tracks: Array<Track>)
+    fun addToTrackHistory(track: Track)
+    fun clearHistory()
 
     fun interface TracksConsumer {
         fun consume(viewState: ViewState)

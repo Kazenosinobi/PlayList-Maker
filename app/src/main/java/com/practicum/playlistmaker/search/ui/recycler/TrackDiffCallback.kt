@@ -1,4 +1,4 @@
-package com.practicum.playlistmaker.search.presentation.recycler
+package com.practicum.playlistmaker.search.ui.recycler
 
 import androidx.recyclerview.widget.DiffUtil
 import com.practicum.playlistmaker.search.domain.models.Track

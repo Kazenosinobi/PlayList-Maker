@@ -1,7 +1,6 @@
 package com.practicum.playlistmaker.settings.domain.api
 
 interface SettingsRepository {
-    fun share()
-    fun support()
-    fun termsOfUse()
+    fun updateTheme(isChecked: Boolean)
+    fun isDarkTheme(): Boolean
 }

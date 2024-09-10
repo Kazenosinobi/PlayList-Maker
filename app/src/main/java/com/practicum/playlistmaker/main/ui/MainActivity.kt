@@ -1,15 +1,13 @@
-package com.practicum.playlistmaker.core
+package com.practicum.playlistmaker.main.ui
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
-import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
-import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.databinding.ActivityMainBinding
-import com.practicum.playlistmaker.search.presentation.SearchActivity
-import com.practicum.playlistmaker.settings.presentation.SettingsActivity
-import com.practicum.playlistmaker.mediaLibrary.presentation.MediaLibraryActivity
+import com.practicum.playlistmaker.search.ui.SearchActivity
+import com.practicum.playlistmaker.settings.ui.SettingsActivity
+import com.practicum.playlistmaker.mediaLibrary.ui.MediaLibraryActivity
 
 class MainActivity : AppCompatActivity() {
 private lateinit var binding: ActivityMainBinding

@@ -1,4 +1,4 @@
-package com.practicum.playlistmaker.mediaLibrary.presentation
+package com.practicum.playlistmaker.mediaLibrary.ui
 
 import android.content.Context
 import android.content.Intent

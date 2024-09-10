@@ -1,4 +1,4 @@
-package com.practicum.playlistmaker.mediaLibrary.data
+package com.practicum.playlistmaker.mediaLibrary.data.impl
 
 import com.practicum.playlistmaker.mediaLibrary.domain.api.MediaLibraryRepository
 

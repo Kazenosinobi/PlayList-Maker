@@ -22,4 +22,12 @@ class TracksInteractorImpl(private val repository: TracksRepository) : TracksInt
     override fun saveSearchTrackHistory(tracks: Array<Track>) {
         repository.saveSearchTrackHistory(tracks)
     }
+
+    override fun addToTrackHistory(track: Track) {
+        repository.addToTrackHistory(track)
+    }
+
+    override fun clearHistory() {
+        repository.clearHistory()
+    }
 }
