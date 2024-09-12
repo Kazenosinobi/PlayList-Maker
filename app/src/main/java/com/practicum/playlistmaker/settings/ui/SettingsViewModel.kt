@@ -7,7 +7,6 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.practicum.playlistmaker.core.App
-import com.practicum.playlistmaker.core.Creator
 import com.practicum.playlistmaker.settings.domain.api.SettingsInteractor
 import com.practicum.playlistmaker.sharing.domain.api.SharingInteractor
 
@@ -35,19 +34,5 @@ class SettingsViewModel(
 
     fun isDarkTheme(): Boolean {
         return settingsInteractor.isDarkTheme()
-    }
-
-    companion object {
-        fun getViewModelFactory(application: App): ViewModelProvider.Factory = viewModelFactory {
-            initializer {
-                val settingsInteractor = Creator.provideSettingsInteractor(application)
-                val sharingInteractor = Creator.provideSharingInteractor(application)
-
-                SettingsViewModel(
-                    settingsInteractor,
-                    sharingInteractor
-                )
-            }
-        }
     }
 }

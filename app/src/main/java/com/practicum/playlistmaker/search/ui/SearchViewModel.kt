@@ -3,11 +3,6 @@ package com.practicum.playlistmaker.search.ui
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewmodel.initializer
-import androidx.lifecycle.viewmodel.viewModelFactory
-import com.practicum.playlistmaker.core.App
-import com.practicum.playlistmaker.core.Creator
 import com.practicum.playlistmaker.search.domain.api.TracksInteractor
 import com.practicum.playlistmaker.search.domain.models.Track
 import com.practicum.playlistmaker.search.domain.models.ViewState
@@ -39,18 +34,5 @@ class SearchViewModel(
 
     fun needToShowHistory() {
         viewStateLiveData.value = ViewState.History(tracksInteractor.getSearchHistory().toList())
-    }
-
-    companion object {
-
-        fun getViewModelFactory(application: App): ViewModelProvider.Factory = viewModelFactory {
-            initializer {
-                val interactor = Creator.provideTracksInteractor(application)
-
-                SearchViewModel(
-                    interactor,
-                )
-            }
-        }
     }
 }

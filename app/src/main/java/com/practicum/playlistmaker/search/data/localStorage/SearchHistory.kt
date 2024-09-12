@@ -4,7 +4,10 @@ import android.content.SharedPreferences
 import com.google.gson.Gson
 import com.practicum.playlistmaker.search.domain.models.Track
 
-class SearchHistory(private val sharedPrefs: SharedPreferences) {
+class SearchHistory(
+    private val sharedPrefs: SharedPreferences,
+    private val gson: Gson,
+) {
 
     fun getSearchHistory(): Array<Track> {
         val json = sharedPrefs.getString(SEARCH_HISTORY_KEY, null) ?: return emptyArray()

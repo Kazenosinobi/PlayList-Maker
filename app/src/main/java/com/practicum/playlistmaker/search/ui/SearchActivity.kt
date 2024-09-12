@@ -7,16 +7,15 @@ import android.os.Handler
 import android.os.Looper
 import android.view.LayoutInflater
 import android.view.inputmethod.InputMethodManager
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
-import com.practicum.playlistmaker.core.App
 import com.practicum.playlistmaker.databinding.ActivitySearchBinding
 import com.practicum.playlistmaker.media.ui.MediaActivity
 import com.practicum.playlistmaker.search.domain.models.Track
 import com.practicum.playlistmaker.search.domain.models.ViewState
 import com.practicum.playlistmaker.search.ui.recycler.TrackAdapter
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SearchActivity : AppCompatActivity() {
 
@@ -31,9 +30,7 @@ class SearchActivity : AppCompatActivity() {
     private var isClickAllowed = true
     private val handler = Handler(Looper.getMainLooper())
 
-    private val viewModel: SearchViewModel by viewModels {
-        SearchViewModel.getViewModelFactory(application as App)
-    }
+    private val viewModel by viewModel<SearchViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,7 +41,6 @@ class SearchActivity : AppCompatActivity() {
             when (viewState) {
                 ViewState.EmptyError -> showEmpty()
                 is ViewState.History -> showHistory(viewState.historyList)
-
                 ViewState.Loading -> showProgressBar()
                 ViewState.NetworkError -> showError()
                 is ViewState.Success -> showListTracks(viewState.trackList)
