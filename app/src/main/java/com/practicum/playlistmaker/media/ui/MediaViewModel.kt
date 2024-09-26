@@ -8,7 +8,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
-import com.practicum.playlistmaker.core.Creator
 import com.practicum.playlistmaker.media.domain.api.MediaInteractor
 import com.practicum.playlistmaker.media.domain.model.PlayerState
 import java.text.SimpleDateFormat
@@ -90,15 +89,5 @@ class MediaViewModel(
     companion object {
         private const val PLAY_TIME_DELAY = 500L
         private const val DEFAULT_CURRENT_POS = "00:00"
-
-        fun getViewModelFactory(): ViewModelProvider.Factory = viewModelFactory {
-            initializer {
-                val interactor = Creator.provideMediaInteractor()
-
-                MediaViewModel(
-                    interactor
-                )
-            }
-        }
     }
 }

@@ -7,7 +7,6 @@ import android.view.LayoutInflater
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
-import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.practicum.playlistmaker.R
@@ -16,6 +15,7 @@ import com.practicum.playlistmaker.media.domain.model.PlayerState
 import com.practicum.playlistmaker.search.domain.models.Track
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MediaActivity : AppCompatActivity() {
     private var binding: ActivityMediaBinding? = null
@@ -25,12 +25,7 @@ class MediaActivity : AppCompatActivity() {
         Json.decodeFromString<Track>(jsonString)
     }
 
-    private val viewModel by lazy {
-        ViewModelProvider(
-            this,
-            MediaViewModel.getViewModelFactory()
-        )[MediaViewModel::class.java]
-    }
+    private val viewModel by viewModel<MediaViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
