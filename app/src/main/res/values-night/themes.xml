@@ -37,6 +37,11 @@
         <item name="playTimeTextColor">@color/deep_white</item>
         <item name="mediaDescriptionsTextColor">@color/light_grey</item>
         <item name="mediaDescriptionsDataTextColor">@color/deep_white</item>
+        <item name="newPlaylistButtonBackGroundColor">@color/deep_white</item>
+        <item name="newPlaylistButtonTextColor">@color/dark_grey</item>
+        <item name="tabRippleColor">@color/light_grey</item>
+        <item name="tabTextColor">@color/deep_white</item>
+        <item name="tabIndicatorColor">@color/deep_white</item>
 
         <item name="colorPrimaryDark">@color/dark_grey</item>
         <item name="colorAccent">@color/blue</item>

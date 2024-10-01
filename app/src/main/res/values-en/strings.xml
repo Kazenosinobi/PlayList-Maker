@@ -39,4 +39,10 @@
     <string name="country">Country</string>
     <string name="playback_progress">0:30</string>
     <string name="play_error">Play error</string>
+    <string name="media_library">Media Library</string>
+    <string name="new_playlist">New playlist</string>
+    <string name="not_create_playlist">You are not create&#10;no one playlists</string>
+    <string name="media_library_is_empty">Your media library is empty</string>
+    <string name="favourite_tracks">Favourite tracks</string>
+    <string name="play_lists">Playlists</string>
 </resources>
