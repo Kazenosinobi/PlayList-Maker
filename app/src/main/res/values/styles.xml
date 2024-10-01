@@ -231,9 +231,9 @@
     </style>
 
     <style name="TabLayoutStyle">
-        <item name="tabRippleColor">?attr/tabRippleColor</item>
-        <item name="tabTextColor">?attr/tabTextColor</item>
-        <item name="tabIndicatorColor">?attr/tabTextColor</item>
+        <item name="customTabRippleColor">?attr/tabRippleColor</item>
+        <item name="customTabTextColor">?attr/tabTextColor</item>
+        <item name="customTabIndicatorColor">?attr/customTabTextColor</item>
     </style>
 
 </resources>

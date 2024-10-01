@@ -36,7 +36,7 @@
     <attr name="mediaDescriptionsDataTextColor" format="reference"/>
     <attr name="newPlaylistButtonBackGroundColor" format="reference"/>
     <attr name="newPlaylistButtonTextColor" format="reference"/>
-    <attr name="tabRippleColor" format="reference"/>
-    <attr name="tabTextColor" format="reference"/>
-    <attr name="tabIndicatorColor" format="reference"/>
+    <attr name="customTabRippleColor" format="reference"/>
+    <attr name="customTabTextColor" format="reference"/>
+    <attr name="customTabIndicatorColor" format="reference"/>
 </resources>
