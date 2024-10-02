@@ -231,9 +231,18 @@
     </style>
 
     <style name="TabLayoutStyle">
-        <item name="customTabRippleColor">?attr/tabRippleColor</item>
-        <item name="customTabTextColor">?attr/tabTextColor</item>
-        <item name="customTabIndicatorColor">?attr/customTabTextColor</item>
+        <item name="tabRippleColor">?attr/customTabRippleColor</item>
+        <item name="tabTextColor">?attr/customTabTextColor</item>
+        <item name="tabIndicatorColor">?attr/customTabIndicatorColor</item>
+        <item name="android:layout_marginHorizontal">@dimen/_16dp</item>
+        <item name="android:fontFamily">@font/ys_display_medium</item>
+        <item name="android:textSize">@dimen/_16sp</item>
+        <item name="android:textFontWeight">500</item>
+        <item name="tabTextAppearance">@style/CustomTabTextAppearance</item>
+    </style>
+
+    <style name="CustomTabTextAppearance" parent="TextAppearance.Design.Tab">
+        <item name="textAllCaps">false</item>
     </style>
 
 </resources>

@@ -19,6 +19,10 @@ class MediaLibraryActivity : AppCompatActivity() {
         binding = ActivityMediaLibraryBinding.inflate(LayoutInflater.from(this))
         setContentView(binding.root)
 
+        binding.backButton.setOnClickListener {
+            finish()
+        }
+
         binding.viewPager.adapter = MediaLibraryViewPagerAdapter(
             fragmentManager = supportFragmentManager,
             lifecycle = lifecycle,
