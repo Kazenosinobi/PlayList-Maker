@@ -34,4 +34,9 @@
     <attr name="playTimeTextColor" format="reference"/>
     <attr name="mediaDescriptionsTextColor" format="reference"/>
     <attr name="mediaDescriptionsDataTextColor" format="reference"/>
+    <attr name="newPlaylistButtonBackGroundColor" format="reference"/>
+    <attr name="newPlaylistButtonTextColor" format="reference"/>
+    <attr name="customTabRippleColor" format="reference"/>
+    <attr name="customTabTextColor" format="reference"/>
+    <attr name="customTabIndicatorColor" format="reference"/>
 </resources>

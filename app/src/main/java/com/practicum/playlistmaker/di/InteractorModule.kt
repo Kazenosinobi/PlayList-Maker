@@ -14,23 +14,23 @@ import java.util.concurrent.Executors
 
 val interactorModule = module {
 
-    single<ExecutorService> {
+    factory<ExecutorService> {
         Executors.newCachedThreadPool()
     }
 
-    single<TracksInteractor> {
+    factory<TracksInteractor> {
         TracksInteractorImpl(get(), get())
     }
 
-    single<SettingsInteractor> {
+    factory<SettingsInteractor> {
         SettingsInteractorImpl(get())
     }
 
-    single<SharingInteractor> {
+    factory<SharingInteractor> {
         SharingInteractorImpl(get())
     }
 
-    single<MediaInteractor> {
+    factory<MediaInteractor> {
         MediaInteractorImpl(get())
     }
 

@@ -24,7 +24,7 @@
     <string name="dot">dot</string>
     <string name="play">play</string>
     <string name="nothing_was_found">Ничего не нашлось</string>
-    <string name="connection_error">Проблемы со связью&#10;&#10;Загрузка не удалась. Проверте подключение к интернету</string>
+    <string name="connection_error">Проблемы со связью\n\nЗагрузка не удалась. Проверте подключение к интернету</string>
     <string name="update">Обновить</string>
     <string name="u_searched">Вы искали</string>
     <string name="clear_history">Очистить историю</string>
@@ -38,4 +38,10 @@
     <string name="country">Страна</string>
     <string name="playback_progress">0:30</string>
     <string name="play_error">Не удалось воспроизвести трек</string>
+    <string name="media_library">Медиатека</string>
+    <string name="new_playlist">Новый плейлист</string>
+    <string name="not_create_playlist">Вы не создали\nни одного плейлиста</string>
+    <string name="media_library_is_empty">Ваша медиатека пуста</string>
+    <string name="favourite_tracks">Избранные треки</string>
+    <string name="play_lists">Плейлисты</string>
 </resources>
