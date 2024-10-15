@@ -7,21 +7,14 @@
     android:layout_height="match_parent"
     android:background="?attr/searchBackgroundColor"
     android:orientation="vertical"
-    app:ignore="NamespaceTypo">
+    app:ignore="NamespaceTypo"
+    tools:context=".search.ui.SearchFragment">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/Toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app1:layout_constraintTop_toTopOf="parent">
-
-        <ImageView
-            android:id="@+id/searchBackButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="?android:attr/selectableItemBackgroundBorderless"
-            android:contentDescription="@string/back_button"
-            android:src="@drawable/arrow_back" />
 
         <TextView
             style="@style/TextViewToolbarStyle"

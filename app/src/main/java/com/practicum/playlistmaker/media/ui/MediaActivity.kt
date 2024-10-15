@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
@@ -170,11 +171,9 @@ class MediaActivity : AppCompatActivity() {
         private const val EXTRA_TRACK = "extra_track"
         private const val EMPTY_STRING = ""
 
-        fun createMediaActivityIntent(context: Context, track: Track): Intent {
-            val intent = Intent(context, MediaActivity::class.java)
+        fun createArgs(track: Track): Bundle {
             val jsonString = Json.encodeToString(track)
-            intent.putExtra(EXTRA_TRACK, jsonString)
-            return intent
+            return bundleOf(EXTRA_TRACK to jsonString)
         }
     }
 }
