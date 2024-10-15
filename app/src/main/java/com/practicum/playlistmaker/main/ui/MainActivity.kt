@@ -18,12 +18,6 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(LayoutInflater.from(this))
         setContentView(binding.root)
 
-        if (savedInstanceState == null) {
-            supportFragmentManager.commit {
-                this.add(R.id.container_view, MediaLibraryFragment())
-            }
-        }
-
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.container_view) as NavHostFragment
         val navController = navHostFragment.navController
