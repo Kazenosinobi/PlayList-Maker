@@ -231,7 +231,7 @@
 
     <style name="TabLayoutStyle">
         <item name="tabRippleColor">?attr/customTabRippleColor</item>
-        <item name="tabBackground">?attr/customTabBackGroundColor</item>
+        <item name="tabBackground">?android:attr/selectableItemBackground</item>
         <item name="tabTextColor">?attr/customTabTextColor</item>
         <item name="tabIndicatorColor">?attr/customTabIndicatorColor</item>
         <item name="android:layout_marginHorizontal">@dimen/_16dp</item>
@@ -245,10 +245,27 @@
         <item name="textAllCaps">false</item>
     </style>
 
-    <style name="CustomBottomNavigationStyle">
+    <style name="BottomNavTextAppearanceActive">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textFontWeight">400</item>
+        <item name="android:gravity">center</item>
+        <item name="android:fontFamily">@font/ys_display_regular</item>
+    </style>
+
+    <style name="BottomNavTextAppearanceInactive">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textFontWeight">400</item>
+        <item name="android:gravity">center</item>
+        <item name="android:fontFamily">@font/ys_display_regular</item>
+    </style>
+
+    <style name="Widget.MaterialComponents.BottomNavigationView.Colored">
         <item name="backgroundTint">?attr/bottomNavigationBackground</item>
-        <item name="itemIconTint">?attr/bottomNavigationColorItem</item>
-        <item name="itemTextColor">?attr/bottomNavigationColorItem</item>
+        <item name="itemIconTint">@color/bottom_navigation_colors</item>
+        <item name="itemTextColor">@color/bottom_navigation_colors</item>
+        <item name="itemTextAppearanceInactive">@style/BottomNavTextAppearanceInactive</item>
+        <item name="itemTextAppearanceActive">@style/BottomNavTextAppearanceActive</item>
+        <item name="itemRippleColor">@color/bottom_navigation_ripple</item>
     </style>
 
 </resources>

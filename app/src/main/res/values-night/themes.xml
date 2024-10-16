@@ -45,8 +45,8 @@
         <item name="customTabIndicatorColor">@color/deep_white</item>
         <item name="customTabBackGroundColor">@color/dark_grey</item>
         <item name="bottomNavigationBackground">@color/dark_grey</item>
-        <item name="bottomNavigationColorItem">@color/deep_white</item>
-        <item name="bottomNavigationColorText">@color/deep_white</item>
+        <item name="bottomNavigationColorItemInactive">@color/deep_white</item>
+        <item name="bottomNavigationColorItemActive">@color/blue</item>
 
         <item name="colorPrimaryDark">@color/dark_grey</item>
         <item name="colorAccent">@color/blue</item>

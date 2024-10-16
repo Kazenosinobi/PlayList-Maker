@@ -42,6 +42,6 @@
     <attr name="customTabIndicatorColor" format="reference"/>
     <attr name="customTabBackGroundColor" format="reference"/>
     <attr name="bottomNavigationBackground" format="reference"/>
-    <attr name="bottomNavigationColorItem" format="reference"/>
-    <attr name="bottomNavigationColorText" format="reference"/>
+    <attr name="bottomNavigationColorItemInactive" format="reference"/>
+    <attr name="bottomNavigationColorItemActive" format="reference"/>
 </resources>
