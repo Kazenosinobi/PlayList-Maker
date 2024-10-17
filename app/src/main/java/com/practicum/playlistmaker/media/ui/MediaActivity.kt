@@ -36,6 +36,11 @@ class MediaActivity : AppCompatActivity() {
         viewModel.getPlayStatusLiveData().observe(this) { state ->
             when (state) {
                 PlayerState.STATE_DEFAULT -> {
+                    binding?.let {
+                        it.imageViewPlay.isEnabled = false
+                        it.imageViewPlay.imageAlpha = DISABLED_ALFA
+                    }
+
                     val url = track.trackUrl
                     if (url.isNullOrBlank()) {
                         Toast.makeText(this, R.string.play_error, Toast.LENGTH_SHORT)
@@ -48,6 +53,7 @@ class MediaActivity : AppCompatActivity() {
                 PlayerState.STATE_PREPARED -> {
                     binding?.let {
                         it.imageViewPlay.isEnabled = true
+                        it.imageViewPlay.imageAlpha = ENABLED_ALFA
                         it.textViewPlayTime.text = START_TIME
                         it.imageViewPlay.setImageResource(R.drawable.play_button)
                     }
@@ -170,6 +176,8 @@ class MediaActivity : AppCompatActivity() {
         const val START_TIME = "00:00"
         private const val EXTRA_TRACK = "extra_track"
         private const val EMPTY_STRING = ""
+        private const val DISABLED_ALFA = 50
+        private const val ENABLED_ALFA = 255
 
         fun createArgs(track: Track): Bundle {
             val jsonString = Json.encodeToString(track)
