@@ -26,15 +26,15 @@ class SettingsFragment: Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.frameLayoutShare.setOnClickListener {
+        binding.MTVShare.setOnClickListener {
             viewModel.share()
         }
 
-        binding.frameLayoutSupport.setOnClickListener {
+        binding.MTVSupport.setOnClickListener {
             viewModel.support()
         }
 
-        binding.frameLayoutTerms.setOnClickListener {
+        binding.MTVTerms.setOnClickListener {
             viewModel.termsOfUse()
         }
 
@@ -42,11 +42,6 @@ class SettingsFragment: Fragment() {
 
         binding.themeSwitcher.setOnCheckedChangeListener { _, isChecked ->
             viewModel.updateTheme(isChecked)
-        }
-
-        binding.flThemeSwitcher.setOnClickListener {
-            binding.themeSwitcher.isChecked = binding.themeSwitcher.isChecked.not() == true
-            viewModel.updateTheme(binding.themeSwitcher.isChecked.not())
         }
     }
 }

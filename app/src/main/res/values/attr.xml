@@ -7,6 +7,7 @@
     <attr name="mainBackgroundColor" format="reference"/>
     <attr name="settingsBackgroundColor" format="reference"/>
     <attr name="searchBackgroundColor" format="reference"/>
+    <attr name="mediaBackgroundColor" format="reference"/>
     <attr name="mediaLibraryBackgroundColor" format="reference"/>
     <attr name="editTextSearchBackgroundColor" format="reference"/>
     <attr name="buttonBackgroundColor" format="reference"/>
@@ -44,4 +45,5 @@
     <attr name="bottomNavigationBackground" format="reference"/>
     <attr name="bottomNavigationColorItemInactive" format="reference"/>
     <attr name="bottomNavigationColorItemActive" format="reference"/>
+    <attr name="separatorColor" format="reference"/>
 </resources>
