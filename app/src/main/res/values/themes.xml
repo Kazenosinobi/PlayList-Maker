@@ -8,6 +8,8 @@
         <item name="mainBackgroundColor">@color/blue</item>
         <item name="settingsBackgroundColor">@color/deep_white</item>
         <item name="searchBackgroundColor">@color/deep_white</item>
+        <item name="mediaBackgroundColor">@color/deep_white</item>
+        <item name="mediaLibraryBackgroundColor">@color/deep_white</item>
         <item name="editTextSearchBackgroundColor">@color/white</item>
         <item name="thumbColorSelected">@color/blue</item>
         <item name="thumbColorNormal">@color/light_grey</item>
@@ -42,6 +44,11 @@
         <item name="customTabRippleColor">@color/light_grey</item>
         <item name="customTabTextColor">@color/dark_grey</item>
         <item name="customTabIndicatorColor">@color/dark_grey</item>
+        <item name="customTabBackGroundColor">@color/deep_white</item>
+        <item name="bottomNavigationBackground">@color/deep_white</item>
+        <item name="bottomNavigationColorItemInactive">@color/dark_grey</item>
+        <item name="bottomNavigationColorItemActive">@color/blue</item>
+        <item name="separatorColor">@color/white</item>
 
         <item name="colorPrimaryDark">@color/blue</item>
         <item name="colorAccent">@color/blue</item>
