@@ -2,14 +2,16 @@ package com.practicum.playlistmaker.media.ui
 
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewmodel.initializer
-import androidx.lifecycle.viewmodel.viewModelFactory
+import androidx.lifecycle.viewModelScope
 import com.practicum.playlistmaker.media.domain.api.MediaInteractor
 import com.practicum.playlistmaker.media.domain.model.PlayerState
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Locale
 
@@ -25,27 +27,30 @@ class MediaViewModel(
     fun getPlayStatusLiveData(): LiveData<PlayerState> = playStatusLiveData
     fun getCurrentPositionLiveData(): LiveData<String> = currentPositionLiveData
 
+    private var timerJob: Job? = null
+
     fun preparePlayer(url: String) {
         if (url.isBlank()) return
         mediaInteractor.preparePlayer(url) { state ->
             if (state == PlayerState.STATE_PREPARED) {
-                handler.removeCallbacks(createUpdateTimerTask())
+                //timerJob?.cancel()
                 playStatusLiveData.value = PlayerState.STATE_PREPARED
             }
         }
+        Log.d("My Log", "preparePlayer")
     }
 
     private fun startPlayer() {
         mediaInteractor.startPlayer()
         playStatusLiveData.value = PlayerState.STATE_PLAYING
-        handler.post(createUpdateTimerTask())
+        createUpdateTimerTask()
     }
 
     fun pausePlayer() {
         if (playStatusLiveData.value != PlayerState.STATE_PLAYING) return
         mediaInteractor.pausePlayer()
         playStatusLiveData.value = PlayerState.STATE_PAUSED
-        handler.removeCallbacks(createUpdateTimerTask())
+        timerJob?.cancel()
     }
 
     fun playbackControl(url: String) {
@@ -66,24 +71,24 @@ class MediaViewModel(
         }
     }
 
-    private fun createUpdateTimerTask(): Runnable {
-        return object : Runnable {
-            override fun run() {
-                if (playStatusLiveData.value == PlayerState.STATE_PLAYING) {
-                    val currentPosition = SimpleDateFormat(
-                        "mm:ss",
-                        Locale.getDefault()
-                    ).format(mediaInteractor.getCurrentPosition())
-                    currentPositionLiveData.value = currentPosition
-                    handler.postDelayed(this, PLAY_TIME_DELAY)
-                }
+    private fun createUpdateTimerTask() {
+        timerJob = viewModelScope.launch {
+            while (playStatusLiveData.value == PlayerState.STATE_PLAYING) {
+                val currentPosition = SimpleDateFormat(
+                    "mm:ss",
+                    Locale.getDefault()
+                ).format(mediaInteractor.getCurrentPosition())
+                currentPositionLiveData.value = currentPosition
+                delay(PLAY_TIME_DELAY)
             }
         }
     }
 
     override fun onCleared() {
         super.onCleared()
-        handler.removeCallbacks(createUpdateTimerTask())
+        timerJob?.cancel()
+        mediaInteractor.getRelease()
+        Log.d("My Log", "onCleared: ")
     }
 
     companion object {
