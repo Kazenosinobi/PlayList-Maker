@@ -7,6 +7,7 @@ import com.practicum.playlistmaker.media.domain.model.PlayerState
 class MediaRepositoryImpl(private val mediaPlayer: MediaPlayer) : MediaRepository {
 
     override fun preparePlayer(url: String, callback: (PlayerState) -> Unit) {
+
         mediaPlayer.reset()
         mediaPlayer.setDataSource(url)
         mediaPlayer.prepareAsync()
@@ -15,6 +16,7 @@ class MediaRepositoryImpl(private val mediaPlayer: MediaPlayer) : MediaRepositor
         }
         mediaPlayer.setOnCompletionListener {
             callback.invoke(PlayerState.STATE_PREPARED)
+            mediaPlayer.seekTo(0)
         }
     }
 
@@ -27,7 +29,7 @@ class MediaRepositoryImpl(private val mediaPlayer: MediaPlayer) : MediaRepositor
     }
 
     override fun getCurrentPosition(): Int {
-        return mediaPlayer.currentPosition ?: 0
+        return mediaPlayer.currentPosition
     }
 
     override fun getRelease() {

@@ -1,19 +1,21 @@
 package com.practicum.playlistmaker.media.ui
 
-import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
+import androidx.lifecycle.flowWithLifecycle
+import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.databinding.ActivityMediaBinding
 import com.practicum.playlistmaker.media.domain.model.PlayerState
 import com.practicum.playlistmaker.search.domain.models.Track
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -33,47 +35,57 @@ class MediaActivity : AppCompatActivity() {
         binding = ActivityMediaBinding.inflate(LayoutInflater.from(this))
         setContentView(binding?.root)
 
-        viewModel.getPlayStatusLiveData().observe(this) { state ->
-            when (state) {
-                PlayerState.STATE_DEFAULT -> {
-                    binding?.let {
-                        it.imageViewPlay.isEnabled = false
-                        it.imageViewPlay.imageAlpha = DISABLED_ALFA
+        viewModel.getPlayStatusStateFlow()
+            .flowWithLifecycle(lifecycle)
+            .onEach { state ->
+                when (state) {
+                    PlayerState.STATE_DEFAULT -> {
+                        binding?.let {
+                            it.imageViewPlay.isEnabled = false
+                            it.imageViewPlay.imageAlpha = DISABLED_ALFA
+                        }
+
+                        val url = track.trackUrl
+                        if (url.isNullOrBlank()) {
+                            Toast.makeText(
+                                this@MediaActivity,
+                                R.string.play_error,
+                                Toast.LENGTH_SHORT
+                            )
+                                .show()
+                        } else {
+                            viewModel.preparePlayer(url)
+                        }
                     }
 
-                    val url = track.trackUrl
-                    if (url.isNullOrBlank()) {
-                        Toast.makeText(this, R.string.play_error, Toast.LENGTH_SHORT)
-                            .show()
-                    } else {
-                        viewModel.preparePlayer(url)
+                    PlayerState.STATE_PREPARED -> {
+                        binding?.let {
+                            it.imageViewPlay.isEnabled = true
+                            it.imageViewPlay.imageAlpha = ENABLED_ALFA
+                            it.textViewPlayTime.text = START_TIME
+                            it.imageViewPlay.setImageResource(R.drawable.play_button)
+                        }
                     }
+
+                    PlayerState.STATE_PLAYING -> binding?.imageViewPlay?.setImageResource(
+                        R.drawable.pause_button
+                    )
+
+                    PlayerState.STATE_PAUSED -> binding?.imageViewPlay?.setImageResource(
+                        R.drawable.play_button
+                    )
+
+                    null -> Unit
                 }
-
-                PlayerState.STATE_PREPARED -> {
-                    binding?.let {
-                        it.imageViewPlay.isEnabled = true
-                        it.imageViewPlay.imageAlpha = ENABLED_ALFA
-                        it.textViewPlayTime.text = START_TIME
-                        it.imageViewPlay.setImageResource(R.drawable.play_button)
-                    }
-                }
-
-                PlayerState.STATE_PLAYING -> binding?.imageViewPlay?.setImageResource(
-                    R.drawable.pause_button
-                )
-
-                PlayerState.STATE_PAUSED -> binding?.imageViewPlay?.setImageResource(
-                    R.drawable.play_button
-                )
-
-                null -> Unit
             }
-        }
+            .launchIn(lifecycleScope)
 
-        viewModel.getCurrentPositionLiveData().observe(this) {
-            binding?.textViewPlayTime?.text = it
-        }
+        viewModel.getCurrentPositionStateFlow()
+            .flowWithLifecycle(lifecycle)
+            .onEach {
+                binding?.textViewPlayTime?.text = it
+            }
+            .launchIn(lifecycleScope)
 
         binding?.backButton?.setOnClickListener {
             finish()

@@ -6,7 +6,6 @@ import com.practicum.playlistmaker.search.domain.models.Track
 
 class SearchHistory(
     private val sharedPrefs: SharedPreferences,
-    private val gson: Gson,
 ) {
 
     fun getSearchHistory(): Array<Track> {

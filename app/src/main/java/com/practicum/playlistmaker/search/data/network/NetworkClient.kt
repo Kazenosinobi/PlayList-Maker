@@ -1,7 +1,7 @@
 package com.practicum.playlistmaker.search.data.network
 
-import com.practicum.playlistmaker.search.data.dto.Response
+import com.practicum.playlistmaker.search.data.dto.TrackDto
 
 interface NetworkClient {
-    fun doRequest(dto: Any): Response
+    suspend fun doRequest(expression: String): Result<List<TrackDto>>
 }

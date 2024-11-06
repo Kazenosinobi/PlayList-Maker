@@ -27,11 +27,11 @@ val repositoryModule = module {
         SharingRepositoryImpl(androidApplication())
     }
 
-    single<MediaRepository> {
+    factory<MediaRepository> {
         MediaRepositoryImpl(get())
     }
 
-    single<MediaPlayer> {
+    factory<MediaPlayer> {
         MediaPlayer()
     }
 

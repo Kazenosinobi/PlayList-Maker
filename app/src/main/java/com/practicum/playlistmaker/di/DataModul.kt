@@ -5,7 +5,7 @@ import com.google.gson.Gson
 import com.practicum.playlistmaker.search.data.localStorage.SearchHistory
 import com.practicum.playlistmaker.search.data.network.NetworkClient
 import com.practicum.playlistmaker.search.data.network.RetrofitNetworkClient
-import com.practicum.playlistmaker.search.data.network.iTunesApi
+import com.practicum.playlistmaker.search.data.network.ITunesApi
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.android.ext.koin.androidContext
@@ -25,13 +25,13 @@ val dataModule = module {
         .addInterceptor(logging)
         .build()
 
-    single<iTunesApi> {
+    single<ITunesApi> {
         Retrofit.Builder()
             .baseUrl(ITUNES_BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .client(client)
             .build()
-            .create(iTunesApi::class.java)
+            .create(ITunesApi::class.java)
     }
 
     single {
@@ -42,7 +42,7 @@ val dataModule = module {
     factory { Gson() }
 
     single {
-        SearchHistory(get(), get())
+        SearchHistory(get())
     }
 
     single<NetworkClient> {
