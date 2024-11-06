@@ -7,4 +7,4 @@ import kotlinx.serialization.Serializable
 data class TracksResponse(
     @SerialName("results")
     val results : List<TrackDto>
-) : Response()
+)

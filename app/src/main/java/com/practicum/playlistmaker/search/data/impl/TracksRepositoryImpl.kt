@@ -1,7 +1,5 @@
 package com.practicum.playlistmaker.search.data.impl
 
-import com.practicum.playlistmaker.search.data.dto.TracksRequest
-import com.practicum.playlistmaker.search.data.dto.TracksResponse
 import com.practicum.playlistmaker.search.data.dto.mapToTrack
 import com.practicum.playlistmaker.search.data.localStorage.SearchHistory
 import com.practicum.playlistmaker.search.data.network.NetworkClient
@@ -10,7 +8,7 @@ import com.practicum.playlistmaker.search.domain.models.Track
 import com.practicum.playlistmaker.search.domain.models.ViewState
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.onEach
+import java.io.IOException
 
 class TracksRepositoryImpl(
     private val networkClient: NetworkClient,
@@ -24,26 +22,27 @@ class TracksRepositoryImpl(
     }
 
     override fun searchTracks(expression: String): Flow<ViewState> = flow {
-        try {
-            val response = networkClient.doRequest(TracksRequest(expression))
+        networkClient.doRequest(expression)
+            .onSuccess { tracks ->
+                if (tracks.isEmpty()) {
+                    emit(ViewState.EmptyError)
+                } else {
+                    emit(ViewState.Success(tracks.map {
+                        it.mapToTrack()
+                    }))
+                }
+            }
+            .onFailure { error ->
+                when (error) {
+                    is IOException -> {
+                        emit(ViewState.NetworkError)
+                    }
 
-            when (response.resultCode) {
-                in 200..299 -> {
-                    val result = (response as TracksResponse).results
-                    if (result.isEmpty()) {
+                    else -> {
                         emit(ViewState.EmptyError)
-                    } else {
-                        emit(ViewState.Success(result.map {
-                            it.mapToTrack()
-                        }))
                     }
                 }
-
-                else -> emit(ViewState.EmptyError)
             }
-        } catch (e: Exception) {
-            emit(ViewState.NetworkError)
-        }
     }
 
     override fun getSearchHistory(): Array<Track> {
