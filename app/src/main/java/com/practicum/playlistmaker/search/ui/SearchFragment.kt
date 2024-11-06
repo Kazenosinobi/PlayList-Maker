@@ -9,6 +9,7 @@ import android.view.inputmethod.InputMethodManager
 import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.practicum.playlistmaker.R
@@ -18,6 +19,9 @@ import com.practicum.playlistmaker.search.domain.models.Track
 import com.practicum.playlistmaker.search.domain.models.ViewState
 import com.practicum.playlistmaker.search.ui.recycler.TrackAdapter
 import com.practicum.playlistmaker.utils.debounce
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SearchFragment : Fragment() {
@@ -47,15 +51,18 @@ class SearchFragment : Fragment() {
         initSearchDebounce()
         initClickDebounce()
 
-        viewModel.getCurrentPositionLiveData().observe(viewLifecycleOwner) { viewState ->
-            when (viewState) {
-                ViewState.EmptyError -> showEmpty()
-                is ViewState.History -> showHistory(viewState.historyList)
-                ViewState.Loading -> showProgressBar()
-                ViewState.NetworkError -> showError()
-                is ViewState.Success -> showListTracks(viewState.trackList)
+        viewModel.getCurrentPositionSharedFlow()
+            .flowWithLifecycle(viewLifecycleOwner.lifecycle)
+            .onEach { viewState ->
+                when (viewState) {
+                    ViewState.EmptyError -> showEmpty()
+                    is ViewState.History -> showHistory(viewState.historyList)
+                    ViewState.Loading -> showProgressBar()
+                    ViewState.NetworkError -> showError()
+                    is ViewState.Success -> showListTracks(viewState.trackList)
+                }
             }
-        }
+            .launchIn(viewLifecycleOwner.lifecycleScope)
 
         trackAdapter = TrackAdapter { track ->
             viewModel.addToTrackHistory(track)
@@ -96,6 +103,7 @@ class SearchFragment : Fragment() {
         }
 
         binding.rwTrack.adapter = trackAdapter
+        binding.rwTrack.itemAnimator = null
         binding.rwSearchHistory.adapter = trackHistoryAdapter
     }
 
@@ -129,6 +137,7 @@ class SearchFragment : Fragment() {
     }
 
     private fun showListTracks(listTracks: List<Track>) {
+
         trackAdapter?.submitList(emptyList())
         trackAdapter?.submitList(listTracks)
         with(binding) {
@@ -170,6 +179,7 @@ class SearchFragment : Fragment() {
     }
 
     private fun showHistory(historyList: List<Track>) {
+        trackAdapter?.submitList(emptyList())
         trackHistoryAdapter?.submitList(historyList)
         binding.groupHistory.isVisible = binding.editTextSearch.text.isNullOrEmpty()
                 && historyList.isEmpty().not()

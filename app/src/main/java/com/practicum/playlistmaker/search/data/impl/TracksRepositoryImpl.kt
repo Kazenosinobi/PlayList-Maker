@@ -1,13 +1,16 @@
 package com.practicum.playlistmaker.search.data.impl
 
-import com.practicum.playlistmaker.search.domain.api.TracksRepository
 import com.practicum.playlistmaker.search.data.dto.TracksRequest
 import com.practicum.playlistmaker.search.data.dto.TracksResponse
 import com.practicum.playlistmaker.search.data.dto.mapToTrack
 import com.practicum.playlistmaker.search.data.localStorage.SearchHistory
 import com.practicum.playlistmaker.search.data.network.NetworkClient
+import com.practicum.playlistmaker.search.domain.api.TracksRepository
 import com.practicum.playlistmaker.search.domain.models.Track
 import com.practicum.playlistmaker.search.domain.models.ViewState
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.onEach
 
 class TracksRepositoryImpl(
     private val networkClient: NetworkClient,
@@ -20,25 +23,26 @@ class TracksRepositoryImpl(
         loadHistory()
     }
 
-    override fun searchTracks(expression: String): ViewState {
+    override fun searchTracks(expression: String): Flow<ViewState> = flow {
         try {
             val response = networkClient.doRequest(TracksRequest(expression))
 
             when (response.resultCode) {
                 in 200..299 -> {
                     val result = (response as TracksResponse).results
-                    return if (result.isEmpty()) {
-                        ViewState.EmptyError
+                    if (result.isEmpty()) {
+                        emit(ViewState.EmptyError)
                     } else {
-                        ViewState.Success(result.map {
+                        emit(ViewState.Success(result.map {
                             it.mapToTrack()
-                        })
+                        }))
                     }
                 }
-                else -> return ViewState.EmptyError
+
+                else -> emit(ViewState.EmptyError)
             }
         } catch (e: Exception) {
-            return ViewState.NetworkError
+            emit(ViewState.NetworkError)
         }
     }
 

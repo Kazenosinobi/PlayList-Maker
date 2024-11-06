@@ -1,16 +1,13 @@
 package com.practicum.playlistmaker.media.ui
 
-import android.os.Handler
-import android.os.Looper
-import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.practicum.playlistmaker.media.domain.api.MediaInteractor
 import com.practicum.playlistmaker.media.domain.model.PlayerState
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Locale
@@ -19,13 +16,11 @@ class MediaViewModel(
     private val mediaInteractor: MediaInteractor,
 ) : ViewModel() {
 
-    private val handler = Handler(Looper.getMainLooper())
+    private val playStatusStateFlow = MutableStateFlow(PlayerState.STATE_DEFAULT)
+    private val currentPositionStateFlow = MutableStateFlow(DEFAULT_CURRENT_POS)
 
-    private val playStatusLiveData = MutableLiveData(PlayerState.STATE_DEFAULT)
-    private val currentPositionLiveData = MutableLiveData(DEFAULT_CURRENT_POS)
-
-    fun getPlayStatusLiveData(): LiveData<PlayerState> = playStatusLiveData
-    fun getCurrentPositionLiveData(): LiveData<String> = currentPositionLiveData
+    fun getPlayStatusStateFlow() = playStatusStateFlow.asStateFlow()
+    fun getCurrentPositionStateFlow() = currentPositionStateFlow.asStateFlow()
 
     private var timerJob: Job? = null
 
@@ -33,28 +28,27 @@ class MediaViewModel(
         if (url.isBlank()) return
         mediaInteractor.preparePlayer(url) { state ->
             if (state == PlayerState.STATE_PREPARED) {
-                //timerJob?.cancel()
-                playStatusLiveData.value = PlayerState.STATE_PREPARED
+                playStatusStateFlow.value = PlayerState.STATE_PREPARED
+                timerJob?.cancel()
             }
         }
-        Log.d("My Log", "preparePlayer")
     }
 
     private fun startPlayer() {
         mediaInteractor.startPlayer()
-        playStatusLiveData.value = PlayerState.STATE_PLAYING
+        playStatusStateFlow.value = PlayerState.STATE_PLAYING
         createUpdateTimerTask()
     }
 
     fun pausePlayer() {
-        if (playStatusLiveData.value != PlayerState.STATE_PLAYING) return
+        if (playStatusStateFlow.value != PlayerState.STATE_PLAYING) return
         mediaInteractor.pausePlayer()
-        playStatusLiveData.value = PlayerState.STATE_PAUSED
+        playStatusStateFlow.value = PlayerState.STATE_PAUSED
         timerJob?.cancel()
     }
 
     fun playbackControl(url: String) {
-        when (playStatusLiveData.value) {
+        when (playStatusStateFlow.value) {
             PlayerState.STATE_PLAYING -> {
                 pausePlayer()
             }
@@ -73,26 +67,29 @@ class MediaViewModel(
 
     private fun createUpdateTimerTask() {
         timerJob = viewModelScope.launch {
-            while (playStatusLiveData.value == PlayerState.STATE_PLAYING) {
-                val currentPosition = SimpleDateFormat(
-                    "mm:ss",
-                    Locale.getDefault()
-                ).format(mediaInteractor.getCurrentPosition())
-                currentPositionLiveData.value = currentPosition
+            while (playStatusStateFlow.value == PlayerState.STATE_PLAYING) {
+                val position = getCurrentPosition()
+                currentPositionStateFlow.value = position
                 delay(PLAY_TIME_DELAY)
             }
         }
+    }
+
+    private fun getCurrentPosition(): String {
+        return SimpleDateFormat(
+            "mm:ss",
+            Locale.getDefault()
+        ).format(mediaInteractor.getCurrentPosition())
     }
 
     override fun onCleared() {
         super.onCleared()
         timerJob?.cancel()
         mediaInteractor.getRelease()
-        Log.d("My Log", "onCleared: ")
     }
 
     companion object {
-        private const val PLAY_TIME_DELAY = 500L
+        private const val PLAY_TIME_DELAY = 300L
         private const val DEFAULT_CURRENT_POS = "00:00"
     }
 }
