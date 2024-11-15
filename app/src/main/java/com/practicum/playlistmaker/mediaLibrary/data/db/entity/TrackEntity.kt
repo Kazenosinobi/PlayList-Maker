@@ -1,5 +1,6 @@
 package com.practicum.playlistmaker.mediaLibrary.data.db.entity
 
+import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.practicum.playlistmaker.search.domain.models.Track
@@ -18,6 +19,10 @@ data class TrackEntity(
     val primaryGenreName: String?,
     val country: String?,
     val trackUrl: String?,
+
+    @ColumnInfo(name = "addedDate")
+    val addedDate: Long,
+    var isFavorite: Boolean = false
 )
 
 fun TrackEntity.mapToTrack(): Track {
@@ -33,5 +38,7 @@ fun TrackEntity.mapToTrack(): Track {
         country = this.country,
         coverArtworkMaxi = this.coverArtworkMaxi,
         trackUrl = this.trackUrl,
+        addedDate = this.addedDate,
+        isFavorite = this.isFavorite
     )
 }

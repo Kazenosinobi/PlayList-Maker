@@ -29,6 +29,9 @@ data class TrackDto(
     val country: String?,
     @SerialName("previewUrl")
     val previewUrl: String?,
+
+    val addedDate: Long,
+    var isFavorite: Boolean = false
 ) {
     fun getTrackTime(): String? =
         SimpleDateFormat("mm:ss", Locale.getDefault()).format(trackTimeMillis)
@@ -56,6 +59,8 @@ fun TrackDto.mapToTrack(): Track {
         country = this.country,
         coverArtworkMaxi = this.getCoverArtwork(),
         trackUrl = this.previewUrl,
+        addedDate = this.addedDate,
+        isFavorite = this.isFavorite
     )
 }
 
@@ -72,5 +77,6 @@ fun TrackDto.mapToTrackEntity(): TrackEntity {
         country = this.country,
         coverArtworkMaxi = this.getCoverArtwork(),
         trackUrl = this.previewUrl,
+        addedDate = this.addedDate
     )
 }
