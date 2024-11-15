@@ -24,6 +24,6 @@ interface TrackDao {
     suspend fun getTrackById(trackId: Int): TrackEntity
 
     @Query("SELECT EXISTS(SELECT 1 FROM track_table WHERE trackId = :id LIMIT 1)")
-    suspend fun isFavourite(id: Int): Flow<Boolean>
+    fun isFavourite(id: Int): Flow<Boolean>
 
 }

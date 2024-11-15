@@ -97,6 +97,22 @@ class MediaActivity : AppCompatActivity() {
         binding?.imageViewPlay?.setOnClickListener {
             viewModel.playbackControl(track.trackUrl ?: "")
         }
+
+        viewModel.getIsFavouriteStateFlow()
+            .flowWithLifecycle(lifecycle)
+            .onEach { isFavourite ->
+                val result = if (isFavourite) {
+                    R.drawable.added_to_favourite
+                } else {
+                    R.drawable.favourite
+                }
+                binding?.imageViewFavourite?.setImageResource(result)
+            }
+            .launchIn(lifecycleScope)
+
+        binding?.imageViewFavourite?.setOnClickListener {
+            viewModel.onFavoriteClicked(track)
+        }
     }
 
     override fun onPause() {

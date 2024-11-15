@@ -1,6 +1,5 @@
 package com.practicum.playlistmaker.search.data.dto
 
-import com.practicum.playlistmaker.mediaLibrary.data.db.entity.TrackEntity
 import com.practicum.playlistmaker.search.domain.models.Track
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -61,22 +60,5 @@ fun TrackDto.mapToTrack(): Track {
         trackUrl = this.previewUrl,
         addedDate = this.addedDate,
         isFavorite = this.isFavorite
-    )
-}
-
-fun TrackDto.mapToTrackEntity(): TrackEntity {
-    return TrackEntity(
-        trackName = this.trackName,
-        artistName = this.artistName,
-        trackTime = this.getTrackTime(),
-        coverArtworkMini = this.artworkUrl100,
-        trackId = this.trackId,
-        collectionName = this.collectionName,
-        releaseYear = this.getReleaseYear(),
-        primaryGenreName = this.primaryGenreName,
-        country = this.country,
-        coverArtworkMaxi = this.getCoverArtwork(),
-        trackUrl = this.previewUrl,
-        addedDate = this.addedDate
     )
 }
