@@ -4,6 +4,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.practicum.playlistmaker.media.domain.api.MediaInteractor
 import com.practicum.playlistmaker.media.domain.model.PlayerState
+import com.practicum.playlistmaker.mediaLibrary.domain.db.FavouriteTracksInteractor
+import com.practicum.playlistmaker.search.domain.models.Track
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -14,15 +16,29 @@ import java.util.Locale
 
 class MediaViewModel(
     private val mediaInteractor: MediaInteractor,
+    private val favouriteTracksInteractor: FavouriteTracksInteractor,
 ) : ViewModel() {
 
     private val playStatusStateFlow = MutableStateFlow(PlayerState.STATE_DEFAULT)
     private val currentPositionStateFlow = MutableStateFlow(DEFAULT_CURRENT_POS)
+    private val isFavouriteStateFlow = MutableStateFlow(false)
 
     fun getPlayStatusStateFlow() = playStatusStateFlow.asStateFlow()
     fun getCurrentPositionStateFlow() = currentPositionStateFlow.asStateFlow()
+    fun getIsFavouriteStateFlow() = isFavouriteStateFlow.asStateFlow()
 
     private var timerJob: Job? = null
+
+    fun onFavoriteClicked(track: Track) {
+        viewModelScope.launch {
+            when (track.isFavorite) {
+                true -> favouriteTracksInteractor.deleteTrackAtFavouriteTracks(track)
+                false -> favouriteTracksInteractor.addTrackToFavouriteTracks(track)
+            }
+            track.isFavorite = !track.isFavorite
+            isFavouriteStateFlow.value = track.isFavorite
+        }
+    }
 
     fun preparePlayer(url: String) {
         if (url.isBlank()) return

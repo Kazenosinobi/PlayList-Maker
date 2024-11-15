@@ -1,6 +1,5 @@
 package com.practicum.playlistmaker.search.data.impl
 
-import com.practicum.playlistmaker.mediaLibrary.data.db.AppDatabase
 import com.practicum.playlistmaker.search.data.dto.mapToTrack
 import com.practicum.playlistmaker.search.data.localStorage.SearchHistory
 import com.practicum.playlistmaker.search.data.network.NetworkClient
@@ -14,7 +13,6 @@ import java.io.IOException
 class TracksRepositoryImpl(
     private val networkClient: NetworkClient,
     private val localStorage: SearchHistory,
-    private val appDatabase: AppDatabase,
 ) : TracksRepository {
 
     private val historyList = arrayListOf<Track>()
@@ -29,12 +27,7 @@ class TracksRepositoryImpl(
                 if (tracks.isEmpty()) {
                     emit(ViewState.EmptyError)
                 } else {
-                    val tracksIds = appDatabase.trackDao().getTrackIds()
-                    val updatedTracks = tracks.map {
-                        val isFavourite = tracksIds.contains(it.trackId)
-                        it.copy(isFavorite = isFavourite)
-                    }
-                    emit(ViewState.Success(updatedTracks.map {
+                    emit(ViewState.Success(tracks.map {
                         it.mapToTrack()
                     }))
                 }
@@ -52,14 +45,8 @@ class TracksRepositoryImpl(
             }
     }
 
-    override suspend fun getSearchHistory(): Array<Track> {
-        val historyTracks = localStorage.getSearchHistory()
-        val trackIds = appDatabase.trackDao().getTrackIds()
-
-        return historyTracks.map {track ->
-            val isFavourite = trackIds.contains(track.trackId)
-            track.copy(isFavorite = isFavourite)
-        }.toTypedArray()
+    override fun getSearchHistory(): Array<Track> {
+        return localStorage.getSearchHistory()
     }
 
     override fun saveSearchTrackHistory(tracks: Array<Track>) {
