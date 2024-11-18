@@ -1,5 +1,6 @@
 package com.practicum.playlistmaker.search.data.impl
 
+import com.practicum.playlistmaker.mediaLibrary.domain.db.FavouriteTracksRepository
 import com.practicum.playlistmaker.search.data.dto.mapToTrack
 import com.practicum.playlistmaker.search.data.localStorage.SearchHistory
 import com.practicum.playlistmaker.search.data.network.NetworkClient
@@ -13,6 +14,7 @@ import java.io.IOException
 class TracksRepositoryImpl(
     private val networkClient: NetworkClient,
     private val localStorage: SearchHistory,
+    private val favouriteTracksRepository: FavouriteTracksRepository
 ) : TracksRepository {
 
     private val historyList = arrayListOf<Track>()
@@ -27,9 +29,12 @@ class TracksRepositoryImpl(
                 if (tracks.isEmpty()) {
                     emit(ViewState.EmptyError)
                 } else {
-                    emit(ViewState.Success(tracks.map {
-                        it.mapToTrack()
-                    }))
+                    val favouriteTrackIds = favouriteTracksRepository.getFavouriteTrackIds()
+                    val tracksWithFavouriteStatus = tracks.map {trackDto ->
+                        val track = trackDto.mapToTrack()
+                        track.copy(isFavorite = favouriteTrackIds.contains(track.trackId))
+                    }
+                    emit(ViewState.Success(tracksWithFavouriteStatus))
                 }
             }
             .onFailure { error ->

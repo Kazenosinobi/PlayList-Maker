@@ -24,4 +24,7 @@ class FavouriteTracksRepositoryImpl(
         val tracks = appDatabase.trackDao().getTracks()
         emit(tracks.map { it.mapToTrack() })
     }
+
+    override suspend fun getFavouriteTrackIds(): List<Int> =
+        appDatabase.trackDao().getFavouriteTrackIds()
 }

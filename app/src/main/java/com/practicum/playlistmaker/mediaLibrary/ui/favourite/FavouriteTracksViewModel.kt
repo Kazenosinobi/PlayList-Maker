@@ -18,7 +18,7 @@ class FavouriteTracksViewModel(
         loadFavouriteTracks()
     }
 
-    private fun loadFavouriteTracks() {
+    fun loadFavouriteTracks() {
         viewModelScope.launch {
             favouriteTracksInteractor.getFavouriteTracks().collect { tracks ->
                 if (tracks.isEmpty()) {

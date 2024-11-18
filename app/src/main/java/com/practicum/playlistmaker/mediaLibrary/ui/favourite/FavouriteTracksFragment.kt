@@ -1,7 +1,6 @@
 package com.practicum.playlistmaker.mediaLibrary.ui.favourite
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -44,30 +43,31 @@ class FavouriteTracksFragment : Fragment() {
 
         initClickDebounce()
 
+        favouriteTrackAdapter = TrackAdapter { track ->
+            onTrackClickDebounce(track)
+        }
+
         binding.rwFavouriteTracks.adapter = favouriteTrackAdapter
+
+        viewModel.loadFavouriteTracks()
 
         viewModel.getFavouriteSharedFlow()
             .flowWithLifecycle(viewLifecycleOwner.lifecycle)
             .onEach { favouriteState ->
-                Log.d("My log", "favouriteState: $favouriteState")
                 when (favouriteState) {
                     is FavouriteState.Content -> {
-                        Log.d("My log", "tracks: ${favouriteState.tracks}")
-                        showContent()
+                        showContent(favouriteState.tracks)
                     }
+
                     FavouriteState.Empty -> showEmpty()
                 }
             }
             .launchIn(viewLifecycleOwner.lifecycleScope)
-
-        favouriteTrackAdapter = TrackAdapter {track->
-            onTrackClickDebounce(track)
-        }
     }
 
-    private fun showContent() {
+    private fun showContent(tracks: List<Track>) {
         with(binding) {
-            favouriteTrackAdapter?.notifyDataSetChanged()
+            favouriteTrackAdapter?.submitList(tracks)
             rwFavouriteTracks.isVisible = true
             textViewEmpty.isVisible = false
             imageViewEmpty.isVisible = false
@@ -97,7 +97,7 @@ class FavouriteTracksFragment : Fragment() {
     private fun startMediaActivity(track: Track) {
         findNavController()
             .navigate(
-                R.id.action_searchFragment_to_mediaActivity,
+                R.id.action_mediaLibraryFragment_to_mediaActivity,
                 MediaActivity.createArgs(track)
             )
     }

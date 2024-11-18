@@ -5,9 +5,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.google.android.material.tabs.TabLayoutMediator
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.databinding.FragmentMediaLibraryBinding
+import com.practicum.playlistmaker.media.ui.MediaActivity
+import com.practicum.playlistmaker.search.domain.models.Track
 
 class MediaLibraryFragment : Fragment() {
     private lateinit var binding: FragmentMediaLibraryBinding
