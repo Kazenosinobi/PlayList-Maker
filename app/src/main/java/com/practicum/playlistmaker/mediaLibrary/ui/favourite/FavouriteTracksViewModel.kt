@@ -11,14 +11,14 @@ class FavouriteTracksViewModel(
     private val favouriteTracksInteractor: FavouriteTracksInteractor,
 ) : ViewModel() {
 
-    private val favouriteSharedFlow = MutableSharedFlow<FavouriteState>()
+    private val favouriteSharedFlow = MutableSharedFlow<FavouriteState>(replay = 1)
     fun getFavouriteSharedFlow() = favouriteSharedFlow.asSharedFlow()
 
     init {
         loadFavouriteTracks()
     }
 
-    fun loadFavouriteTracks() {
+    private fun loadFavouriteTracks() {
         viewModelScope.launch {
             favouriteTracksInteractor.getFavouriteTracks().collect { tracks ->
                 if (tracks.isEmpty()) {

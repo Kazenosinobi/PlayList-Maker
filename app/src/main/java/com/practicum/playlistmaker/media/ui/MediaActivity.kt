@@ -19,6 +19,7 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.core.parameter.parametersOf
 
 class MediaActivity : AppCompatActivity() {
     private var binding: ActivityMediaBinding? = null
@@ -28,7 +29,9 @@ class MediaActivity : AppCompatActivity() {
         Json.decodeFromString<Track>(jsonString)
     }
 
-    private val viewModel by viewModel<MediaViewModel>()
+    private val viewModel by viewModel<MediaViewModel>{
+        parametersOf(track)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -111,7 +114,7 @@ class MediaActivity : AppCompatActivity() {
             .launchIn(lifecycleScope)
 
         binding?.imageViewFavourite?.setOnClickListener {
-            viewModel.onFavoriteClicked(track)
+            viewModel.onFavoriteClicked()
         }
     }
 

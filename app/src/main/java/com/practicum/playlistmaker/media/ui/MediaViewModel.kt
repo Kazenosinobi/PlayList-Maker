@@ -10,6 +10,8 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Locale
@@ -17,6 +19,7 @@ import java.util.Locale
 class MediaViewModel(
     private val mediaInteractor: MediaInteractor,
     private val favouriteTracksInteractor: FavouriteTracksInteractor,
+    private val track: Track
 ) : ViewModel() {
 
     private val playStatusStateFlow = MutableStateFlow(PlayerState.STATE_DEFAULT)
@@ -28,15 +31,25 @@ class MediaViewModel(
     fun getIsFavouriteStateFlow() = isFavouriteStateFlow.asStateFlow()
 
     private var timerJob: Job? = null
+    private var currentTrack = track
 
-    fun onFavoriteClicked(track: Track) {
+    init {
+        observeOnFavourite()
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        timerJob?.cancel()
+        mediaInteractor.getRelease()
+    }
+
+    fun onFavoriteClicked() {
         viewModelScope.launch {
-            when (track.isFavorite) {
-                true -> favouriteTracksInteractor.deleteTrackAtFavouriteTracks(track)
-                false -> favouriteTracksInteractor.addTrackToFavouriteTracks(track)
+            when (currentTrack.isFavorite) {
+                true -> favouriteTracksInteractor.deleteTrackAtFavouriteTracks(currentTrack)
+                false -> favouriteTracksInteractor.addTrackToFavouriteTracks(currentTrack)
             }
-            track.isFavorite = !track.isFavorite
-            isFavouriteStateFlow.value = track.isFavorite
+            currentTrack = currentTrack.copy(isFavorite = !currentTrack.isFavorite)
         }
     }
 
@@ -48,12 +61,6 @@ class MediaViewModel(
                 timerJob?.cancel()
             }
         }
-    }
-
-    private fun startPlayer() {
-        mediaInteractor.startPlayer()
-        playStatusStateFlow.value = PlayerState.STATE_PLAYING
-        createUpdateTimerTask()
     }
 
     fun pausePlayer() {
@@ -77,7 +84,6 @@ class MediaViewModel(
                 preparePlayer(url)
             }
 
-            null -> Unit
         }
     }
 
@@ -98,10 +104,19 @@ class MediaViewModel(
         ).format(mediaInteractor.getCurrentPosition())
     }
 
-    override fun onCleared() {
-        super.onCleared()
-        timerJob?.cancel()
-        mediaInteractor.getRelease()
+    private fun startPlayer() {
+        mediaInteractor.startPlayer()
+        playStatusStateFlow.value = PlayerState.STATE_PLAYING
+        createUpdateTimerTask()
+    }
+
+    private fun observeOnFavourite() {
+        favouriteTracksInteractor.isFavourite(currentTrack.trackId)
+            .onEach {
+                isFavouriteStateFlow.value = it
+                currentTrack = currentTrack.copy(isFavorite = it)
+            }
+            .launchIn(viewModelScope)
     }
 
     companion object {

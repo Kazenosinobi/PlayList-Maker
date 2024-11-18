@@ -1,6 +1,7 @@
 package com.practicum.playlistmaker.mediaLibrary.ui.favourite
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -34,11 +35,15 @@ class FavouriteTracksFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
+        Log.d("MyLog", " onCreateView +++++")
+
         binding = FragmentFavouriteTracksBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        Log.d("MyLog", " onViewCreated +++++")
+
         super.onViewCreated(view, savedInstanceState)
 
         initClickDebounce()
@@ -49,8 +54,6 @@ class FavouriteTracksFragment : Fragment() {
 
         binding.rwFavouriteTracks.adapter = favouriteTrackAdapter
 
-        viewModel.loadFavouriteTracks()
-
         viewModel.getFavouriteSharedFlow()
             .flowWithLifecycle(viewLifecycleOwner.lifecycle)
             .onEach { favouriteState ->
@@ -59,7 +62,9 @@ class FavouriteTracksFragment : Fragment() {
                         showContent(favouriteState.tracks)
                     }
 
-                    FavouriteState.Empty -> showEmpty()
+                    FavouriteState.Empty -> {
+                        showEmpty()
+                    }
                 }
             }
             .launchIn(viewLifecycleOwner.lifecycleScope)
@@ -76,6 +81,8 @@ class FavouriteTracksFragment : Fragment() {
     }
 
     private fun showEmpty() {
+        Log.d("MyLog", "showEmpty() ++++")
+
         with(binding) {
             rwFavouriteTracks.isVisible = false
             textViewEmpty.isVisible = true

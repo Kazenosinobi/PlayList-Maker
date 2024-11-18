@@ -29,9 +29,8 @@ data class Track(
     val country: String?,
     @SerialName("trackUrl")
     val trackUrl: String?,
-
-    val addedDate: Long,
-    var isFavorite: Boolean = false
+    @SerialName("isFavorite")
+    val isFavorite: Boolean = false
 )
 
 fun Track.mapToTrackEntity(): TrackEntity {
@@ -47,7 +46,6 @@ fun Track.mapToTrackEntity(): TrackEntity {
         country = this.country,
         coverArtworkMaxi = this.coverArtworkMaxi,
         trackUrl = this.trackUrl,
-        addedDate = this.addedDate,
-        isFavorite = this.isFavorite
+        addedDate = System.currentTimeMillis(),
     )
 }

@@ -14,14 +14,16 @@ class SearchViewModel(
     private val tracksInteractor: TracksInteractor,
 ) : ViewModel() {
 
-    private val viewStateSharedFlow = MutableSharedFlow<ViewState>()
+    private val viewStateSharedFlow = MutableSharedFlow<ViewState>(replay = 1)
     fun getCurrentPositionSharedFlow() = viewStateSharedFlow.asSharedFlow()
 
     private var searchJob: Job? = null
+    private var lastSearchQuery: String? = null
 
     fun search(text: String?) {
-        if (text.isNullOrBlank()) return
+        if (text.isNullOrBlank() || text == lastSearchQuery) return
 
+        lastSearchQuery = text
         searchJob = viewModelScope.launch {
             viewStateSharedFlow.emit(ViewState.Loading)
             tracksInteractor

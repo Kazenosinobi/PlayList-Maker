@@ -22,7 +22,6 @@ data class TrackEntity(
 
     @ColumnInfo(name = "addedDate")
     val addedDate: Long,
-    var isFavorite: Boolean = false
 )
 
 fun TrackEntity.mapToTrack(): Track {
@@ -38,7 +37,5 @@ fun TrackEntity.mapToTrack(): Track {
         country = this.country,
         coverArtworkMaxi = this.coverArtworkMaxi,
         trackUrl = this.trackUrl,
-        addedDate = this.addedDate,
-        isFavorite = this.isFavorite
     )
 }

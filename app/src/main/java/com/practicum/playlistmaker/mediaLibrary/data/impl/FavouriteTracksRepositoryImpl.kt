@@ -6,7 +6,7 @@ import com.practicum.playlistmaker.mediaLibrary.domain.db.FavouriteTracksReposit
 import com.practicum.playlistmaker.search.domain.models.Track
 import com.practicum.playlistmaker.search.domain.models.mapToTrackEntity
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.map
 
 class FavouriteTracksRepositoryImpl(
     private val appDatabase: AppDatabase,
@@ -20,11 +20,11 @@ class FavouriteTracksRepositoryImpl(
         appDatabase.trackDao().deleteTrack(track.mapToTrackEntity())
     }
 
-    override fun getFavouriteTracks(): Flow<List<Track>> = flow {
-        val tracks = appDatabase.trackDao().getTracks()
-        emit(tracks.map { it.mapToTrack() })
-    }
+    override fun getFavouriteTracks(): Flow<List<Track>> = appDatabase.trackDao().getTracks()
+        .map { it.map { it.mapToTrack() } }
 
-    override suspend fun getFavouriteTrackIds(): List<Int> =
-        appDatabase.trackDao().getFavouriteTrackIds()
+    override fun isFavourite(trackId: Int): Flow<Boolean> =
+        appDatabase.trackDao().isFavourite(trackId)
+
+
 }

@@ -29,12 +29,7 @@ class TracksRepositoryImpl(
                 if (tracks.isEmpty()) {
                     emit(ViewState.EmptyError)
                 } else {
-                    val favouriteTrackIds = favouriteTracksRepository.getFavouriteTrackIds()
-                    val tracksWithFavouriteStatus = tracks.map {trackDto ->
-                        val track = trackDto.mapToTrack()
-                        track.copy(isFavorite = favouriteTrackIds.contains(track.trackId))
-                    }
-                    emit(ViewState.Success(tracksWithFavouriteStatus))
+                    emit(ViewState.Success(tracks.map { it.mapToTrack() }))
                 }
             }
             .onFailure { error ->
