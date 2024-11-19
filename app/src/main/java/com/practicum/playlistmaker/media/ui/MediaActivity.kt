@@ -13,7 +13,6 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.databinding.ActivityMediaBinding
 import com.practicum.playlistmaker.media.domain.model.PlayerState
-import com.practicum.playlistmaker.media.domain.model.PlayerStateData
 import com.practicum.playlistmaker.search.domain.models.Track
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach

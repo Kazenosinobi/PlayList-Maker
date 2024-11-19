@@ -25,13 +25,13 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SearchFragment : Fragment() {
 
-    private lateinit var binding: FragmentSearchBinding
+    private var binding: FragmentSearchBinding? = null
 
     private var trackAdapter: TrackAdapter? = null
     private var trackHistoryAdapter: TrackAdapter? = null
 
-    private lateinit var onTrackClickDebounce: (Track) -> Unit
-    private lateinit var onSearchDebounce: (String) -> Unit
+    private var onTrackClickDebounce: ((Track) -> Unit?)? = null
+    private var onSearchDebounce: ((String) -> Unit)? = null
 
     private val viewModel by viewModel<SearchViewModel>()
 
@@ -39,9 +39,9 @@ class SearchFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?,
-    ): View {
+    ): View? {
         binding = FragmentSearchBinding.inflate(inflater, container, false)
-        return binding.root
+        return binding?.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -70,29 +70,29 @@ class SearchFragment : Fragment() {
     }
 
     private fun initListeners() {
-        binding.imageViewSearchClear.setOnClickListener {
-            binding.editTextSearch.setText(EMPTY_TEXT)
+        binding?.imageViewSearchClear?.setOnClickListener {
+            binding?.editTextSearch?.setText(EMPTY_TEXT)
             hideKeyBoard()
             viewModel.needToShowHistory()
         }
 
-        binding.reconnectButton.setOnClickListener {
-            viewModel.search(binding.editTextSearch.text.toString())
+        binding?.reconnectButton?.setOnClickListener {
+            viewModel.search(binding?.editTextSearch?.text.toString())
         }
-        binding.buttonClearHistory.setOnClickListener {
+        binding?.buttonClearHistory?.setOnClickListener {
             viewModel.clearHistory()
             trackHistoryAdapter?.submitList(emptyList())
         }
 
-        binding.editTextSearch.addTextChangedListener {
-            binding.imageViewSearchClear.isVisible = it.isNullOrEmpty().not()
-            if (binding.editTextSearch.hasFocus()) {
+        binding?.editTextSearch?.addTextChangedListener {
+            binding?.imageViewSearchClear?.isVisible = it.isNullOrEmpty().not()
+            if (binding?.editTextSearch?.hasFocus() == true) {
                 viewModel.needToShowHistory()
             }
-            onSearchDebounce(it.toString())
+            onSearchDebounce?.let { it1 -> it1(it.toString()) }
         }
 
-        binding.editTextSearch.setOnFocusChangeListener { _, hasFocus ->
+        binding?.editTextSearch?.setOnFocusChangeListener { _, hasFocus ->
             if (hasFocus) {
                 viewModel.needToShowHistory()
             }
@@ -102,17 +102,17 @@ class SearchFragment : Fragment() {
     private fun initAdapters() {
         trackAdapter = TrackAdapter { track ->
             viewModel.addToTrackHistory(track)
-            onTrackClickDebounce(track)
+            onTrackClickDebounce?.let { it(track) }
         }
         trackHistoryAdapter = TrackAdapter { track ->
             viewModel.addToTrackHistory(track)
-            onTrackClickDebounce(track)
+            onTrackClickDebounce?.let { it(track) }
             viewModel.needToShowHistory()
         }
 
-        binding.rwTrack.adapter = trackAdapter
-        binding.rwTrack.itemAnimator = null
-        binding.rwSearchHistory.adapter = trackHistoryAdapter
+        binding?.rwTrack?.adapter = trackAdapter
+        binding?.rwTrack?.itemAnimator = null
+        binding?.rwSearchHistory?.adapter = trackHistoryAdapter
     }
 
     private fun initSearchDebounce() {
@@ -148,54 +148,54 @@ class SearchFragment : Fragment() {
 
         trackAdapter?.submitList(emptyList())
         trackAdapter?.submitList(listTracks)
-        with(binding) {
-            rwTrack.isVisible = true
-            llErrors.isVisible = false
-            llNotInternet.isVisible = false
-            progressBar.isVisible = false
+        binding?.let {
+            it.rwTrack.isVisible = true
+            it.llErrors.isVisible = false
+            it.llNotInternet.isVisible = false
+            it.progressBar.isVisible = false
         }
     }
 
     private fun showProgressBar() {
-        with(binding) {
-            rwTrack.isVisible = false
-            llErrors.isVisible = false
-            llNotInternet.isVisible = false
-            groupHistory.isVisible = false
-            progressBar.isVisible = true
+        binding?.let {
+            it.rwTrack.isVisible = false
+            it.llErrors.isVisible = false
+            it.llNotInternet.isVisible = false
+            it.groupHistory.isVisible = false
+            it.progressBar.isVisible = true
         }
     }
 
     private fun showEmpty() {
-        with(binding) {
-            rwTrack.isVisible = false
-            llErrors.isVisible = true
-            llNotInternet.isVisible = false
-            groupHistory.isVisible = false
-            progressBar.isVisible = false
+        binding?.let {
+            it.rwTrack.isVisible = false
+            it.llErrors.isVisible = true
+            it.llNotInternet.isVisible = false
+            it.groupHistory.isVisible = false
+            it.progressBar.isVisible = false
         }
     }
 
     private fun showError() {
-        with(binding) {
-            rwTrack.isVisible = false
-            llNotInternet.isVisible = true
-            llErrors.isVisible = false
-            groupHistory.isVisible = false
-            progressBar.isVisible = false
+        binding?.let {
+            it.rwTrack.isVisible = false
+            it.llNotInternet.isVisible = true
+            it.llErrors.isVisible = false
+            it.groupHistory.isVisible = false
+            it.progressBar.isVisible = false
         }
     }
 
     private fun showHistory(historyList: List<Track>) {
         trackAdapter?.submitList(emptyList())
         trackHistoryAdapter?.submitList(historyList)
-        binding.groupHistory.isVisible = binding.editTextSearch.text.isNullOrEmpty()
+        binding?.groupHistory?.isVisible = binding?.editTextSearch?.text.isNullOrEmpty()
                 && historyList.isEmpty().not()
-        with(binding) {
-            rwTrack.isVisible = false
-            llErrors.isVisible = false
-            llNotInternet.isVisible = false
-            progressBar.isVisible = false
+        binding?.let {
+            it.rwTrack.isVisible = false
+            it.llErrors.isVisible = false
+            it.llNotInternet.isVisible = false
+            it.progressBar.isVisible = false
         }
     }
 

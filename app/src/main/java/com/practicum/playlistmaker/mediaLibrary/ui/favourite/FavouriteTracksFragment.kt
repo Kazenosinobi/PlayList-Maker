@@ -23,19 +23,19 @@ class FavouriteTracksFragment : Fragment() {
 
     private val viewModel: FavouriteTracksViewModel by viewModel()
 
-    private lateinit var binding: FragmentFavouriteTracksBinding
+    private var binding: FragmentFavouriteTracksBinding? = null
 
     private var favouriteTrackAdapter: TrackAdapter? = null
 
-    private lateinit var onTrackClickDebounce: (Track) -> Unit
+    private var onTrackClickDebounce: ((Track) -> Unit)? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?,
-    ): View {
+    ): View? {
         binding = FragmentFavouriteTracksBinding.inflate(inflater, container, false)
-        return binding.root
+        return binding?.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -48,10 +48,10 @@ class FavouriteTracksFragment : Fragment() {
 
     private fun initAdapters() {
         favouriteTrackAdapter = TrackAdapter { track ->
-            onTrackClickDebounce(track)
+            onTrackClickDebounce?.let { it(track) }
         }
 
-        binding.rwFavouriteTracks.adapter = favouriteTrackAdapter
+        binding?.rwFavouriteTracks?.adapter = favouriteTrackAdapter
     }
 
     private fun observeFlow() {
@@ -72,19 +72,19 @@ class FavouriteTracksFragment : Fragment() {
     }
 
     private fun showContent(tracks: List<Track>) {
-        with(binding) {
+        binding?.let {
             favouriteTrackAdapter?.submitList(tracks)
-            rwFavouriteTracks.isVisible = true
-            textViewEmpty.isVisible = false
-            imageViewEmpty.isVisible = false
+            it.rwFavouriteTracks.isVisible = true
+            it.textViewEmpty.isVisible = false
+            it.imageViewEmpty.isVisible = false
         }
     }
 
     private fun showEmpty() {
-        with(binding) {
-            rwFavouriteTracks.isVisible = false
-            textViewEmpty.isVisible = true
-            imageViewEmpty.isVisible = true
+        binding?.let {
+            it.rwFavouriteTracks.isVisible = false
+            it.textViewEmpty.isVisible = true
+            it.imageViewEmpty.isVisible = true
         }
     }
 

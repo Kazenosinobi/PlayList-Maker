@@ -4,7 +4,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.practicum.playlistmaker.media.domain.api.MediaInteractor
 import com.practicum.playlistmaker.media.domain.model.PlayerState
-import com.practicum.playlistmaker.media.domain.model.PlayerStateData
 import com.practicum.playlistmaker.mediaLibrary.domain.db.FavouriteTracksInteractor
 import com.practicum.playlistmaker.search.domain.models.Track
 import kotlinx.coroutines.Job
@@ -13,6 +12,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Locale
@@ -24,7 +24,7 @@ class MediaViewModel(
 ) : ViewModel() {
 
     private val playerStateFlow =
-        MutableStateFlow(PlayerStateData(playerState = PlayerState.STATE_DEFAULT))
+        MutableStateFlow(PlayerStateData())
 
     fun getPlayerStateFlow() = playerStateFlow.asStateFlow()
 
@@ -62,11 +62,7 @@ class MediaViewModel(
                 startPlayer()
             }
 
-            PlayerState.STATE_DEFAULT -> {
-                preparePlayer(url)
-            }
-
-            PlayerState.STATE_CONNECTION_ERROR -> {
+            PlayerState.STATE_DEFAULT, PlayerState.STATE_CONNECTION_ERROR -> {
                 preparePlayer(url)
             }
         }
@@ -76,15 +72,15 @@ class MediaViewModel(
         timerJob = viewModelScope.launch {
             while (playerStateFlow.value.playerState == PlayerState.STATE_PLAYING) {
                 val position = getCurrentPosition()
-                playerStateFlow.value = playerStateFlow.value.copy(currentPosition = position)
-                delay(PLAY_TIME_DELAY)
+                playerStateFlow.update { it.copy(currentPosition = position) }
+                delay(PLAY_TIME_DELAY_MILLIS)
             }
         }
     }
 
     private fun getCurrentPosition(): String {
         return SimpleDateFormat(
-            "mm:ss",
+            DATE_FORMAT_PATTERN,
             Locale.getDefault()
         ).format(mediaInteractor.getCurrentPosition())
     }
@@ -94,14 +90,16 @@ class MediaViewModel(
         mediaInteractor.preparePlayer(url) { state ->
             when (state) {
                 PlayerState.STATE_PREPARED -> {
-                    playerStateFlow.value =
-                        playerStateFlow.value.copy(playerState = PlayerState.STATE_PREPARED)
+                    playerStateFlow.update {
+                        it.copy(playerState = PlayerState.STATE_PREPARED)
+                    }
                     timerJob?.cancel()
                 }
 
                 PlayerState.STATE_CONNECTION_ERROR -> {
-                    playerStateFlow.value =
-                        playerStateFlow.value.copy(playerState = PlayerState.STATE_CONNECTION_ERROR)
+                    playerStateFlow.update {
+                        it.copy(playerState = PlayerState.STATE_CONNECTION_ERROR)
+                    }
                 }
 
                 else -> Unit
@@ -112,18 +110,24 @@ class MediaViewModel(
     fun pausePlayer() {
         if (playerStateFlow.value.playerState != PlayerState.STATE_PLAYING) return
         mediaInteractor.pausePlayer()
-        playerStateFlow.value = playerStateFlow.value.copy(playerState = PlayerState.STATE_PAUSED)
+        playerStateFlow.update {
+            it.copy(playerState = PlayerState.STATE_PAUSED)
+        }
         timerJob?.cancel()
     }
 
     private fun startPlayer() {
         mediaInteractor.startPlayer()
-        playerStateFlow.value = playerStateFlow.value.copy(playerState = PlayerState.STATE_PLAYING)
+        playerStateFlow.update {
+            it.copy(playerState = PlayerState.STATE_PLAYING)
+        }
         createUpdateTimerTask()
     }
 
     private fun updatePlayerState() {
-        playerStateFlow.value = playerStateFlow.value.copy(isFavourite = currentTrack.isFavorite)
+        playerStateFlow.update {
+            it.copy(isFavourite = currentTrack.isFavorite)
+        }
     }
 
     private fun observeOnFavourite() {
@@ -136,6 +140,7 @@ class MediaViewModel(
     }
 
     private companion object {
-        private const val PLAY_TIME_DELAY = 300L
+        private const val PLAY_TIME_DELAY_MILLIS = 300L
+        private const val DATE_FORMAT_PATTERN = "mm:ss"
     }
 }

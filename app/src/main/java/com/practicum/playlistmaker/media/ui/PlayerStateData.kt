@@ -1,7 +1,9 @@
-package com.practicum.playlistmaker.media.domain.model
+package com.practicum.playlistmaker.media.ui
+
+import com.practicum.playlistmaker.media.domain.model.PlayerState
 
 data class PlayerStateData(
-    val playerState: PlayerState,
+    val playerState: PlayerState = PlayerState.STATE_DEFAULT,
     val currentPosition: String = DEFAULT_CURRENT_POS,
     val isFavourite: Boolean = false
 ) {
