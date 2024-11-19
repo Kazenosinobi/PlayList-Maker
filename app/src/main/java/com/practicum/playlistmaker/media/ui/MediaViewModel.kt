@@ -19,7 +19,7 @@ import java.util.Locale
 class MediaViewModel(
     private val mediaInteractor: MediaInteractor,
     private val favouriteTracksInteractor: FavouriteTracksInteractor,
-    private val track: Track
+    track: Track,
 ) : ViewModel() {
 
     private val playStatusStateFlow = MutableStateFlow(PlayerState.STATE_DEFAULT)

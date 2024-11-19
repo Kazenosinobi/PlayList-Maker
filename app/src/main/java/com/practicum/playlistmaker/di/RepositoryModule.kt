@@ -13,13 +13,14 @@ import com.practicum.playlistmaker.settings.domain.api.SettingsRepository
 import com.practicum.playlistmaker.sharing.data.impl.SharingRepositoryImpl
 import com.practicum.playlistmaker.sharing.domain.api.SharingRepository
 import org.koin.android.ext.koin.androidApplication
+import org.koin.core.module.dsl.factoryOf
+import org.koin.core.module.dsl.singleOf
+import org.koin.dsl.bind
 import org.koin.dsl.module
 
 val repositoryModule = module {
 
-    single<TracksRepository> {
-        TracksRepositoryImpl(get(), get(), get())
-    }
+    singleOf(::TracksRepositoryImpl).bind<TracksRepository>()
 
     single<SettingsRepository> {
         SettingsRepositoryImpl(androidApplication() as App)
@@ -29,16 +30,12 @@ val repositoryModule = module {
         SharingRepositoryImpl(androidApplication())
     }
 
-    factory<MediaRepository> {
-        MediaRepositoryImpl(get())
-    }
+    factoryOf(::MediaRepositoryImpl).bind<MediaRepository>()
 
     factory<MediaPlayer> {
         MediaPlayer()
     }
 
-    single<FavouriteTracksRepository> {
-        FavouriteTracksRepositoryImpl(get())
-    }
+    singleOf(::FavouriteTracksRepositoryImpl).bind<FavouriteTracksRepository>()
 
 }

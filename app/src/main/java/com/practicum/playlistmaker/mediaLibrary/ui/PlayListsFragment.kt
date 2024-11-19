@@ -8,7 +8,7 @@ import androidx.fragment.app.Fragment
 import com.practicum.playlistmaker.databinding.FragmentPlayListsBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class PlayListsFragment: Fragment() {
+class PlayListsFragment : Fragment() {
 
     private val viewModel: PlayListViewModel by viewModel()
 
@@ -24,8 +24,7 @@ class PlayListsFragment: Fragment() {
     }
 
     companion object {
-
-                fun newInstance() = PlayListsFragment()
+        fun newInstance() = PlayListsFragment()
     }
 
 }

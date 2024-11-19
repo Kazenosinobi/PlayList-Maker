@@ -29,7 +29,7 @@ class MediaActivity : AppCompatActivity() {
         Json.decodeFromString<Track>(jsonString)
     }
 
-    private val viewModel by viewModel<MediaViewModel>{
+    private val viewModel by viewModel<MediaViewModel> {
         parametersOf(track)
     }
 
@@ -204,7 +204,7 @@ class MediaActivity : AppCompatActivity() {
     }
 
     companion object {
-        const val START_TIME = "00:00"
+        private const val START_TIME = "00:00"
         private const val EXTRA_TRACK = "extra_track"
         private const val EMPTY_STRING = ""
         private const val DISABLED_ALFA = 50

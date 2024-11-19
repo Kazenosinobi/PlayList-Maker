@@ -16,7 +16,7 @@ class MediaRepositoryImpl(private val mediaPlayer: MediaPlayer) : MediaRepositor
         }
         mediaPlayer.setOnCompletionListener {
             callback.invoke(PlayerState.STATE_PREPARED)
-            mediaPlayer.seekTo(0)
+            mediaPlayer.seekTo(START_POSITION)
         }
     }
 
@@ -37,5 +37,9 @@ class MediaRepositoryImpl(private val mediaPlayer: MediaPlayer) : MediaRepositor
         mediaPlayer.setOnPreparedListener(null)
         mediaPlayer.setOnCompletionListener(null)
         mediaPlayer.release()
+    }
+
+    private companion object {
+        private const val START_POSITION = 0
     }
 }

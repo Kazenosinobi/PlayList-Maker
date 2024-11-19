@@ -10,6 +10,8 @@ import com.practicum.playlistmaker.settings.domain.api.SettingsInteractor
 import com.practicum.playlistmaker.settings.domain.impl.SettingsInteractorImpl
 import com.practicum.playlistmaker.sharing.domain.api.SharingInteractor
 import com.practicum.playlistmaker.sharing.domain.impl.SharingInteractorImpl
+import org.koin.core.module.dsl.factoryOf
+import org.koin.dsl.bind
 import org.koin.dsl.module
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
@@ -20,24 +22,10 @@ val interactorModule = module {
         Executors.newCachedThreadPool()
     }
 
-    factory<TracksInteractor> {
-        TracksInteractorImpl(get())
-    }
-
-    factory<SettingsInteractor> {
-        SettingsInteractorImpl(get())
-    }
-
-    factory<SharingInteractor> {
-        SharingInteractorImpl(get())
-    }
-
-    factory<MediaInteractor> {
-        MediaInteractorImpl(get())
-    }
-
-    factory<FavouriteTracksInteractor> {
-        FavouriteTracksInteractorImpl(get())
-    }
+    factoryOf(::TracksInteractorImpl).bind<TracksInteractor>()
+    factoryOf(::SettingsInteractorImpl).bind<SettingsInteractor>()
+    factoryOf(::SharingInteractorImpl).bind<SharingInteractor>()
+    factoryOf(::MediaInteractorImpl).bind<MediaInteractor>()
+    factoryOf(::FavouriteTracksInteractorImpl).bind<FavouriteTracksInteractor>()
 
 }

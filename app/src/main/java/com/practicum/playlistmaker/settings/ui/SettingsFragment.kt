@@ -8,7 +8,7 @@ import androidx.fragment.app.Fragment
 import com.practicum.playlistmaker.databinding.FragmentSettingsBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class SettingsFragment: Fragment() {
+class SettingsFragment : Fragment() {
 
     private lateinit var binding: FragmentSettingsBinding
 
@@ -40,8 +40,8 @@ class SettingsFragment: Fragment() {
 
         binding.themeSwitcher.isChecked = viewModel.isDarkTheme()
 
-        binding.themeSwitcher.setOnCheckedChangeListener { _, isChecked ->
-            viewModel.updateTheme(isChecked)
+        binding.themeSwitcher.setOnClickListener {
+            viewModel.updateTheme(binding.themeSwitcher.isChecked)
         }
     }
 }

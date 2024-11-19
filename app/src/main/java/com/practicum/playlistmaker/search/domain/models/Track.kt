@@ -1,7 +1,6 @@
 package com.practicum.playlistmaker.search.domain.models
 
 import com.practicum.playlistmaker.mediaLibrary.data.db.entity.TrackEntity
-import com.practicum.playlistmaker.search.data.dto.TrackDto
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -30,7 +29,7 @@ data class Track(
     @SerialName("trackUrl")
     val trackUrl: String?,
     @SerialName("isFavorite")
-    val isFavorite: Boolean = false
+    val isFavorite: Boolean = false,
 )
 
 fun Track.mapToTrackEntity(): TrackEntity {

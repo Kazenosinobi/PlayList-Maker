@@ -11,10 +11,13 @@ import com.practicum.playlistmaker.search.data.network.RetrofitNetworkClient
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.android.ext.koin.androidContext
+import org.koin.core.module.dsl.singleOf
+import org.koin.dsl.bind
 import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
+private const val DB_NAME = "database.db"
 private const val ITUNES_BASE_URL = "https://itunes.apple.com"
 
 val dataModule = module {
@@ -43,19 +46,15 @@ val dataModule = module {
 
     factory { Gson() }
 
-    single {
-        SearchHistory(get())
-    }
+    singleOf(::SearchHistory)
 
-    single<NetworkClient> {
-        RetrofitNetworkClient(get())
-    }
+    singleOf(::RetrofitNetworkClient).bind<NetworkClient>()
 
     single {
         Room.databaseBuilder(
             androidContext(),
             AppDatabase::class.java,
-            "database.db"
+            DB_NAME
         ).fallbackToDestructiveMigration().build()
     }
 

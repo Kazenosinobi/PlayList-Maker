@@ -7,7 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import androidx.core.view.isVisible
-import androidx.core.widget.doOnTextChanged
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
@@ -21,7 +21,6 @@ import com.practicum.playlistmaker.search.ui.recycler.TrackAdapter
 import com.practicum.playlistmaker.utils.debounce
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SearchFragment : Fragment() {
@@ -50,7 +49,12 @@ class SearchFragment : Fragment() {
 
         initSearchDebounce()
         initClickDebounce()
+        initAdapters()
+        initListeners()
+        observeFlow()
+    }
 
+    private fun observeFlow() {
         viewModel.getCurrentPositionSharedFlow()
             .flowWithLifecycle(viewLifecycleOwner.lifecycle)
             .onEach { viewState ->
@@ -63,35 +67,13 @@ class SearchFragment : Fragment() {
                 }
             }
             .launchIn(viewLifecycleOwner.lifecycleScope)
+    }
 
-        trackAdapter = TrackAdapter { track ->
-            viewModel.addToTrackHistory(track)
-            onTrackClickDebounce(track)
-        }
-        trackHistoryAdapter = TrackAdapter { track ->
-            viewModel.addToTrackHistory(track)
-            onTrackClickDebounce(track)
-            viewModel.needToShowHistory()
-        }
-
+    private fun initListeners() {
         binding.imageViewSearchClear.setOnClickListener {
             binding.editTextSearch.setText(EMPTY_TEXT)
             hideKeyBoard()
             viewModel.needToShowHistory()
-        }
-
-        binding.editTextSearch.doOnTextChanged { text, _, _, _ ->
-            binding.imageViewSearchClear.isVisible = text.isNullOrEmpty().not()
-            if (binding.editTextSearch.hasFocus()) {
-                viewModel.needToShowHistory()
-            }
-            onSearchDebounce(text.toString())
-        }
-
-        binding.editTextSearch.setOnFocusChangeListener { _, hasFocus ->
-            if (hasFocus) {
-                viewModel.needToShowHistory()
-            }
         }
 
         binding.reconnectButton.setOnClickListener {
@@ -100,6 +82,32 @@ class SearchFragment : Fragment() {
         binding.buttonClearHistory.setOnClickListener {
             viewModel.clearHistory()
             trackHistoryAdapter?.submitList(emptyList())
+        }
+
+        binding.editTextSearch.addTextChangedListener {
+            binding.imageViewSearchClear.isVisible = it.isNullOrEmpty().not()
+            if (binding.editTextSearch.hasFocus()) {
+                viewModel.needToShowHistory()
+            }
+            onSearchDebounce(it.toString())
+        }
+
+        binding.editTextSearch.setOnFocusChangeListener { _, hasFocus ->
+            if (hasFocus) {
+                viewModel.needToShowHistory()
+            }
+        }
+    }
+
+    private fun initAdapters() {
+        trackAdapter = TrackAdapter { track ->
+            viewModel.addToTrackHistory(track)
+            onTrackClickDebounce(track)
+        }
+        trackHistoryAdapter = TrackAdapter { track ->
+            viewModel.addToTrackHistory(track)
+            onTrackClickDebounce(track)
+            viewModel.needToShowHistory()
         }
 
         binding.rwTrack.adapter = trackAdapter
@@ -199,7 +207,7 @@ class SearchFragment : Fragment() {
             )
     }
 
-    companion object {
+    private companion object {
         private const val EMPTY_TEXT = ""
         private const val SEARCH_DEBOUNCE_DELAY = 2000L
         private const val CLICK_DEBOUNCE_DELAY = 100L
