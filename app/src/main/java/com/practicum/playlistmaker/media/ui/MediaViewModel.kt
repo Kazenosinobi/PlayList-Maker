@@ -67,7 +67,9 @@ class MediaViewModel(
                 preparePlayer(url)
             }
 
-            PlayerState.STATE_CONNECTION_ERROR -> {}
+            PlayerState.STATE_CONNECTION_ERROR -> {
+                preparePlayer(url)
+            }
         }
     }
 
@@ -91,9 +93,15 @@ class MediaViewModel(
     fun preparePlayer(url: String) {
         if (url.isBlank()) return
         mediaInteractor.preparePlayer(url) { state ->
-            if (state == PlayerState.STATE_PREPARED) {
-                playStatusStateFlow.value = PlayerState.STATE_PREPARED
-                timerJob?.cancel()
+            when(state) {
+                PlayerState.STATE_PREPARED ->  {
+                    playStatusStateFlow.value = PlayerState.STATE_PREPARED
+                    timerJob?.cancel()
+                }
+                PlayerState.STATE_CONNECTION_ERROR -> {
+                    playStatusStateFlow.value = PlayerState.STATE_CONNECTION_ERROR
+                }
+                else -> Unit
             }
         }
     }
