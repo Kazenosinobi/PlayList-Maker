@@ -53,23 +53,6 @@ class MediaViewModel(
         }
     }
 
-    fun preparePlayer(url: String) {
-        if (url.isBlank()) return
-        mediaInteractor.preparePlayer(url) { state ->
-            if (state == PlayerState.STATE_PREPARED) {
-                playStatusStateFlow.value = PlayerState.STATE_PREPARED
-                timerJob?.cancel()
-            }
-        }
-    }
-
-    fun pausePlayer() {
-        if (playStatusStateFlow.value != PlayerState.STATE_PLAYING) return
-        mediaInteractor.pausePlayer()
-        playStatusStateFlow.value = PlayerState.STATE_PAUSED
-        timerJob?.cancel()
-    }
-
     fun playbackControl(url: String) {
         when (playStatusStateFlow.value) {
             PlayerState.STATE_PLAYING -> {
@@ -84,6 +67,7 @@ class MediaViewModel(
                 preparePlayer(url)
             }
 
+            PlayerState.STATE_CONNECTION_ERROR -> {}
         }
     }
 
@@ -102,6 +86,23 @@ class MediaViewModel(
             "mm:ss",
             Locale.getDefault()
         ).format(mediaInteractor.getCurrentPosition())
+    }
+
+    fun preparePlayer(url: String) {
+        if (url.isBlank()) return
+        mediaInteractor.preparePlayer(url) { state ->
+            if (state == PlayerState.STATE_PREPARED) {
+                playStatusStateFlow.value = PlayerState.STATE_PREPARED
+                timerJob?.cancel()
+            }
+        }
+    }
+
+    fun pausePlayer() {
+        if (playStatusStateFlow.value != PlayerState.STATE_PLAYING) return
+        mediaInteractor.pausePlayer()
+        playStatusStateFlow.value = PlayerState.STATE_PAUSED
+        timerJob?.cancel()
     }
 
     private fun startPlayer() {

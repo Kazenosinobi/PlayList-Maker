@@ -78,7 +78,15 @@ class MediaActivity : AppCompatActivity() {
                         R.drawable.play_button
                     )
 
-                    null -> Unit
+                    PlayerState.STATE_CONNECTION_ERROR -> {
+                        Toast.makeText(
+                            this@MediaActivity,
+                            R.string.connection_error,
+                            Toast.LENGTH_SHORT
+                        )
+                            .show()
+
+                    }
                 }
             }
             .launchIn(lifecycleScope)
