@@ -1,5 +1,6 @@
 package com.practicum.playlistmaker.mediaLibrary.ui.favourite
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.practicum.playlistmaker.mediaLibrary.domain.db.FavouriteTracksInteractor
@@ -23,10 +24,16 @@ class FavouriteTracksViewModel(
 
         favouriteTracksInteractor.getFavouriteTracks()
             .onEach { tracks ->
+
+                Log.d("MY log", "state: $favouriteSharedFlow ")
                 if (tracks.isEmpty()) {
                     favouriteSharedFlow.emit(FavouriteState.Empty)
+
+                    Log.d("MY log", "stateEmpty: $favouriteSharedFlow ")
                 } else {
                     favouriteSharedFlow.emit(FavouriteState.Content(tracks))
+
+                    Log.d("MY log", "stateContent: $favouriteSharedFlow ")
                 }
             }
             .launchIn(viewModelScope)

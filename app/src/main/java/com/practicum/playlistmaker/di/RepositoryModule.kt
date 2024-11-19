@@ -12,6 +12,7 @@ import com.practicum.playlistmaker.settings.data.impl.SettingsRepositoryImpl
 import com.practicum.playlistmaker.settings.domain.api.SettingsRepository
 import com.practicum.playlistmaker.sharing.data.impl.SharingRepositoryImpl
 import com.practicum.playlistmaker.sharing.domain.api.SharingRepository
+import com.practicum.playlistmaker.utils.InternetConnectionValidator
 import org.koin.android.ext.koin.androidApplication
 import org.koin.core.module.dsl.factoryOf
 import org.koin.core.module.dsl.singleOf
@@ -31,6 +32,8 @@ val repositoryModule = module {
     }
 
     factoryOf(::MediaRepositoryImpl).bind<MediaRepository>()
+
+    factoryOf(::InternetConnectionValidator)
 
     factory<MediaPlayer> {
         MediaPlayer()

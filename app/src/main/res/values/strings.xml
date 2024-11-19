@@ -25,6 +25,7 @@
     <string name="play">play</string>
     <string name="nothing_was_found">Ничего не нашлось</string>
     <string name="connection_error">Проблемы со связью\n\nЗагрузка не удалась. Проверте подключение к интернету</string>
+    <string name="connection_error_toast">Не удалось воспроизвести трек. Проверте подключение к интернету</string>
     <string name="update">Обновить</string>
     <string name="u_searched">Вы искали</string>
     <string name="clear_history">Очистить историю</string>

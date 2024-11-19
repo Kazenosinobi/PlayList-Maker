@@ -79,9 +79,12 @@ class MediaActivity : AppCompatActivity() {
                     )
 
                     PlayerState.STATE_CONNECTION_ERROR -> {
+                        binding?.let {
+                            it.imageViewPlay.isEnabled = true
+                        }
                         Toast.makeText(
                             this@MediaActivity,
-                            R.string.connection_error,
+                            R.string.connection_error_toast,
                             Toast.LENGTH_SHORT
                         )
                             .show()
