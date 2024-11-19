@@ -13,6 +13,7 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.databinding.ActivityMediaBinding
 import com.practicum.playlistmaker.media.domain.model.PlayerState
+import com.practicum.playlistmaker.media.domain.model.PlayerStateData
 import com.practicum.playlistmaker.search.domain.models.Track
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -38,68 +39,63 @@ class MediaActivity : AppCompatActivity() {
         binding = ActivityMediaBinding.inflate(LayoutInflater.from(this))
         setContentView(binding?.root)
 
-        viewModel.getPlayStatusStateFlow()
+        viewModel.getPlayerStateFlow()
             .flowWithLifecycle(lifecycle)
             .onEach { state ->
-                when (state) {
-                    PlayerState.STATE_DEFAULT -> {
-                        binding?.let {
-                            it.imageViewPlay.isEnabled = false
-                            it.imageViewPlay.imageAlpha = DISABLED_ALFA
-                        }
-
-                        val url = track.trackUrl
-                        if (url.isNullOrBlank()) {
-                            Toast.makeText(
-                                this@MediaActivity,
-                                R.string.play_error,
-                                Toast.LENGTH_SHORT
-                            )
-                                .show()
-                        } else {
-                            viewModel.preparePlayer(url)
-                        }
-                    }
-
-                    PlayerState.STATE_PREPARED -> {
-                        binding?.let {
-                            it.imageViewPlay.isEnabled = true
-                            it.imageViewPlay.imageAlpha = ENABLED_ALFA
-                            it.textViewPlayTime.text = START_TIME
-                            it.imageViewPlay.setImageResource(R.drawable.play_button)
-                        }
-                    }
-
-                    PlayerState.STATE_PLAYING -> binding?.imageViewPlay?.setImageResource(
-                        R.drawable.pause_button
-                    )
-
-                    PlayerState.STATE_PAUSED -> binding?.imageViewPlay?.setImageResource(
-                        R.drawable.play_button
-                    )
-
-                    PlayerState.STATE_CONNECTION_ERROR -> {
-                        binding?.let {
-                            it.imageViewPlay.isEnabled = true
-                        }
-                        Toast.makeText(
-                            this@MediaActivity,
-                            R.string.connection_error_toast,
-                            Toast.LENGTH_SHORT
-                        )
-                            .show()
-
-                    }
-                }
+//                when (state.playerState) {
+//                    PlayerState.STATE_DEFAULT -> {
+//                        binding?.let {
+//                            it.imageViewPlay.isEnabled = false
+//                            it.imageViewPlay.imageAlpha = DISABLED_ALFA
+//                        }
+//
+//                        val url = track.trackUrl
+//                        if (url.isNullOrBlank()) {
+//                            Toast.makeText(
+//                                this@MediaActivity,
+//                                R.string.play_error,
+//                                Toast.LENGTH_SHORT
+//                            )
+//                                .show()
+//                        } else {
+//                            viewModel.preparePlayer(url)
+//                        }
+//                    }
+//
+//                    PlayerState.STATE_PREPARED -> {
+//                        binding?.let {
+//                            it.imageViewPlay.isEnabled = true
+//                            it.imageViewPlay.imageAlpha = ENABLED_ALFA
+//                            it.textViewPlayTime.text = START_TIME
+//                            it.imageViewPlay.setImageResource(R.drawable.play_button)
+//                        }
+//                    }
+//
+//                    PlayerState.STATE_PLAYING -> binding?.imageViewPlay?.setImageResource(
+//                        R.drawable.pause_button
+//                    )
+//
+//                    PlayerState.STATE_PAUSED -> binding?.imageViewPlay?.setImageResource(
+//                        R.drawable.play_button
+//                    )
+//
+//                    PlayerState.STATE_CONNECTION_ERROR -> {
+//                        binding?.let {
+//                            it.imageViewPlay.isEnabled = true
+//                        }
+//                        Toast.makeText(
+//                            this@MediaActivity,
+//                            R.string.connection_error_toast,
+//                            Toast.LENGTH_SHORT
+//                        )
+//                            .show()
+//
+//                    }
+//                }
+                renderState(state)
             }
             .launchIn(lifecycleScope)
 
-        viewModel.getCurrentPositionStateFlow()
-            .flowWithLifecycle(lifecycle)
-            .onEach {
-                binding?.textViewPlayTime?.text = it
-            }
-            .launchIn(lifecycleScope)
 
         binding?.backButton?.setOnClickListener {
             finish()
@@ -111,18 +107,6 @@ class MediaActivity : AppCompatActivity() {
         binding?.imageViewPlay?.setOnClickListener {
             viewModel.playbackControl(track.trackUrl ?: "")
         }
-
-        viewModel.getIsFavouriteStateFlow()
-            .flowWithLifecycle(lifecycle)
-            .onEach { isFavourite ->
-                val result = if (isFavourite) {
-                    R.drawable.added_to_favourite
-                } else {
-                    R.drawable.favourite
-                }
-                binding?.imageViewFavourite?.setImageResource(result)
-            }
-            .launchIn(lifecycleScope)
 
         binding?.imageViewFavourite?.setOnClickListener {
             viewModel.onFavoriteClicked()
@@ -137,6 +121,56 @@ class MediaActivity : AppCompatActivity() {
     override fun onDestroy() {
         binding = null
         super.onDestroy()
+    }
+
+    private fun updateFavouriteButton(isFavourite: Boolean) {
+        val icon = if (isFavourite) R.drawable.added_to_favourite else R.drawable.favourite
+        binding?.imageViewFavourite?.setImageResource(icon)
+    }
+
+    private fun showToast(message: Int) {
+        Toast.makeText(this@MediaActivity, message, Toast.LENGTH_SHORT).show()
+    }
+
+    private fun renderState(state: PlayerStateData) {
+        binding?.let { binding ->
+            with(binding) {
+                textViewPlayTime.text = state.currentPosition
+                imageViewPlay.isEnabled = state.playerState != PlayerState.STATE_DEFAULT
+                imageViewPlay.imageAlpha =
+                    if (state.playerState == PlayerState.STATE_DEFAULT) DISABLED_ALFA else ENABLED_ALFA
+
+                when (state.playerState) {
+                    PlayerState.STATE_DEFAULT -> {
+                        val url = track.trackUrl
+                        if (url.isNullOrBlank()) {
+                            showToast(R.string.play_error)
+                        } else {
+                            viewModel.preparePlayer(url)
+                        }
+                    }
+
+                    PlayerState.STATE_PREPARED -> {
+                        imageViewPlay.setImageResource(R.drawable.play_button)
+                        textViewPlayTime.text = START_TIME
+                    }
+
+                    PlayerState.STATE_PLAYING -> {
+                        imageViewPlay.setImageResource(R.drawable.pause_button)
+                    }
+
+                    PlayerState.STATE_PAUSED -> {
+                        imageViewPlay.setImageResource(R.drawable.play_button)
+                    }
+
+                    PlayerState.STATE_CONNECTION_ERROR -> {
+                        showToast(R.string.connection_error_toast)
+                    }
+                }
+            }
+
+            updateFavouriteButton(state.isFavourite)
+        }
     }
 
     private fun getImageAlbum() {
