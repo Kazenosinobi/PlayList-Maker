@@ -42,56 +42,6 @@ class MediaActivity : AppCompatActivity() {
         viewModel.getPlayerStateFlow()
             .flowWithLifecycle(lifecycle)
             .onEach { state ->
-//                when (state.playerState) {
-//                    PlayerState.STATE_DEFAULT -> {
-//                        binding?.let {
-//                            it.imageViewPlay.isEnabled = false
-//                            it.imageViewPlay.imageAlpha = DISABLED_ALFA
-//                        }
-//
-//                        val url = track.trackUrl
-//                        if (url.isNullOrBlank()) {
-//                            Toast.makeText(
-//                                this@MediaActivity,
-//                                R.string.play_error,
-//                                Toast.LENGTH_SHORT
-//                            )
-//                                .show()
-//                        } else {
-//                            viewModel.preparePlayer(url)
-//                        }
-//                    }
-//
-//                    PlayerState.STATE_PREPARED -> {
-//                        binding?.let {
-//                            it.imageViewPlay.isEnabled = true
-//                            it.imageViewPlay.imageAlpha = ENABLED_ALFA
-//                            it.textViewPlayTime.text = START_TIME
-//                            it.imageViewPlay.setImageResource(R.drawable.play_button)
-//                        }
-//                    }
-//
-//                    PlayerState.STATE_PLAYING -> binding?.imageViewPlay?.setImageResource(
-//                        R.drawable.pause_button
-//                    )
-//
-//                    PlayerState.STATE_PAUSED -> binding?.imageViewPlay?.setImageResource(
-//                        R.drawable.play_button
-//                    )
-//
-//                    PlayerState.STATE_CONNECTION_ERROR -> {
-//                        binding?.let {
-//                            it.imageViewPlay.isEnabled = true
-//                        }
-//                        Toast.makeText(
-//                            this@MediaActivity,
-//                            R.string.connection_error_toast,
-//                            Toast.LENGTH_SHORT
-//                        )
-//                            .show()
-//
-//                    }
-//                }
                 renderState(state)
             }
             .launchIn(lifecycleScope)
