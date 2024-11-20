@@ -11,7 +11,7 @@ class TracksInteractorImpl(
 ) : TracksInteractor {
 
     override fun searchTracks(expression: String): Flow<ViewState> {
-            return repository.searchTracks(expression)
+        return repository.searchTracks(expression)
     }
 
     override fun getSearchHistory(): Array<Track> {

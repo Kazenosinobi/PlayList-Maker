@@ -44,8 +44,8 @@ class App : Application() {
             ?.apply()
     }
 
-    companion object {
-        const val THEME_SWITCHER_KEY = "key_for_theme_switcher"
-        const val PREFERENCES = "preferences"
+    private companion object {
+        private const val THEME_SWITCHER_KEY = "key_for_theme_switcher"
+        private const val PREFERENCES = "preferences"
     }
 }

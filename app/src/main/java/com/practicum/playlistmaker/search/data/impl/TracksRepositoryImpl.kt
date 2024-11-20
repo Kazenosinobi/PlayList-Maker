@@ -27,9 +27,7 @@ class TracksRepositoryImpl(
                 if (tracks.isEmpty()) {
                     emit(ViewState.EmptyError)
                 } else {
-                    emit(ViewState.Success(tracks.map {
-                        it.mapToTrack()
-                    }))
+                    emit(ViewState.Success(tracks.map { it.mapToTrack() }))
                 }
             }
             .onFailure { error ->

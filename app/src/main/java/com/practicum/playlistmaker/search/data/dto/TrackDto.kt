@@ -34,10 +34,10 @@ data class TrackDto(
 
     fun getCoverArtwork() = artworkUrl100?.replaceAfterLast('/', "512x512bb.jpg")
 
-    fun getReleaseYear() = releaseDate?.take(TAKE_YEAR)
+    fun getReleaseYear() = releaseDate?.take(GET_YEAR)
 
     companion object {
-        const val TAKE_YEAR = 4
+        const val GET_YEAR = 4
 
     }
 }

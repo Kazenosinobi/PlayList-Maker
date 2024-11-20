@@ -19,6 +19,7 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.core.parameter.parametersOf
 
 class MediaActivity : AppCompatActivity() {
     private var binding: ActivityMediaBinding? = null
@@ -28,75 +29,19 @@ class MediaActivity : AppCompatActivity() {
         Json.decodeFromString<Track>(jsonString)
     }
 
-    private val viewModel by viewModel<MediaViewModel>()
+    private val viewModel by viewModel<MediaViewModel> {
+        parametersOf(track)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMediaBinding.inflate(LayoutInflater.from(this))
         setContentView(binding?.root)
 
-        viewModel.getPlayStatusStateFlow()
-            .flowWithLifecycle(lifecycle)
-            .onEach { state ->
-                when (state) {
-                    PlayerState.STATE_DEFAULT -> {
-                        binding?.let {
-                            it.imageViewPlay.isEnabled = false
-                            it.imageViewPlay.imageAlpha = DISABLED_ALFA
-                        }
-
-                        val url = track.trackUrl
-                        if (url.isNullOrBlank()) {
-                            Toast.makeText(
-                                this@MediaActivity,
-                                R.string.play_error,
-                                Toast.LENGTH_SHORT
-                            )
-                                .show()
-                        } else {
-                            viewModel.preparePlayer(url)
-                        }
-                    }
-
-                    PlayerState.STATE_PREPARED -> {
-                        binding?.let {
-                            it.imageViewPlay.isEnabled = true
-                            it.imageViewPlay.imageAlpha = ENABLED_ALFA
-                            it.textViewPlayTime.text = START_TIME
-                            it.imageViewPlay.setImageResource(R.drawable.play_button)
-                        }
-                    }
-
-                    PlayerState.STATE_PLAYING -> binding?.imageViewPlay?.setImageResource(
-                        R.drawable.pause_button
-                    )
-
-                    PlayerState.STATE_PAUSED -> binding?.imageViewPlay?.setImageResource(
-                        R.drawable.play_button
-                    )
-
-                    null -> Unit
-                }
-            }
-            .launchIn(lifecycleScope)
-
-        viewModel.getCurrentPositionStateFlow()
-            .flowWithLifecycle(lifecycle)
-            .onEach {
-                binding?.textViewPlayTime?.text = it
-            }
-            .launchIn(lifecycleScope)
-
-        binding?.backButton?.setOnClickListener {
-            finish()
-        }
-
         getImageAlbum()
         setText()
-
-        binding?.imageViewPlay?.setOnClickListener {
-            viewModel.playbackControl(track.trackUrl ?: "")
-        }
+        observeFlow()
+        initListeners()
     }
 
     override fun onPause() {
@@ -107,6 +52,79 @@ class MediaActivity : AppCompatActivity() {
     override fun onDestroy() {
         binding = null
         super.onDestroy()
+    }
+
+    private fun observeFlow() {
+        viewModel.getPlayerStateFlow()
+            .flowWithLifecycle(lifecycle)
+            .onEach { state ->
+                renderState(state)
+            }
+            .launchIn(lifecycleScope)
+    }
+
+    private fun initListeners() {
+        binding?.backButton?.setOnClickListener {
+            finish()
+        }
+
+        binding?.imageViewPlay?.setOnClickListener {
+            viewModel.playbackControl(track.trackUrl ?: "")
+        }
+
+        binding?.imageViewFavourite?.setOnClickListener {
+            viewModel.onFavoriteClicked()
+        }
+    }
+
+    private fun updateFavouriteButton(isFavourite: Boolean) {
+        val icon = if (isFavourite) R.drawable.added_to_favourite else R.drawable.favourite
+        binding?.imageViewFavourite?.setImageResource(icon)
+    }
+
+    private fun showToast(message: Int) {
+        Toast.makeText(this@MediaActivity, message, Toast.LENGTH_SHORT).show()
+    }
+
+    private fun renderState(state: PlayerStateData) {
+        binding?.let { binding ->
+            with(binding) {
+                textViewPlayTime.text = state.currentPosition
+                imageViewPlay.isEnabled = state.playerState != PlayerState.STATE_DEFAULT
+                imageViewPlay.imageAlpha =
+                    if (state.playerState == PlayerState.STATE_DEFAULT) DISABLED_ALFA else ENABLED_ALFA
+
+                when (state.playerState) {
+                    PlayerState.STATE_DEFAULT -> {
+                        val url = track.trackUrl
+                        if (url.isNullOrBlank()) {
+                            showToast(R.string.play_error)
+                        } else {
+                            viewModel.preparePlayer(url)
+                        }
+                    }
+
+                    PlayerState.STATE_PREPARED -> {
+                        imageViewPlay.setImageResource(R.drawable.play_button)
+                        textViewPlayTime.text = START_TIME
+                    }
+
+                    PlayerState.STATE_PLAYING -> {
+                        imageViewPlay.setImageResource(R.drawable.pause_button)
+                    }
+
+                    PlayerState.STATE_PAUSED -> {
+                        imageViewPlay.setImageResource(R.drawable.play_button)
+                    }
+
+                    PlayerState.STATE_CONNECTION_ERROR -> {
+                        showToast(R.string.connection_error_toast)
+                    }
+                }
+            }
+
+            updateFavouriteButton(state.isFavourite)
+        }
     }
 
     private fun getImageAlbum() {
@@ -185,7 +203,7 @@ class MediaActivity : AppCompatActivity() {
     }
 
     companion object {
-        const val START_TIME = "00:00"
+        private const val START_TIME = "00:00"
         private const val EXTRA_TRACK = "extra_track"
         private const val EMPTY_STRING = ""
         private const val DISABLED_ALFA = 50
