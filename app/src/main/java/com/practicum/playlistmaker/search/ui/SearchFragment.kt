@@ -19,6 +19,7 @@ import com.practicum.playlistmaker.search.domain.models.Track
 import com.practicum.playlistmaker.search.domain.models.ViewState
 import com.practicum.playlistmaker.search.ui.recycler.TrackAdapter
 import com.practicum.playlistmaker.utils.debounce
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -55,7 +56,8 @@ class SearchFragment : Fragment() {
     }
 
     private fun observeFlow() {
-        viewModel.getCurrentPositionSharedFlow()
+        viewModel.getViewStateSharedFlow()
+            .distinctUntilChanged()
             .flowWithLifecycle(viewLifecycleOwner.lifecycle)
             .onEach { viewState ->
                 when (viewState) {
@@ -145,8 +147,6 @@ class SearchFragment : Fragment() {
     }
 
     private fun showListTracks(listTracks: List<Track>) {
-
-        trackAdapter?.submitList(emptyList())
         trackAdapter?.submitList(listTracks)
         binding?.let {
             it.rwTrack.isVisible = true

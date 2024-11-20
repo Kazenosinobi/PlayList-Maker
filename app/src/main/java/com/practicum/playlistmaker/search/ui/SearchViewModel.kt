@@ -18,7 +18,7 @@ class SearchViewModel(
 ) : ViewModel() {
 
     private val viewStateSharedFlow = MutableSharedFlow<ViewState>(replay = REPLAY_COUNT)
-    fun getCurrentPositionSharedFlow() = viewStateSharedFlow.asSharedFlow()
+    fun getViewStateSharedFlow() = viewStateSharedFlow.asSharedFlow()
 
     private var searchJob: Job? = null
     private var lastSearchQuery: String? = null
@@ -44,6 +44,7 @@ class SearchViewModel(
 
     fun needToShowHistory() {
         searchJob?.cancel()
+        lastSearchQuery = null
         viewModelScope.launch {
             viewStateSharedFlow.emit(
                 ViewState.History(

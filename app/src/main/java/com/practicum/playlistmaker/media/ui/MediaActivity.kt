@@ -38,28 +38,10 @@ class MediaActivity : AppCompatActivity() {
         binding = ActivityMediaBinding.inflate(LayoutInflater.from(this))
         setContentView(binding?.root)
 
-        viewModel.getPlayerStateFlow()
-            .flowWithLifecycle(lifecycle)
-            .onEach { state ->
-                renderState(state)
-            }
-            .launchIn(lifecycleScope)
-
-
-        binding?.backButton?.setOnClickListener {
-            finish()
-        }
-
         getImageAlbum()
         setText()
-
-        binding?.imageViewPlay?.setOnClickListener {
-            viewModel.playbackControl(track.trackUrl ?: "")
-        }
-
-        binding?.imageViewFavourite?.setOnClickListener {
-            viewModel.onFavoriteClicked()
-        }
+        observeFlow()
+        initListeners()
     }
 
     override fun onPause() {
@@ -70,6 +52,29 @@ class MediaActivity : AppCompatActivity() {
     override fun onDestroy() {
         binding = null
         super.onDestroy()
+    }
+
+    private fun observeFlow() {
+        viewModel.getPlayerStateFlow()
+            .flowWithLifecycle(lifecycle)
+            .onEach { state ->
+                renderState(state)
+            }
+            .launchIn(lifecycleScope)
+    }
+
+    private fun initListeners() {
+        binding?.backButton?.setOnClickListener {
+            finish()
+        }
+
+        binding?.imageViewPlay?.setOnClickListener {
+            viewModel.playbackControl(track.trackUrl ?: "")
+        }
+
+        binding?.imageViewFavourite?.setOnClickListener {
+            viewModel.onFavoriteClicked()
+        }
     }
 
     private fun updateFavouriteButton(isFavourite: Boolean) {
