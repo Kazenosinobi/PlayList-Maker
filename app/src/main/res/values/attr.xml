@@ -6,12 +6,17 @@
     <attr name="trackColorNormal" format="reference"/>
     <attr name="mainBackgroundColor" format="reference"/>
     <attr name="settingsBackgroundColor" format="reference"/>
+    <attr name="playListCreateBackgroundColor" format="reference"/>
+    <attr name="editTextSolidBackgroundColor" format="reference"/>
+    <attr name="editTextStrokeBackgroundColor" format="reference"/>
+    <attr name="enabledEditTextStrokeBackgroundColor" format="reference"/>
     <attr name="searchBackgroundColor" format="reference"/>
     <attr name="mediaBackgroundColor" format="reference"/>
     <attr name="mediaLibraryBackgroundColor" format="reference"/>
     <attr name="editTextSearchBackgroundColor" format="reference"/>
     <attr name="buttonBackgroundColor" format="reference"/>
     <attr name="buttonTextColor" format="reference"/>
+    <attr name="playListButtonCreate" format="reference"/>
     <attr name="mainTextColor" format="reference"/>
     <attr name="settingsTextColor" format="reference"/>
     <attr name="settingsToolbarTextColor" format="reference"/>
@@ -21,6 +26,7 @@
     <attr name="searchTextHintColor" format="reference"/>
     <attr name="searchTextColor" format="reference"/>
     <attr name="clearColor" format="reference"/>
+    <attr name="playListCreateEditTextHintColor" format="reference"/>
     <attr name="SearchTrackNameTextColor" format="reference"/>
     <attr name="SearchArtistNameTextColor" format="reference"/>
     <attr name="SearchTrackTimeTextColor" format="reference"/>

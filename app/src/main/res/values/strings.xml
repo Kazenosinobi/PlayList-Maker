@@ -45,4 +45,9 @@
     <string name="media_library_is_empty">Ваша медиатека пуста</string>
     <string name="favourite_tracks">Избранные треки</string>
     <string name="play_lists">Плейлисты</string>
+    <string name="new_play_list">Новый плейлист</string>
+    <string name="add_image">Добавить изображение</string>
+    <string name="name_of_album">Название*</string>
+    <string name="description">Описание</string>
+    <string name="Create">Создать</string>
 </resources>

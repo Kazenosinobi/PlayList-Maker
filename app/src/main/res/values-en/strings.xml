@@ -46,4 +46,9 @@
     <string name="media_library_is_empty">Your media library is empty</string>
     <string name="favourite_tracks">Favourite tracks</string>
     <string name="play_lists">Playlists</string>
+    <string name="new_play_list">New playlist</string>
+    <string name="add_image">Add image</string>
+    <string name="name_of_album">Name*</string>
+    <string name="description">Description</string>
+    <string name="Create">Create</string>
 </resources>
