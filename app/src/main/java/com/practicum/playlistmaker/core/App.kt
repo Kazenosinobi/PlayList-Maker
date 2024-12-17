@@ -3,6 +3,7 @@ package com.practicum.playlistmaker.core
 import android.app.Application
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatDelegate
+import com.markodevcic.peko.PermissionRequester
 import com.practicum.playlistmaker.di.dataModule
 import com.practicum.playlistmaker.di.interactorModule
 import com.practicum.playlistmaker.di.repositoryModule
@@ -15,6 +16,9 @@ class App : Application() {
     private var sharedPrefs: SharedPreferences? = null
     override fun onCreate() {
         super.onCreate()
+
+        PermissionRequester.initialize(applicationContext)
+
         startKoin {
             androidContext(this@App)
             modules(listOf(dataModule, repositoryModule, interactorModule, viewModelModule))

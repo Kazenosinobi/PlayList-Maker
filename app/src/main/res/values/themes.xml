@@ -58,6 +58,7 @@
 
         <item name="colorPrimaryDark">@color/blue</item>
         <item name="colorAccent">@color/blue</item>
+        <item name="colorPrimary">@color/blue</item>
     </style>
 
     <!--style name="Theme.PlaylistMaker" parent="Base.Theme.PlaylistMaker" /-->
