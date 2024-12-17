@@ -49,25 +49,11 @@
         app:layout_constraintTop_toBottomOf="@+id/Toolbar" />
 
     <com.google.android.material.textfield.TextInputLayout
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        style="@style/PlayListCreateEditTextStyle"
         android:id="@+id/textInputLayoutName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="@dimen/_16dp"
-        android:layout_marginVertical="@dimen/_16dp"
-        app:boxCornerRadiusBottomEnd="@dimen/_4dp"
-        app:boxCornerRadiusBottomStart="@dimen/_4dp"
-        app:boxCornerRadiusTopEnd="@dimen/_4dp"
-        app:boxCornerRadiusTopStart="@dimen/_4dp"
-        app:boxStrokeWidth="1dp"
-        app:boxStrokeWidthFocused="1dp"
-        app:boxStrokeColor="@color/edit_text_frame"
-        app:boxStrokeErrorColor="@color/red"
         android:hint="@string/name_of_album"
-        android:textColorHint="?attr/playListCreateEditTextHintColor"
-        android:textSize="@dimen/_16sp"
-        android:fontFamily="@font/ys_display_regular"
-        android:textFontWeight="400"
         app:layout_constraintBottom_toTopOf="@+id/editTextDescription"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" >
@@ -87,7 +73,7 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <EditText
-        style="@style/PlayListCreateEditTextStyle"
+        style="@style/PlayListCreateEditTextForHintStyle"
         android:id="@+id/editTextDescription"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
