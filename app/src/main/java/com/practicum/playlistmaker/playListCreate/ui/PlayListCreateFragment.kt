@@ -14,15 +14,21 @@ import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.markodevcic.peko.PermissionRequester
 import com.markodevcic.peko.PermissionResult
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.databinding.FragmentPlayListCreateBinding
+import com.practicum.playlistmaker.mediaLibrary.ui.favourite.FavouriteState
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.io.File
 import java.io.FileOutputStream
 
@@ -30,7 +36,11 @@ class PlayListCreateFragment : Fragment() {
 
     private var binding: FragmentPlayListCreateBinding? = null
 
+    private val viewModel: PlayListCreateViewModel by viewModel()
+
     private val requester = PermissionRequester.instance()
+
+    private var imagePath: Uri? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -46,10 +56,12 @@ class PlayListCreateFragment : Fragment() {
 
         initListeners()
         dataCompleteness()
+        observeFlow()
     }
 
     private val picMedia =
         registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
+            imagePath = uri
             if (uri != null) {
 
                 binding?.imageViewAddPic?.let { image ->
@@ -69,7 +81,13 @@ class PlayListCreateFragment : Fragment() {
 
     private fun initListeners() {
         binding?.backButton?.setOnClickListener {
-            findNavController().navigateUp()
+            val isNameSet = binding?.editTextName?.text.isNullOrBlank().not()
+            val isDescriptionSet = binding?.editTextDescription?.text.isNullOrBlank().not()
+            if (imagePath != null || isNameSet || isDescriptionSet) {
+                showDialog()
+            } else {
+                findNavController().navigateUp()
+            }
         }
 
         binding?.editTextName?.addTextChangedListener {
@@ -77,7 +95,14 @@ class PlayListCreateFragment : Fragment() {
         }
 
         binding?.buttonCreate?.setOnClickListener {
+            val nameOfAlbum = binding?.editTextName?.text.toString()
+            val descriptionOfAlbum = binding?.editTextDescription?.text.toString()
+            val image = imagePath.toString()
 
+            viewModel.updatePlayListData(image, nameOfAlbum, descriptionOfAlbum)
+            viewModel.savePlayList()
+            Toast.makeText(requireContext(), "PlayList Created", Toast.LENGTH_SHORT).show()
+            findNavController().navigateUp()
         }
 
         binding?.imageViewAddPic?.setOnClickListener {
@@ -127,7 +152,7 @@ class PlayListCreateFragment : Fragment() {
                     is PermissionResult.Denied.NeedsRationale -> {
                         Toast.makeText(
                             requireContext(),
-                            TOAST,
+                            R.string.DescriptionOfPermission,
                             Toast.LENGTH_LONG
                         ).show()
                     }
@@ -140,10 +165,32 @@ class PlayListCreateFragment : Fragment() {
         }
     }
 
+    private fun showDialog() {
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle(R.string.PlayListCreateFragmentDialogTitle)
+            .setMessage(R.string.PlayListCreateFragmentDialogMessage)
+            .setNeutralButton(R.string.Cancel) { dialog, which ->
+
+            }
+            .setPositiveButton(R.string.No) { dialog, which ->
+                findNavController().navigateUp()
+            }
+            .show()
+    }
+
+    private fun observeFlow() {
+        viewModel.getPlayListCreateSharedFlow()
+            .flowWithLifecycle(viewLifecycleOwner.lifecycle)
+            .onEach { playListCreateData ->
+                binding?.editTextName?.setText(playListCreateData.nameOfAlbum)
+                binding?.editTextDescription?.setText(playListCreateData.descriptionOfAlbum)
+            }
+            .launchIn(viewLifecycleOwner.lifecycleScope)
+    }
+
     private companion object {
         private const val NAME_OF_FOLDER = "Play list maker album"
         private const val CHILD_PATH = "first_cover.jpg"
         private const val SCHEME = "package"
-        private const val TOAST = "Разрешение необходимо для обложки."
     }
 }

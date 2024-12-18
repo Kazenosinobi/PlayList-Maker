@@ -51,4 +51,9 @@
     <string name="name_of_album">Name*</string>
     <string name="description">Description</string>
     <string name="Create">Create</string>
+    <string name="DescriptionOfPermission">Permission required for cover.</string>
+    <string name="PlayListCreateFragmentDialogTitle">Finish creating a playlist?</string>
+    <string name="PlayListCreateFragmentDialogMessage">All unsaved data will be lost</string>
+    <string name="Cancel">Cancel</string>
+    <string name="No">Complete</string>
 </resources>
