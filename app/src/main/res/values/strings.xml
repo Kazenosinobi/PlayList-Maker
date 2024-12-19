@@ -55,4 +55,5 @@
     <string name="PlayListCreateFragmentDialogMessage">Все несохраненные данные будут потеряны</string>
     <string name="Cancel">Отмена</string>
     <string name="No">Завершить</string>
+    <string name="play_list_created">Плейлист %s создан</string>
 </resources>

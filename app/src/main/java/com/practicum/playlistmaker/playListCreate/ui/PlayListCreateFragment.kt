@@ -12,21 +12,20 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.widget.addTextChangedListener
+import androidx.core.content.ContextCompat
+import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.snackbar.Snackbar
 import com.markodevcic.peko.PermissionRequester
 import com.markodevcic.peko.PermissionResult
 import com.practicum.playlistmaker.R
+import com.practicum.playlistmaker.core.App
 import com.practicum.playlistmaker.databinding.FragmentPlayListCreateBinding
-import com.practicum.playlistmaker.mediaLibrary.ui.favourite.FavouriteState
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.io.File
@@ -56,7 +55,6 @@ class PlayListCreateFragment : Fragment() {
 
         initListeners()
         dataCompleteness()
-        observeFlow()
     }
 
     private val picMedia =
@@ -90,7 +88,7 @@ class PlayListCreateFragment : Fragment() {
             }
         }
 
-        binding?.editTextName?.addTextChangedListener {
+        binding?.editTextName?.doAfterTextChanged {
             dataCompleteness()
         }
 
@@ -99,9 +97,29 @@ class PlayListCreateFragment : Fragment() {
             val descriptionOfAlbum = binding?.editTextDescription?.text.toString()
             val image = imagePath.toString()
 
-            viewModel.updatePlayListData(image, nameOfAlbum, descriptionOfAlbum)
-            viewModel.savePlayList()
-            Toast.makeText(requireContext(), "PlayList Created", Toast.LENGTH_SHORT).show()
+            viewModel.savePlayList(image, nameOfAlbum, descriptionOfAlbum)
+
+            val rootView = requireActivity().window.decorView.rootView
+            val message =
+                getString(R.string.play_list_created, binding?.editTextName?.text?.toString())
+            val (textColor, backgroundColor) = if ((requireContext().applicationContext as App).darkTheme) {
+                ContextCompat.getColor(
+                    requireContext(),
+                    R.color.dark_grey
+                ) to ContextCompat.getColor(requireContext(), R.color.deep_white)
+            } else {
+                ContextCompat.getColor(
+                    requireContext(),
+                    R.color.deep_white
+                ) to ContextCompat.getColor(requireContext(), R.color.dark_grey)
+            }
+            Snackbar.make(rootView, message, Snackbar.LENGTH_LONG)
+                .setAnchorView(binding?.buttonCreate)
+                .setTextColor(textColor)
+                .setBackgroundTint(backgroundColor)
+                .show()
+
+
             findNavController().navigateUp()
         }
 
@@ -176,16 +194,6 @@ class PlayListCreateFragment : Fragment() {
                 findNavController().navigateUp()
             }
             .show()
-    }
-
-    private fun observeFlow() {
-        viewModel.getPlayListCreateSharedFlow()
-            .flowWithLifecycle(viewLifecycleOwner.lifecycle)
-            .onEach { playListCreateData ->
-                binding?.editTextName?.setText(playListCreateData.nameOfAlbum)
-                binding?.editTextDescription?.setText(playListCreateData.descriptionOfAlbum)
-            }
-            .launchIn(viewLifecycleOwner.lifecycleScope)
     }
 
     private companion object {

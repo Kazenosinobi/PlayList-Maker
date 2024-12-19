@@ -56,4 +56,5 @@
     <string name="PlayListCreateFragmentDialogMessage">All unsaved data will be lost</string>
     <string name="Cancel">Cancel</string>
     <string name="No">Complete</string>
+    <string name="play_list_created">Playlist %s is created</string>
 </resources>
