@@ -16,20 +16,4 @@ class PlayListCreateRepositoryImpl(
         appDatabase.playListDao().addPlayList(playList.mapToPlayListEntity())
     }
 
-    override suspend fun deletePlayListAtFavouritePlayList(playList: PlayListCreateData) {
-        appDatabase.playListDao().deletePlayList(playList.mapToPlayListEntity())
-    }
-
-    override suspend fun updateFavouritePlayList(playList: PlayListCreateData) {
-        appDatabase.playListDao().updatePlayList(playList.mapToPlayListEntity())
-    }
-
-    override fun getFavouritePlayList(): Flow<List<PlayListCreateData>> =
-        appDatabase.playListDao().getPlayList()
-            .map { playListsEntity ->
-                playListsEntity.map { playListEntity ->
-                    playListEntity.mapToPlayListEntity()
-                }
-            }
-
 }

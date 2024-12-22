@@ -2,14 +2,29 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/llBottomSheet"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="vertical"
-    tools:context=".mediaLibrary.ui.MediaLibraryFragment">
+    app:behavior_hideable="true"
+    app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
+    tools:context=".playListBottomSheet.ui.PlayListBottomSheetFragment">
+
+    <View
+        android:layout_width="@dimen/_48dp"
+        android:layout_height="@dimen/_4dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/_8dp"
+        android:background="@drawable/rounder" />
+
+    <TextView
+        style="@style/PlayListBottomSheetTittleTextStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
     <Button
-        android:id="@+id/newPlaylistButton"
-        style="@style/newPlaylistButtonStyle"
+        android:id="@+id/buttonNewPlayList"
+        style="@style/buttonNewPlayListStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/new_playlist" />
@@ -35,11 +50,10 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rwPlayLists"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-        app:spanCount="2"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         tools:itemCount="9"
-        tools:listitem="@layout/play_list_item" />
+        tools:listitem="@layout/play_list_bottom_sheet_item" />
 
 </LinearLayout>

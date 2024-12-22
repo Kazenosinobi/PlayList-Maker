@@ -14,7 +14,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.databinding.FragmentSearchBinding
-import com.practicum.playlistmaker.media.ui.MediaActivity
+import com.practicum.playlistmaker.media.ui.MediaFragment
 import com.practicum.playlistmaker.search.domain.models.Track
 import com.practicum.playlistmaker.search.domain.models.ViewState
 import com.practicum.playlistmaker.search.ui.recycler.TrackAdapter
@@ -133,7 +133,7 @@ class SearchFragment : Fragment() {
             viewLifecycleOwner.lifecycleScope,
             false
         ) { track ->
-            startMediaActivity(track)
+            startMediaFragment(track)
         }
     }
 
@@ -199,11 +199,11 @@ class SearchFragment : Fragment() {
         }
     }
 
-    private fun startMediaActivity(track: Track) {
+    private fun startMediaFragment(track: Track) {
         findNavController()
             .navigate(
-                R.id.action_searchFragment_to_mediaActivity,
-                MediaActivity.createArgs(track)
+                R.id.action_searchFragment_to_mediaFragment,
+                MediaFragment.createArgs(track)
             )
     }
 

@@ -7,6 +7,7 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
 import com.practicum.playlistmaker.playListCreate.data.db.entity.PlayListEntity
+import com.practicum.playlistmaker.search.domain.models.Track
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -21,6 +22,6 @@ interface PlayListDao {
     @Update
     suspend fun updatePlayList(playList: PlayListEntity)
 
-    @Query("SELECT playListId, playListName, playListDescription, imagePath, trackIds, trackCount FROM play_list_table")
+    @Query("SELECT playListId, playListName, playListDescription, imagePath, tracks FROM play_list_table")
     fun getPlayList(): Flow<List<PlayListEntity>>
 }

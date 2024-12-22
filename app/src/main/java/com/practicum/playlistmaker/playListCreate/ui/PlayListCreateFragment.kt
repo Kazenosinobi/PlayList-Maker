@@ -15,6 +15,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentContainerView
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
@@ -79,13 +80,7 @@ class PlayListCreateFragment : Fragment() {
 
     private fun initListeners() {
         binding?.backButton?.setOnClickListener {
-            val isNameSet = binding?.editTextName?.text.isNullOrBlank().not()
-            val isDescriptionSet = binding?.editTextDescription?.text.isNullOrBlank().not()
-            if (imagePath != null || isNameSet || isDescriptionSet) {
-                showDialog()
-            } else {
-                findNavController().navigateUp()
-            }
+            canBack()
         }
 
         binding?.editTextName?.doAfterTextChanged {
@@ -93,34 +88,7 @@ class PlayListCreateFragment : Fragment() {
         }
 
         binding?.buttonCreate?.setOnClickListener {
-            val nameOfAlbum = binding?.editTextName?.text.toString()
-            val descriptionOfAlbum = binding?.editTextDescription?.text.toString()
-            val image = imagePath.toString()
-
-            viewModel.savePlayList(image, nameOfAlbum, descriptionOfAlbum)
-
-            val rootView = requireActivity().window.decorView.rootView
-            val message =
-                getString(R.string.play_list_created, binding?.editTextName?.text?.toString())
-            val (textColor, backgroundColor) = if ((requireContext().applicationContext as App).darkTheme) {
-                ContextCompat.getColor(
-                    requireContext(),
-                    R.color.dark_grey
-                ) to ContextCompat.getColor(requireContext(), R.color.deep_white)
-            } else {
-                ContextCompat.getColor(
-                    requireContext(),
-                    R.color.deep_white
-                ) to ContextCompat.getColor(requireContext(), R.color.dark_grey)
-            }
-            Snackbar.make(rootView, message, Snackbar.LENGTH_LONG)
-                .setAnchorView(binding?.buttonCreate)
-                .setTextColor(textColor)
-                .setBackgroundTint(backgroundColor)
-                .show()
-
-
-            findNavController().navigateUp()
+            showSnackBar()
         }
 
         binding?.imageViewAddPic?.setOnClickListener {
@@ -194,6 +162,46 @@ class PlayListCreateFragment : Fragment() {
                 findNavController().navigateUp()
             }
             .show()
+    }
+
+    private fun showSnackBar() {
+        val nameOfAlbum = binding?.editTextName?.text.toString()
+        val descriptionOfAlbum = binding?.editTextDescription?.text.toString()
+        val image = imagePath.toString()
+
+        viewModel.savePlayList(image, nameOfAlbum, descriptionOfAlbum)
+
+        val rootView = requireActivity().findViewById<FragmentContainerView>(R.id.container_view)
+        val message =
+            getString(R.string.play_list_created, binding?.editTextName?.text?.toString())
+        val (textColor, backgroundColor) = if ((requireContext().applicationContext as App).darkTheme) {
+            ContextCompat.getColor(
+                requireContext(),
+                R.color.dark_grey
+            ) to ContextCompat.getColor(requireContext(), R.color.deep_white)
+        } else {
+            ContextCompat.getColor(
+                requireContext(),
+                R.color.deep_white
+            ) to ContextCompat.getColor(requireContext(), R.color.dark_grey)
+        }
+        Snackbar.make(rootView, message, Snackbar.LENGTH_LONG)
+            .setTextColor(textColor)
+            .setBackgroundTint(backgroundColor)
+            .show()
+
+
+        findNavController().navigateUp()
+    }
+
+    private fun canBack() {
+        val isNameSet = binding?.editTextName?.text.isNullOrBlank().not()
+        val isDescriptionSet = binding?.editTextDescription?.text.isNullOrBlank().not()
+        if (imagePath != null || isNameSet || isDescriptionSet) {
+            showDialog()
+        } else {
+            findNavController().navigateUp()
+        }
     }
 
     private companion object {

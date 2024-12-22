@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+
+    android:background="@null"
+    card_view:cardElevation="0dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/searchBackgroundColor"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/imageViewAlbum"
+            android:layout_width="@dimen/_160dp"
+            android:layout_height="@dimen/_160dp"
+            android:layout_gravity="center"
+            android:layout_marginBottom="@dimen/_4dp"
+            android:contentDescription="@string/album_image"
+            android:src="@drawable/place_holder" />
+
+        <TextView
+            android:id="@+id/TextViewName"
+            style="@style/PlayListNameTextViewStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:text="Название альбома Название альбома Название альбома Название альбома" />
+
+        <TextView
+            android:id="@+id/TextViewTracksCount"
+            style="@style/PlayListNameTextViewStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:text="123456 треков" />
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>

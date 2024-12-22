@@ -13,15 +13,4 @@ class PlayListCreateInteractorImpl(
         playListCreateRepository.addPlayListToFavouritePlayList(playList)
     }
 
-    override suspend fun deletePlayListAtFavouritePlayList(playList: PlayListCreateData) {
-        playListCreateRepository.deletePlayListAtFavouritePlayList(playList)
-    }
-
-    override suspend fun updateFavouritePlayList(playList: PlayListCreateData) {
-        playListCreateRepository.updateFavouritePlayList(playList)
-    }
-
-    override fun getFavouritePlayList(): Flow<List<PlayListCreateData>> =
-        playListCreateRepository.getFavouritePlayList()
-
 }

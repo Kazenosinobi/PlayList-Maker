@@ -28,6 +28,10 @@
     <attr name="clearColor" format="reference"/>
     <attr name="playListCreateEditTextHintColor" format="reference"/>
     <attr name="SearchTrackNameTextColor" format="reference"/>
+    <attr name="PlayListBottomSheetAlbumNameTextColor" format="reference"/>
+    <attr name="PlayListBottomSheetTracksCountTextColor" format="reference"/>
+    <attr name="PlayListBottomSheetRounderColor" format="reference"/>
+    <attr name="PlayListBottomSheetBackgroundColor" format="reference"/>
     <attr name="SearchArtistNameTextColor" format="reference"/>
     <attr name="SearchTrackTimeTextColor" format="reference"/>
     <attr name="SearchDotColor" format="reference"/>

@@ -12,12 +12,14 @@ class PlayListCreateViewModel(
 
     fun savePlayList(image: String?, nameOfAlbum: String?, descriptionOfAlbum: String?) {
         val data = PlayListCreateData(
+            playListId = 0,
             image,
             nameOfAlbum,
-            descriptionOfAlbum
+            descriptionOfAlbum,
+            tracks = emptyList()
         )
-            viewModelScope.launch {
-                playListCreateInteractor.addPlayListToFavouritePlayList(data)
-            }
+        viewModelScope.launch {
+            playListCreateInteractor.addPlayListToFavouritePlayList(data)
+        }
     }
 }

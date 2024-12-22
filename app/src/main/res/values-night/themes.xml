@@ -16,6 +16,9 @@
         <item name="mediaBackgroundColor">@color/dark_grey</item>
         <item name="mediaLibraryBackgroundColor">@color/dark_grey</item>
         <item name="editTextSearchBackgroundColor">@color/deep_white</item>
+        <item name="PlayListBottomSheetAlbumNameTextColor">@color/deep_white</item>
+        <item name="PlayListBottomSheetTracksCountTextColor">@color/deep_white</item>
+        <item name="PlayListBottomSheetRounderColor">@color/deep_white</item>
         <item name="playListCreateEditTextHintColor">@color/deep_white</item>
         <item name="thumbColorSelected">@color/blue</item>
         <item name="thumbColorNormal">@color/light_grey</item>
@@ -47,6 +50,7 @@
         <item name="mediaDescriptionsDataTextColor">@color/deep_white</item>
         <item name="newPlaylistButtonBackGroundColor">@color/deep_white</item>
         <item name="newPlaylistButtonTextColor">@color/dark_grey</item>
+        <item name="PlayListBottomSheetBackgroundColor">@color/dark_grey</item>
         <item name="customTabRippleColor">@color/light_grey</item>
         <item name="customTabTextColor">@color/deep_white</item>
         <item name="customTabIndicatorColor">@color/deep_white</item>
@@ -59,5 +63,6 @@
         <item name="colorPrimaryDark">@color/dark_grey</item>
         <item name="colorAccent">@color/blue</item>
         <item name="colorPrimary">@color/blue</item>
+        <item name="bottomSheetDialogTheme">@style/CustomBottomSheetDialog</item>
     </style>
 </resources>
