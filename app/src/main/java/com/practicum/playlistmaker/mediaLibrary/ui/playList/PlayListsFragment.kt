@@ -48,6 +48,11 @@ class PlayListsFragment : Fragment() {
         albumImageDecoration()
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        playListAdapter = null
+    }
+
     private fun initListeners() {
         binding?.newPlaylistButton?.setOnClickListener {
             startPlayListCreateFragment()

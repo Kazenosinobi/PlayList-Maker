@@ -35,8 +35,8 @@
 
     <ImageView
         android:id="@+id/imageViewAddPic"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_width="@dimen/_312dp"
+        android:layout_height="@dimen/_312dp"
         android:scaleType="fitCenter"
         android:layout_marginHorizontal="@dimen/_24dp"
         android:layout_marginTop="@dimen/_16dp"

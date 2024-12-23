@@ -55,6 +55,12 @@ class SearchFragment : Fragment() {
         observeFlow()
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        trackAdapter = null
+        trackHistoryAdapter = null
+    }
+
     private fun observeFlow() {
         viewModel.getViewStateSharedFlow()
             .distinctUntilChanged()

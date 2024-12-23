@@ -63,6 +63,11 @@ class PlayListBottomSheetFragment : BottomSheetDialogFragment() {
         observeFlow()
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        playListBottomSheetAdapter = null
+    }
+
     private fun initListeners() {
         binding?.buttonNewPlayList?.setOnClickListener {
             startPlayListCreateFragment()
