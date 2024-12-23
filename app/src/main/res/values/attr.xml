@@ -56,4 +56,5 @@
     <attr name="bottomNavigationColorItemInactive" format="reference"/>
     <attr name="bottomNavigationColorItemActive" format="reference"/>
     <attr name="separatorColor" format="reference"/>
+    <attr name="PlayListFragmentBackgroundColor" format="reference"/>
 </resources>

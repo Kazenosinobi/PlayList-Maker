@@ -4,7 +4,7 @@ import com.practicum.playlistmaker.playListCreate.domain.models.PlayListCreateDa
 
 sealed interface PlayListState {
 
-    data class Content(val tracks: List<PlayListCreateData>) : PlayListState
+    data class Content(val playLists: List<PlayListCreateData>) : PlayListState
     data object Empty : PlayListState
 
 }

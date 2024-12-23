@@ -8,6 +8,8 @@ import com.practicum.playlistmaker.mediaLibrary.domain.impl.FavouriteTracksInter
 import com.practicum.playlistmaker.mediaLibrary.domain.impl.PlayListInteractorImpl
 import com.practicum.playlistmaker.playListCreate.domain.db.PlayListCreateInteractor
 import com.practicum.playlistmaker.playListCreate.domain.impl.PlayListCreateInteractorImpl
+import com.practicum.playlistmaker.playListScreen.domain.db.PlayListScreenInteractor
+import com.practicum.playlistmaker.playListScreen.domain.impl.PlayListScreenInteractorImpl
 import com.practicum.playlistmaker.search.domain.api.TracksInteractor
 import com.practicum.playlistmaker.search.domain.impl.TracksInteractorImpl
 import com.practicum.playlistmaker.settings.domain.api.SettingsInteractor
@@ -33,5 +35,5 @@ val interactorModule = module {
     factoryOf(::FavouriteTracksInteractorImpl).bind<FavouriteTracksInteractor>()
     factoryOf(::PlayListCreateInteractorImpl).bind<PlayListCreateInteractor>()
     factoryOf(::PlayListInteractorImpl).bind<PlayListInteractor>()
-
+    factoryOf(::PlayListScreenInteractorImpl).bind<PlayListScreenInteractor>()
 }

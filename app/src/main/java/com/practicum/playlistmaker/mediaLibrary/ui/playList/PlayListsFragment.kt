@@ -72,7 +72,7 @@ class PlayListsFragment : Fragment() {
             viewLifecycleOwner.lifecycleScope,
             false
         ) { playList ->
-
+            startPlayListScreenFragment()
         }
     }
 
@@ -83,13 +83,20 @@ class PlayListsFragment : Fragment() {
             )
     }
 
+    private fun startPlayListScreenFragment() {
+        findNavController()
+            .navigate(
+                R.id.action_mediaLibraryFragment_to_playListScreenFragment
+            )
+    }
+
     private fun observeFlow() {
         viewModel.getPlayListSharedFlow()
             .flowWithLifecycle(viewLifecycleOwner.lifecycle)
             .onEach { playListState ->
                 when (playListState) {
                     is PlayListState.Content -> {
-                        showContent(playListState.tracks)
+                        showContent(playListState.playLists)
                     }
 
                     PlayListState.Empty -> {

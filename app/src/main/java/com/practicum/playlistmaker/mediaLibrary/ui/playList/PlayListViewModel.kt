@@ -22,11 +22,11 @@ class PlayListViewModel(
     private fun loadPlayLists() {
 
         playListInteractor.getFavouritePlayList()
-            .onEach { tracks ->
-                if (tracks.isEmpty()) {
+            .onEach { playLists ->
+                if (playLists.isEmpty()) {
                     playListSharedFlow.emit(PlayListState.Empty)
                 } else {
-                    playListSharedFlow.emit(PlayListState.Content(tracks))
+                    playListSharedFlow.emit(PlayListState.Content(playLists))
                 }
             }
             .launchIn(viewModelScope)

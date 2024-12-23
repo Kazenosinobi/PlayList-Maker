@@ -24,4 +24,7 @@ interface PlayListDao {
 
     @Query("SELECT playListId, playListName, playListDescription, imagePath, tracks FROM play_list_table")
     fun getPlayList(): Flow<List<PlayListEntity>>
+
+    @Query("SELECT playListId, playListName, playListDescription, imagePath, tracks FROM play_list_table WHERE playListId = :playListId")
+    fun getPlayListById(playListId: Int): Flow<PlayListEntity>
 }

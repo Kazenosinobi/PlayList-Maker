@@ -114,7 +114,7 @@ class PlayListBottomSheetFragment : BottomSheetDialogFragment() {
             .onEach { playListState ->
                 when (playListState) {
                     is PlayListState.Content -> {
-                        showContent(playListState.tracks)
+                        showContent(playListState.playLists)
                     }
 
                     PlayListState.Empty -> {
