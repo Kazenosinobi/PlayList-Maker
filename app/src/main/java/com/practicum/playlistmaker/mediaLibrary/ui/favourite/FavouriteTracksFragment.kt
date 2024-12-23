@@ -11,7 +11,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.databinding.FragmentFavouriteTracksBinding
-import com.practicum.playlistmaker.media.ui.MediaActivity
+import com.practicum.playlistmaker.media.ui.MediaFragment
 import com.practicum.playlistmaker.search.domain.models.Track
 import com.practicum.playlistmaker.search.ui.recycler.TrackAdapter
 import com.practicum.playlistmaker.utils.debounce
@@ -101,8 +101,8 @@ class FavouriteTracksFragment : Fragment() {
     private fun startMediaActivity(track: Track) {
         findNavController()
             .navigate(
-                R.id.action_mediaLibraryFragment_to_mediaActivity,
-                MediaActivity.createArgs(track)
+                R.id.action_mediaLibraryFragment_to_mediaFragment,
+                MediaFragment.createArgs(track)
             )
     }
 

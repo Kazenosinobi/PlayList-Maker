@@ -15,6 +15,7 @@ constraintlayout = "2.1.4"
 glide = "4.16.0"
 gson = "2.10.1"
 navigationFragmentKtx = "2.8.2"
+pekoVersion = "3.0.1"
 retrofit = "2.9.0"
 converter-gson = "2.9.0"
 okhttp = "4.9.3"
@@ -39,6 +40,7 @@ androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "j
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
 koin-android = { module = "io.insert-koin:koin-android", version.ref = "koinAndroid" }
+markodevcic-peko = { module = "com.markodevcic:peko", version.ref = "pekoVersion" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 androidx-activity = { group = "androidx.activity", name = "activity", version.ref = "activity" }
 androidx-constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }

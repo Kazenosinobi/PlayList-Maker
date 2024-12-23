@@ -2,17 +2,21 @@ package com.practicum.playlistmaker.media.ui
 
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.practicum.playlistmaker.R
-import com.practicum.playlistmaker.databinding.ActivityMediaBinding
+import com.practicum.playlistmaker.databinding.FragmentMediaBinding
 import com.practicum.playlistmaker.media.domain.model.PlayerState
+import com.practicum.playlistmaker.playListBottomSheet.ui.PlayListBottomSheetFragment
 import com.practicum.playlistmaker.search.domain.models.Track
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -21,11 +25,11 @@ import kotlinx.serialization.json.Json
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
-class MediaActivity : AppCompatActivity() {
-    private var binding: ActivityMediaBinding? = null
+class MediaFragment : Fragment() {
+    private var binding: FragmentMediaBinding? = null
 
     private val track by lazy {
-        val jsonString = intent.getStringExtra(EXTRA_TRACK) ?: ""
+        val jsonString = requireArguments().getString(EXTRA_TRACK) ?: ""
         Json.decodeFromString<Track>(jsonString)
     }
 
@@ -33,10 +37,17 @@ class MediaActivity : AppCompatActivity() {
         parametersOf(track)
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = ActivityMediaBinding.inflate(LayoutInflater.from(this))
-        setContentView(binding?.root)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        binding = FragmentMediaBinding.inflate(inflater, container, false)
+        return binding?.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         getImageAlbum()
         setText()
@@ -49,9 +60,9 @@ class MediaActivity : AppCompatActivity() {
         super.onPause()
     }
 
-    override fun onDestroy() {
+    override fun onDestroyView() {
+        super.onDestroyView()
         binding = null
-        super.onDestroy()
     }
 
     private fun observeFlow() {
@@ -65,7 +76,7 @@ class MediaActivity : AppCompatActivity() {
 
     private fun initListeners() {
         binding?.backButton?.setOnClickListener {
-            finish()
+            findNavController().navigateUp()
         }
 
         binding?.imageViewPlay?.setOnClickListener {
@@ -75,6 +86,10 @@ class MediaActivity : AppCompatActivity() {
         binding?.imageViewFavourite?.setOnClickListener {
             viewModel.onFavoriteClicked()
         }
+
+        binding?.imageViewCatalog?.setOnClickListener {
+            startPlayListBottomSheetFragment(track)
+        }
     }
 
     private fun updateFavouriteButton(isFavourite: Boolean) {
@@ -83,7 +98,7 @@ class MediaActivity : AppCompatActivity() {
     }
 
     private fun showToast(message: Int) {
-        Toast.makeText(this@MediaActivity, message, Toast.LENGTH_SHORT).show()
+        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
     }
 
     private fun renderState(state: PlayerStateData) {
@@ -200,6 +215,14 @@ class MediaActivity : AppCompatActivity() {
                 EMPTY_STRING
             }
         }
+    }
+
+    private fun startPlayListBottomSheetFragment(track: Track) {
+        findNavController()
+            .navigate(
+                R.id.action_mediaFragment_to_playListBottomSheetFragment,
+                PlayListBottomSheetFragment.createArgs(track)
+            )
     }
 
     companion object {

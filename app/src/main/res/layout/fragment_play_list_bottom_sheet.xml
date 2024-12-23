@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/llBottomSheet"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    app:behavior_hideable="true"
+    app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
+    tools:context=".playListBottomSheet.ui.PlayListBottomSheetFragment">
+
+    <View
+        android:layout_width="@dimen/_48dp"
+        android:layout_height="@dimen/_4dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/_8dp"
+        android:background="@drawable/rounder" />
+
+    <TextView
+        style="@style/PlayListBottomSheetTittleTextStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <Button
+        android:id="@+id/buttonNewPlayList"
+        style="@style/buttonNewPlayListStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/new_playlist" />
+
+    <ImageView
+        android:id="@+id/imageViewNoData"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/_24dp"
+        android:contentDescription="@string/nothing_was_found"
+        android:src="@drawable/light_mode_nothing"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/textViewNoData"
+        style="@style/MediaLibraryErrorTextViewStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/not_create_playlist"
+        android:visibility="gone" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rwPlayLists"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        tools:itemCount="9"
+        tools:listitem="@layout/play_list_bottom_sheet_item" />
+
+</LinearLayout>

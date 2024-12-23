@@ -46,4 +46,23 @@
     <string name="media_library_is_empty">Your media library is empty</string>
     <string name="favourite_tracks">Favourite tracks</string>
     <string name="play_lists">Playlists</string>
+    <string name="new_play_list">New playlist</string>
+    <string name="add_image">Add image</string>
+    <string name="name_of_album">Name*</string>
+    <string name="description">Description</string>
+    <string name="Create">Create</string>
+    <string name="DescriptionOfPermission">Permission required for cover.</string>
+    <string name="PlayListCreateFragmentDialogTitle">Finish creating a playlist?</string>
+    <string name="PlayListCreateFragmentDialogMessage">All unsaved data will be lost</string>
+    <string name="Cancel">Cancel</string>
+    <string name="No">Complete</string>
+    <string name="play_list_created">Playlist %s is created</string>
+    <string name="added_to_play_list">Added to playlist %s</string>
+    <string name="already_added_to_play_list">The track already added to playlist %s</string>
+    <string name="add_to_play_list">Add to playlist</string>
+
+    <plurals name="tracks_count">
+        <item quantity="one">%d track</item>
+        <item quantity="other">%d tracks</item>
+    </plurals>
 </resources>

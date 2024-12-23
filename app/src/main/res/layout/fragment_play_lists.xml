@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".mediaLibrary.ui.MediaLibraryFragment">
 
     <Button
@@ -11,19 +12,34 @@
         style="@style/newPlaylistButtonStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/new_playlist"/>
+        android:text="@string/new_playlist" />
 
     <ImageView
+        android:id="@+id/imageViewNoData"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:layout_marginTop="@dimen/_24dp"
         android:contentDescription="@string/nothing_was_found"
-        android:src="@drawable/light_mode_nothing" />
+        android:src="@drawable/light_mode_nothing"
+        android:visibility="gone" />
 
     <TextView
+        android:id="@+id/textViewNoData"
         style="@style/MediaLibraryErrorTextViewStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/not_create_playlist" />
+        android:text="@string/not_create_playlist"
+        android:visibility="gone" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rwPlayLists"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+        app:spanCount="2"
+        tools:itemCount="9"
+        tools:listitem="@layout/play_list_item" />
 
 </LinearLayout>

@@ -5,12 +5,21 @@
         <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
         <item name="buttonBackgroundColor">@color/deep_white</item>
         <item name="buttonTextColor">@color/dark_grey</item>
+        <item name="playListButtonCreate">@color/deep_white</item>
         <item name="mainBackgroundColor">@color/dark_grey</item>
         <item name="settingsBackgroundColor">@color/dark_grey</item>
         <item name="searchBackgroundColor">@color/dark_grey</item>
+        <item name="playListCreateBackgroundColor">@color/dark_grey</item>
+        <item name="editTextSolidBackgroundColor">@color/dark_grey</item>
+        <item name="editTextStrokeBackgroundColor">@color/deep_white</item>
+        <item name="enabledEditTextStrokeBackgroundColor">@color/blue</item>
         <item name="mediaBackgroundColor">@color/dark_grey</item>
         <item name="mediaLibraryBackgroundColor">@color/dark_grey</item>
         <item name="editTextSearchBackgroundColor">@color/deep_white</item>
+        <item name="PlayListBottomSheetAlbumNameTextColor">@color/deep_white</item>
+        <item name="PlayListBottomSheetTracksCountTextColor">@color/deep_white</item>
+        <item name="PlayListBottomSheetRounderColor">@color/deep_white</item>
+        <item name="playListCreateEditTextHintColor">@color/deep_white</item>
         <item name="thumbColorSelected">@color/blue</item>
         <item name="thumbColorNormal">@color/light_grey</item>
         <item name="trackColorSelected">@color/light_blue</item>
@@ -41,6 +50,7 @@
         <item name="mediaDescriptionsDataTextColor">@color/deep_white</item>
         <item name="newPlaylistButtonBackGroundColor">@color/deep_white</item>
         <item name="newPlaylistButtonTextColor">@color/dark_grey</item>
+        <item name="PlayListBottomSheetBackgroundColor">@color/dark_grey</item>
         <item name="customTabRippleColor">@color/light_grey</item>
         <item name="customTabTextColor">@color/deep_white</item>
         <item name="customTabIndicatorColor">@color/deep_white</item>
@@ -52,5 +62,7 @@
 
         <item name="colorPrimaryDark">@color/dark_grey</item>
         <item name="colorAccent">@color/blue</item>
+        <item name="colorPrimary">@color/blue</item>
+        <item name="bottomSheetDialogTheme">@style/CustomBottomSheetDialog</item>
     </style>
 </resources>
