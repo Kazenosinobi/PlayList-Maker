@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.flowWithLifecycle
@@ -20,9 +21,17 @@ import com.practicum.playlistmaker.search.ui.recycler.TrackAdapter
 import com.practicum.playlistmaker.utils.debounce
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.core.parameter.parametersOf
 
 class PlayListScreenFragment : Fragment() {
+
+    private val playListId by lazy {
+        val jsonString = requireArguments().getString(EXTRA_PLAY_LIST_ID) ?: ""
+        Json.decodeFromString<Int>(jsonString)
+    }
 
     private var binding: FragmentPlayListScreenBinding? = null
 
@@ -30,7 +39,9 @@ class PlayListScreenFragment : Fragment() {
 
     private var onPlayListClickDebounce: ((Track) -> Unit)? = null
 
-    private val viewModel: PlayListScreenViewModel by viewModel()
+    private val viewModel: PlayListScreenViewModel by viewModel {
+        parametersOf(playListId)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -48,6 +59,7 @@ class PlayListScreenFragment : Fragment() {
         initAdapters()
         initListeners()
         observeFlow()
+        setUpBottomSheetHeight()
     }
 
     override fun onDestroyView() {
@@ -128,14 +140,16 @@ class PlayListScreenFragment : Fragment() {
             with(it) {
                 textViewAlbumName.text = playList.nameOfAlbum
                 textViewDescription.text = getDescription(playList)
-                textViewTotalDuration.text = playList.getTotalDuration(playList.tracks)
-                textViewTotalTracks.text = playList.tracks.size.toString()
+                textViewTotalDuration.text = getTotalDurationText(playList)
+                textViewTotalTracks.text = getTotalTracksText(playList)
             }
         }
     }
 
     private fun getDescription(playList: PlayListCreateData): String {
-        return playList.descriptionOfAlbum ?: run {
+        return playList.descriptionOfAlbum.takeIf {
+            it.isNullOrBlank().not()
+        } ?: run {
             binding.let {
                 it?.textViewDescription?.isVisible = false
                 EMPTY_STRING
@@ -143,8 +157,45 @@ class PlayListScreenFragment : Fragment() {
         }
     }
 
-    private companion object {
+    private fun getTotalDurationText(playList: PlayListCreateData): String? {
+        val resources = binding?.root?.context?.resources
+        val totalDuration = playList.getTotalDuration(playList.tracks).toInt()
+        return resources?.getQuantityString(
+            R.plurals.minutes_count,
+            totalDuration,
+            totalDuration
+        )
+    }
+
+    private fun getTotalTracksText(playList: PlayListCreateData): String? {
+        val resources = binding?.root?.context?.resources
+        val tracksCount = playList.tracks.size
+        return resources?.getQuantityString(
+            R.plurals.tracks_count,
+            tracksCount,
+            tracksCount
+        )
+    }
+
+    private fun setUpBottomSheetHeight() {
+        val bottomSheetDimensions = BottomSheetDimensions(requireActivity())
+        binding?.llBottomSheet?.let {container ->
+            bottomSheetDimensions.setupBottomSheetHeight(
+                container,
+                PERCENT_OF_BOTTOM_SHEET_HEIGHT
+            )
+        }
+    }
+
+    companion object {
         private const val CLICK_DEBOUNCE_DELAY = 100L
+        private const val PERCENT_OF_BOTTOM_SHEET_HEIGHT = 0.37f
         private const val EMPTY_STRING = ""
+        private const val EXTRA_PLAY_LIST_ID = "extra_play_list_id"
+
+        fun createArgs(playListId: Int): Bundle {
+            val jsonString = Json.encodeToString(playListId)
+            return bundleOf(EXTRA_PLAY_LIST_ID to jsonString)
+        }
     }
 }

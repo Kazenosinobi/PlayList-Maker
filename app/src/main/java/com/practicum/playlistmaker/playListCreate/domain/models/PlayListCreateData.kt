@@ -2,8 +2,6 @@ package com.practicum.playlistmaker.playListCreate.domain.models
 
 import com.practicum.playlistmaker.playListCreate.data.db.entity.PlayListEntity
 import com.practicum.playlistmaker.search.domain.models.Track
-import java.text.SimpleDateFormat
-import java.util.Locale
 
 data class PlayListCreateData(
     val playListId: Long,
@@ -18,12 +16,13 @@ data class PlayListCreateData(
         )
     }
 
-    fun getTotalDuration(tracks: List<Track>): String {
-        var totalDuration = ""
-        for (track in tracks) {
-            totalDuration += track.trackTime
-        }
-        return SimpleDateFormat("mm", Locale.getDefault()).format(totalDuration)
+    fun getTotalDuration(tracks: List<Track>): Long {
+        val totalDuration = tracks.sumOf { it.trackTimeMillis }
+        return totalDuration / MILLIS_IN_SECOND
+    }
+
+    private companion object {
+        private const val MILLIS_IN_SECOND = 60_000L
     }
 }
 

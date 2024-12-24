@@ -208,7 +208,7 @@ class MediaFragment : Fragment() {
     }
 
     private fun getTrackTime(): String {
-        return track.trackTime ?: run {
+        return track.getTrackTime() ?: run {
             binding.let {
                 it?.textViewDuration?.isVisible = false
                 it?.textViewDurationData?.isVisible = false

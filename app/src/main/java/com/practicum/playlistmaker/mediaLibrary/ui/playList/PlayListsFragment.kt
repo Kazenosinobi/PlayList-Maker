@@ -14,6 +14,7 @@ import com.practicum.playlistmaker.databinding.FragmentPlayListsBinding
 import com.practicum.playlistmaker.mediaLibrary.ui.playList.recycler.GridSpacingItemDecoration
 import com.practicum.playlistmaker.mediaLibrary.ui.playList.recycler.PlayListAdapter
 import com.practicum.playlistmaker.playListCreate.domain.models.PlayListCreateData
+import com.practicum.playlistmaker.playListScreen.ui.PlayListScreenFragment
 import com.practicum.playlistmaker.utils.debounce
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -72,7 +73,7 @@ class PlayListsFragment : Fragment() {
             viewLifecycleOwner.lifecycleScope,
             false
         ) { playList ->
-            startPlayListScreenFragment()
+            startPlayListScreenFragment(playList.playListId.toInt())
         }
     }
 
@@ -83,10 +84,11 @@ class PlayListsFragment : Fragment() {
             )
     }
 
-    private fun startPlayListScreenFragment() {
+    private fun startPlayListScreenFragment(playListId: Int) {
         findNavController()
             .navigate(
-                R.id.action_mediaLibraryFragment_to_playListScreenFragment
+                R.id.action_mediaLibraryFragment_to_playListScreenFragment,
+                PlayListScreenFragment.createArgs(playListId)
             )
     }
 

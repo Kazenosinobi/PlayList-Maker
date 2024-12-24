@@ -15,7 +15,7 @@ class TrackViewHolder(private val binding: TrackItemBinding) :
         with(binding) {
             textViewTrackName.text = item.trackName
             textViewArtistName.text = item.artistName
-            textViewTrackTime.text = item.trackTime
+            textViewTrackTime.text = item.getTrackTime()
             textViewArtistName.invalidate()
             textViewArtistName.requestLayout()
 

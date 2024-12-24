@@ -35,20 +35,28 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/backButton" />
 
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/centerBorder"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.45" />
+
         <TextView
             android:id="@+id/textViewAlbumName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/_16dp"
-            android:layout_marginTop="@dimen/_24dp"
             android:ellipsize="end"
             android:fontFamily="@font/ys_display_bold"
             android:maxLines="1"
             android:textColor="@color/dark_grey"
             android:textFontWeight="700"
             android:textSize="@dimen/_24sp"
+            app:layout_constraintBottom_toTopOf="@+id/textViewDescription"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageViewAlbum"
+            app:layout_constraintTop_toBottomOf="@+id/centerBorder"
+            app:layout_constraintVertical_chainStyle="packed"
             tools:text="Album name" />
 
         <TextView
@@ -58,105 +66,95 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/_16dp"
             android:layout_marginTop="@dimen/_8dp"
+            app:layout_constraintBottom_toTopOf="@+id/textViewTotalDuration"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textViewAlbumName"
             tools:text="Description DescriptionDescriptionDescriptionDescriptionDescription" />
 
-        <LinearLayout
-            android:id="@+id/llDescription"
-            android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/textViewTotalDuration"
+            style="@style/PlayListScreenTextViewStyle"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/_16dp"
             android:layout_marginTop="@dimen/_8dp"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
+            app:layout_constraintBottom_toTopOf="@+id/imageViewDot"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textViewDescription">
+            app:layout_constraintTop_toBottomOf="@+id/textViewDescription"
+            tools:text="300 minutes" />
 
-            <TextView
-                android:id="@+id/textViewTotalDuration"
-                style="@style/PlayListScreenTextViewStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                tools:text="300 minutes" />
-
-            <ImageView
-                android:id="@+id/imageViewDot"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/_4dp"
-                android:background="@color/dark_grey"
-                android:contentDescription="@string/dot"
-                android:src="@drawable/ellipse_2" />
-
-            <TextView
-                android:id="@+id/textViewTotalTracks"
-                style="@style/PlayListScreenTextViewStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                tools:text="98 tracks" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/llIcons"
-            android:layout_width="match_parent"
+        <ImageView
+            android:id="@+id/imageViewDot"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/_4dp"
+            android:background="@color/dark_grey"
+            android:contentDescription="@string/dot"
+            android:src="@drawable/ellipse_2"
+            app:layout_constraintBottom_toBottomOf="@+id/textViewTotalTracks"
+            app:layout_constraintStart_toEndOf="@+id/textViewTotalDuration"
+            app:layout_constraintTop_toTopOf="@+id/textViewTotalDuration" />
+
+        <TextView
+            android:id="@+id/textViewTotalTracks"
+            style="@style/PlayListScreenTextViewStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/_4dp"
+            app:layout_constraintBaseline_toBaselineOf="@+id/textViewTotalDuration"
+            app:layout_constraintStart_toEndOf="@+id/imageViewDot"
+            tools:text="98 tracks" />
+
+        <ImageView
+            android:id="@+id/imageViewShare"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_20dp"
             android:layout_marginTop="@dimen/_20dp"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
+            android:contentDescription="@string/share"
+            android:src="@drawable/share2"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/llDescription">
+            app:layout_constraintTop_toBottomOf="@+id/textViewTotalDuration" />
 
-            <ImageView
-                android:id="@+id/imageViewShare"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/_20dp"
-                android:contentDescription="@string/share"
-                android:src="@drawable/share2" />
-
-            <ImageView
-                android:id="@+id/imageViewOptions"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/_32dp"
-                android:contentDescription="@string/text_options"
-                android:src="@drawable/options" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/llBottomSheet"
-            android:layout_width="match_parent"
+        <ImageView
+            android:id="@+id/imageViewOptions"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_28dp"
-            android:orientation="vertical"
-            app:behavior_hideable="true"
-            app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/llIcons">
-
-            <View
-                android:layout_width="@dimen/_48dp"
-                android:layout_height="@dimen/_4dp"
-                android:layout_gravity="center"
-                android:layout_marginTop="@dimen/_8dp"
-                android:layout_marginBottom="@dimen/_12dp"
-                android:background="@drawable/rounder" />
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rwTracksList"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                tools:itemCount="9"
-                tools:listitem="@layout/track_item" />
-
-        </LinearLayout>
-
+            android:layout_marginStart="@dimen/_32dp"
+            android:contentDescription="@string/text_options"
+            android:src="@drawable/options"
+            app:layout_constraintBottom_toBottomOf="@+id/imageViewShare"
+            app:layout_constraintStart_toEndOf="@+id/imageViewShare"
+            app:layout_constraintTop_toTopOf="@+id/imageViewShare" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <LinearLayout
+        android:id="@+id/llBottomSheet"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/bottom_sheet_dialog_background"
+        android:orientation="vertical"
+        app:behavior_hideable="true"
+        app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
+
+        <View
+            android:layout_width="@dimen/_48dp"
+            android:layout_height="@dimen/_4dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/_8dp"
+            android:layout_marginBottom="@dimen/_12dp"
+            android:background="@drawable/rounder" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rwTracksList"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:itemCount="9"
+            tools:listitem="@layout/track_item" />
+
+    </LinearLayout>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
