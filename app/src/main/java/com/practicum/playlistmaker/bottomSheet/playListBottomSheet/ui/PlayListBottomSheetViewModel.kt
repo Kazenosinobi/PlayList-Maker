@@ -1,4 +1,4 @@
-package com.practicum.playlistmaker.playListBottomSheet.ui
+package com.practicum.playlistmaker.bottomSheet.playListBottomSheet.ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -23,6 +23,13 @@ class PlayListBottomSheetViewModel(
         loadPlayLists()
     }
 
+    fun addTrackToPlayList(track: Track, playList: PlayListCreateData) {
+        viewModelScope.launch {
+            playListInteractor.updateFavouritePlayList(playList.addTrack(track))
+            playListSharedFlow.emit(PlayListState.Content(listOf(playList.addTrack(track))))
+        }
+    }
+
     private fun loadPlayLists() {
 
         playListInteractor.getFavouritePlayList()
@@ -34,13 +41,6 @@ class PlayListBottomSheetViewModel(
                 }
             }
             .launchIn(viewModelScope)
-    }
-
-    fun addTrackToPlayList(track: Track, playList: PlayListCreateData) {
-        viewModelScope.launch {
-            playListInteractor.updateFavouritePlayList(playList.addTrack(track))
-            playListSharedFlow.emit(PlayListState.Content(listOf(playList.addTrack(track))))
-        }
     }
 
     private companion object {

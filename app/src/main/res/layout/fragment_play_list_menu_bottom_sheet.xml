@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/llBottomSheet"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    app:behavior_hideable="true"
+    app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
+    tools:context=".bottomSheet.playListMenuBottomSheet.ui.PlayListMenuBottomSheetFragment">
+
+    <View
+        android:layout_width="@dimen/_48dp"
+        android:layout_height="@dimen/_4dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/_8dp"
+        android:layout_marginBottom="@dimen/_12dp"
+        android:background="@drawable/rounder" />
+
+    <include
+        android:id="@+id/include"
+        layout="@layout/play_list_bottom_sheet_item" />
+
+    <TextView
+        android:id="@+id/textViewShare"
+        style="@style/PlayListMenuBottomSheetTextViewStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/share_play_list" />
+
+    <TextView
+        android:id="@+id/textViewEdit"
+        style="@style/PlayListMenuBottomSheetTextViewStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/edit_play_list" />
+
+    <TextView
+        android:id="@+id/textViewDelete"
+        style="@style/PlayListMenuBottomSheetTextViewStyle"
+        android:layout_marginBottom="@dimen/_28dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/delete_play_list" />
+
+</LinearLayout>

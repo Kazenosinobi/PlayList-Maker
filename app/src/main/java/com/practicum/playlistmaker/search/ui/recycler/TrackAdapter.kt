@@ -2,12 +2,15 @@ package com.practicum.playlistmaker.search.ui.recycler
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.ListAdapter
+import androidx.recyclerview.widget.RecyclerView
 import com.practicum.playlistmaker.databinding.TrackItemBinding
 import com.practicum.playlistmaker.search.domain.models.Track
 
 class TrackAdapter(
     private val onClick: (Track) -> Unit = {},
+    private val onLongClickListener: (Track) -> Unit = {},
 ) : ListAdapter<Track, TrackViewHolder>(TrackDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TrackViewHolder {
@@ -23,5 +26,6 @@ class TrackAdapter(
         val track = getItem(position)
         holder.bind(track)
         holder.itemView.setOnClickListener { onClick(track) }
+        holder.itemView.setOnClickListener { onLongClickListener(track) }
     }
 }

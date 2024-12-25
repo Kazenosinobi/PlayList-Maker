@@ -5,7 +5,6 @@ import kotlinx.coroutines.flow.Flow
 
 interface PlayListInteractor {
 
-    suspend fun deletePlayListAtFavouritePlayList(playList: PlayListCreateData)
     suspend fun updateFavouritePlayList(playList: PlayListCreateData)
     fun getFavouritePlayList(): Flow<List<PlayListCreateData>>
 

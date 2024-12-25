@@ -1,12 +1,10 @@
 package com.practicum.playlistmaker.playListScreen.domain.db
 
 import com.practicum.playlistmaker.playListCreate.domain.models.PlayListCreateData
-import kotlinx.coroutines.flow.Flow
 
 interface PlayListScreenInteractor {
 
-    suspend fun deletePlayListAtFavouritePlayList(playList: PlayListCreateData)
     suspend fun updateFavouritePlayList(playList: PlayListCreateData)
-    fun getPlayListById(playListId: Int): Flow<PlayListCreateData>
+    suspend fun getPlayListById(playListId: Int): PlayListCreateData
 
 }

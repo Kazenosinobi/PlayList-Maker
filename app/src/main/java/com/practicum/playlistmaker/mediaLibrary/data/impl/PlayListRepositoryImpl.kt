@@ -12,10 +12,6 @@ class PlayListRepositoryImpl(
     private val appDatabase: AppDatabase,
 ) : PlayListRepository {
 
-    override suspend fun deletePlayListAtFavouritePlayList(playList: PlayListCreateData) {
-        appDatabase.playListDao().deletePlayList(playList.mapToPlayListEntity())
-    }
-
     override suspend fun updateFavouritePlayList(playList: PlayListCreateData) {
         appDatabase.playListDao().updatePlayList(playList.mapToPlayListEntity())
     }

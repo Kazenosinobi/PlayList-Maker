@@ -7,7 +7,10 @@
     <string name="text_options">Настройки</string>
     <string name="back_button">Кнопка возврата назад</string>
     <string name="black_topic">Темная тема</string>
-    <string name="share">Поделиться приложением</string>
+    <string name="share_application">Поделиться приложением</string>
+    <string name="share_play_list">Поделиться</string>
+    <string name="edit_play_list">Редактировать информацию</string>
+    <string name="delete_play_list">Удалить плейлист</string>
     <string name="support">Написать в поддержку</string>
     <string name="terms_of_use">Пользовательское соглашение</string>
     <string name="share_uri">https://practicum.yandex.ru/android-developer/</string>
@@ -54,11 +57,16 @@
     <string name="PlayListCreateFragmentDialogTitle">Завершить создание плейлиста?</string>
     <string name="PlayListCreateFragmentDialogMessage">Все несохраненные данные будут потеряны</string>
     <string name="Cancel">Отмена</string>
-    <string name="No">Завершить</string>
+    <string name="Complete">Завершить</string>
     <string name="play_list_created">Плейлист %s создан</string>
     <string name="added_to_play_list">Добавленно в плейлист %s</string>
     <string name="already_added_to_play_list">Трек уже добавлен в плейлист %s</string>
     <string name="add_to_play_list">Добавить в плейлист</string>
+    <string name="want_to_delete_a_track">Хотите удалить трек?</string>
+    <string name="want_to_delete_a_play_list">Хотите удалить плейлист %s?</string>
+    <string name="yes">Да</string>
+    <string name="no">Нет</string>
+    <string name="no_tracks">В этом плейлисте нет списка треков, которым можно поделиться</string>
 
     <plurals name="tracks_count">
         <item quantity="one">%d трек</item>

@@ -1,4 +1,4 @@
-package com.practicum.playlistmaker.playListBottomSheet.ui
+package com.practicum.playlistmaker.bottomSheet.playListBottomSheet.ui
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -19,7 +19,7 @@ import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.core.App
 import com.practicum.playlistmaker.databinding.FragmentPlayListBottomSheetBinding
 import com.practicum.playlistmaker.mediaLibrary.ui.playList.PlayListState
-import com.practicum.playlistmaker.playListBottomSheet.ui.recycler.PlayListBottomSheetAdapter
+import com.practicum.playlistmaker.bottomSheet.playListBottomSheet.ui.recycler.PlayListBottomSheetAdapter
 import com.practicum.playlistmaker.playListCreate.domain.models.PlayListCreateData
 import com.practicum.playlistmaker.search.domain.models.Track
 import com.practicum.playlistmaker.utils.debounce
@@ -88,9 +88,9 @@ class PlayListBottomSheetFragment : BottomSheetDialogFragment() {
             false
         ) { playList ->
             val format =
-                if (playList.tracks.contains(track)) R.string.already_added_to_play_list else R.string.added_to_play_list
+                if (playList.tracks?.contains(track) == true) R.string.already_added_to_play_list else R.string.added_to_play_list
             val message = playList.nameOfAlbum ?: ""
-            if (playList.tracks.contains(track)) {
+            if (playList.tracks?.contains(track) == true) {
                 Toast.makeText(requireContext(), getString(format, message), Toast.LENGTH_SHORT)
                     .show()
             } else {

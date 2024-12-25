@@ -164,7 +164,7 @@ class PlayListCreateFragment : Fragment() {
             .setNeutralButton(R.string.Cancel) { dialog, which ->
 
             }
-            .setPositiveButton(R.string.No) { dialog, which ->
+            .setPositiveButton(R.string.Complete) { dialog, which ->
                 findNavController().navigateUp()
             }
             .show()
@@ -191,9 +191,10 @@ class PlayListCreateFragment : Fragment() {
                 R.color.deep_white
             ) to ContextCompat.getColor(requireContext(), R.color.dark_grey)
         }
-        Snackbar.make(rootView, message, Snackbar.LENGTH_LONG)
+        Snackbar.make(rootView, message, Snackbar.LENGTH_SHORT)
             .setTextColor(textColor)
             .setBackgroundTint(backgroundColor)
+            .setAnchorView(requireActivity().findViewById<View>(R.id.bottomNavigationView))
             .show()
 
 

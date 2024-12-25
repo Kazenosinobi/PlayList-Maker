@@ -25,14 +25,17 @@ class MainActivity : AppCompatActivity() {
 
         navController.addOnDestinationChangedListener {_, destination, _ ->
             when (destination.id) {
-                R.id.playListCreateFragment -> {
-                    binding?.bottomNavigationView?.visibility = View.GONE
+                R.id.searchFragment -> {
+                    binding?.bottomNavigationView?.visibility = View.VISIBLE
                 }
-                R.id.playListScreenFragment -> {
-                    binding?.bottomNavigationView?.visibility = View.GONE
+                R.id.mediaLibraryFragment -> {
+                    binding?.bottomNavigationView?.visibility = View.VISIBLE
+                }
+                R.id.settingsFragment -> {
+                    binding?.bottomNavigationView?.visibility = View.VISIBLE
                 }
                 else -> {
-                    binding?.bottomNavigationView?.visibility = View.VISIBLE
+                    binding?.bottomNavigationView?.visibility = View.GONE
                 }
             }
         }

@@ -1,5 +1,6 @@
 package com.practicum.playlistmaker.mediaLibrary.ui.playList.recycler
 
+import android.util.Log
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
@@ -15,8 +16,9 @@ class PlayListViewHolder(private val binding: PlayListItemBinding) :
         val cornerRadius = binding.root.context.resources.getDimensionPixelSize(R.dimen._8dp)
         with(binding) {
             TextViewName.text = item.nameOfAlbum
-            TextViewTracksCount.text = getTrackCountText(item.tracks.size)
+            TextViewTracksCount.text = item.tracks?.let { getTrackCountText(it.size) }
 
+            Log.d("My log", "${item.image}")
             Glide.with(imageViewAlbum.context)
                 .load(item.image)
                 .placeholder(R.drawable.place_holder)

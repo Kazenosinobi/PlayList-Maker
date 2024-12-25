@@ -1,5 +1,7 @@
 package com.practicum.playlistmaker.di
 
+import com.practicum.playlistmaker.bottomSheet.playListMenuBottomSheet.domain.api.PlayListMenuBottomSheetInteractor
+import com.practicum.playlistmaker.bottomSheet.playListMenuBottomSheet.domain.impl.PlayListMenuBottomSheetInteractorImpl
 import com.practicum.playlistmaker.media.domain.api.MediaInteractor
 import com.practicum.playlistmaker.media.domain.impl.MediaInteractorImpl
 import com.practicum.playlistmaker.mediaLibrary.domain.db.FavouriteTracksInteractor
@@ -8,7 +10,9 @@ import com.practicum.playlistmaker.mediaLibrary.domain.impl.FavouriteTracksInter
 import com.practicum.playlistmaker.mediaLibrary.domain.impl.PlayListInteractorImpl
 import com.practicum.playlistmaker.playListCreate.domain.db.PlayListCreateInteractor
 import com.practicum.playlistmaker.playListCreate.domain.impl.PlayListCreateInteractorImpl
+import com.practicum.playlistmaker.playListScreen.domain.api.ButtonsPlayListScreenInteractor
 import com.practicum.playlistmaker.playListScreen.domain.db.PlayListScreenInteractor
+import com.practicum.playlistmaker.playListScreen.domain.impl.ButtonsPlayListScreenInteractorImpl
 import com.practicum.playlistmaker.playListScreen.domain.impl.PlayListScreenInteractorImpl
 import com.practicum.playlistmaker.search.domain.api.TracksInteractor
 import com.practicum.playlistmaker.search.domain.impl.TracksInteractorImpl
@@ -36,4 +40,6 @@ val interactorModule = module {
     factoryOf(::PlayListCreateInteractorImpl).bind<PlayListCreateInteractor>()
     factoryOf(::PlayListInteractorImpl).bind<PlayListInteractor>()
     factoryOf(::PlayListScreenInteractorImpl).bind<PlayListScreenInteractor>()
+    factoryOf(::ButtonsPlayListScreenInteractorImpl).bind<ButtonsPlayListScreenInteractor>()
+    factoryOf(::PlayListMenuBottomSheetInteractorImpl).bind<PlayListMenuBottomSheetInteractor>()
 }

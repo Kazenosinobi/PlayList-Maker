@@ -1,6 +1,8 @@
 package com.practicum.playlistmaker.di
 
 import android.media.MediaPlayer
+import com.practicum.playlistmaker.bottomSheet.playListMenuBottomSheet.data.impl.PlayListMenuBottomSheetRepositoryImpl
+import com.practicum.playlistmaker.bottomSheet.playListMenuBottomSheet.domain.api.PlayListMenuBottomSheetRepository
 import com.practicum.playlistmaker.core.App
 import com.practicum.playlistmaker.media.data.impl.MediaRepositoryImpl
 import com.practicum.playlistmaker.media.domain.api.MediaRepository
@@ -10,7 +12,9 @@ import com.practicum.playlistmaker.mediaLibrary.domain.db.FavouriteTracksReposit
 import com.practicum.playlistmaker.mediaLibrary.domain.db.PlayListRepository
 import com.practicum.playlistmaker.playListCreate.data.impl.PlayListCreateRepositoryImpl
 import com.practicum.playlistmaker.playListCreate.domain.db.PlayListCreateRepository
+import com.practicum.playlistmaker.playListScreen.data.impl.ButtonsPlayListScreenRepositoryImpl
 import com.practicum.playlistmaker.playListScreen.data.impl.PlayListScreenRepositoryImpl
+import com.practicum.playlistmaker.playListScreen.domain.api.ButtonsPlayListScreenRepository
 import com.practicum.playlistmaker.playListScreen.domain.db.PlayListScreenRepository
 import com.practicum.playlistmaker.search.data.impl.TracksRepositoryImpl
 import com.practicum.playlistmaker.search.domain.api.TracksRepository
@@ -49,5 +53,10 @@ val repositoryModule = module {
     singleOf(::PlayListCreateRepositoryImpl).bind<PlayListCreateRepository>()
     singleOf(::PlayListRepositoryImpl).bind<PlayListRepository>()
     singleOf(::PlayListScreenRepositoryImpl).bind<PlayListScreenRepository>()
+    singleOf(::ButtonsPlayListScreenRepositoryImpl).bind<ButtonsPlayListScreenRepository>()
+
+    single<PlayListMenuBottomSheetRepository> {
+        PlayListMenuBottomSheetRepositoryImpl(androidApplication(), get())
+    }
 
 }

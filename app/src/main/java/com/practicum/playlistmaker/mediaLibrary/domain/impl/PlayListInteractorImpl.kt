@@ -9,10 +9,6 @@ class PlayListInteractorImpl(
     private val playListRepository: PlayListRepository,
 ) : PlayListInteractor {
 
-    override suspend fun deletePlayListAtFavouritePlayList(playList: PlayListCreateData) {
-        playListRepository.deletePlayListAtFavouritePlayList(playList)
-    }
-
     override suspend fun updateFavouritePlayList(playList: PlayListCreateData) {
         playListRepository.updateFavouritePlayList(playList)
     }

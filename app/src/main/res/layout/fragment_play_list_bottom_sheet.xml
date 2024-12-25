@@ -8,7 +8,7 @@
     android:orientation="vertical"
     app:behavior_hideable="true"
     app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
-    tools:context=".playListBottomSheet.ui.PlayListBottomSheetFragment">
+    tools:context=".bottomSheet.playListBottomSheet.ui.PlayListBottomSheetFragment">
 
     <View
         android:layout_width="@dimen/_48dp"

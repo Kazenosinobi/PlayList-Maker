@@ -44,7 +44,7 @@
     </fragment>
     <dialog
         android:id="@+id/playListBottomSheetFragment"
-        android:name="com.practicum.playlistmaker.playListBottomSheet.ui.PlayListBottomSheetFragment"
+        android:name="com.practicum.playlistmaker.bottomSheet.playListBottomSheet.ui.PlayListBottomSheetFragment"
         android:label="fragment_play_list_bottom_sheet"
         tools:layout="@layout/fragment_play_list_bottom_sheet" >
         <action
@@ -68,5 +68,13 @@
         <action
             android:id="@+id/action_playListScreenFragment_to_mediaFragment"
             app:destination="@id/mediaFragment" />
+        <action
+            android:id="@+id/action_playListScreenFragment_to_playListMenuBottomSheetFragment2"
+            app:destination="@id/playListMenuBottomSheetFragment2" />
     </fragment>
+    <dialog
+        android:id="@+id/playListMenuBottomSheetFragment2"
+        android:name="com.practicum.playlistmaker.bottomSheet.playListMenuBottomSheet.ui.PlayListMenuBottomSheetFragment"
+        android:label="fragment_play_list_menu_bottom_sheet"
+        tools:layout="@layout/fragment_play_list_menu_bottom_sheet" />
 </navigation>

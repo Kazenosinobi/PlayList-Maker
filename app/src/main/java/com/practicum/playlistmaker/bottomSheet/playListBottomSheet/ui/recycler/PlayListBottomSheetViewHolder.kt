@@ -1,4 +1,4 @@
-package com.practicum.playlistmaker.playListBottomSheet.ui.recycler
+package com.practicum.playlistmaker.bottomSheet.playListBottomSheet.ui.recycler
 
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -15,7 +15,7 @@ class PlayListBottomSheetViewHolder(private val binding: PlayListBottomSheetItem
         val cornerRadius = binding.root.context.resources.getDimensionPixelSize(R.dimen._4dp)
         with(binding) {
             TextViewName.text = item.nameOfAlbum
-            TextViewTracksCount.text = getTrackCountText(item.tracks.size)
+            TextViewTracksCount.text = item.tracks?.let { getTrackCountText(it.size) }
 
             Glide.with(imageViewAlbum.context)
                 .load(item.image)

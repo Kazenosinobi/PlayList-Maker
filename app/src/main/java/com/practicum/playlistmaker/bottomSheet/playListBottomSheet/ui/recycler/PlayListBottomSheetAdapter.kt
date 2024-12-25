@@ -1,4 +1,4 @@
-package com.practicum.playlistmaker.playListBottomSheet.ui.recycler
+package com.practicum.playlistmaker.bottomSheet.playListBottomSheet.ui.recycler
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

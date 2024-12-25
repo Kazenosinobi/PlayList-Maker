@@ -3,7 +3,8 @@ package com.practicum.playlistmaker.di
 import com.practicum.playlistmaker.media.ui.MediaViewModel
 import com.practicum.playlistmaker.mediaLibrary.ui.favourite.FavouriteTracksViewModel
 import com.practicum.playlistmaker.mediaLibrary.ui.playList.PlayListViewModel
-import com.practicum.playlistmaker.playListBottomSheet.ui.PlayListBottomSheetViewModel
+import com.practicum.playlistmaker.bottomSheet.playListBottomSheet.ui.PlayListBottomSheetViewModel
+import com.practicum.playlistmaker.bottomSheet.playListMenuBottomSheet.ui.PlayListMenuBottomSheetViewModel
 import com.practicum.playlistmaker.playListCreate.ui.PlayListCreateViewModel
 import com.practicum.playlistmaker.playListScreen.ui.PlayListScreenViewModel
 import com.practicum.playlistmaker.search.ui.SearchViewModel
@@ -22,5 +23,6 @@ val viewModelModule = module {
     viewModelOf(::PlayListCreateViewModel)
     viewModelOf(::PlayListBottomSheetViewModel)
     viewModelOf(::PlayListScreenViewModel)
+    viewModelOf(::PlayListMenuBottomSheetViewModel)
 
 }

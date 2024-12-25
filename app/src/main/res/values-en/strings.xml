@@ -8,7 +8,10 @@
     <string name="text_options">Settings</string>
     <string name="back_button">Back button</string>
     <string name="black_topic">Dark theme</string>
-    <string name="share">Share app</string>
+    <string name="share_application">Share app</string>
+    <string name="share_play_list">Share</string>
+    <string name="edit_play_list">Edit information</string>
+    <string name="delete_play_list">Delete playlist</string>
     <string name="support">Write to support</string>
     <string name="terms_of_use">Terms of use</string>
     <string name="share_uri">https://practicum.yandex.ru/android-developer/</string>
@@ -55,11 +58,16 @@
     <string name="PlayListCreateFragmentDialogTitle">Finish creating a playlist?</string>
     <string name="PlayListCreateFragmentDialogMessage">All unsaved data will be lost</string>
     <string name="Cancel">Cancel</string>
-    <string name="No">Complete</string>
+    <string name="Complete">Complete</string>
     <string name="play_list_created">Playlist %s is created</string>
     <string name="added_to_play_list">Added to playlist %s</string>
     <string name="already_added_to_play_list">The track already added to playlist %s</string>
     <string name="add_to_play_list">Add to playlist</string>
+    <string name="want_to_delete_a_track">Want to delete a track?</string>
+    <string name="want_to_delete_a_play_list">Want to delete playlist %s?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="no_tracks">This playlist does not have a list of tracks to share</string>
 
     <plurals name="tracks_count">
         <item quantity="one">%d track</item>
