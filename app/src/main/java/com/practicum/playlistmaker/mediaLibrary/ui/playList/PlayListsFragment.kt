@@ -13,7 +13,7 @@ import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.databinding.FragmentPlayListsBinding
 import com.practicum.playlistmaker.mediaLibrary.ui.playList.recycler.GridSpacingItemDecoration
 import com.practicum.playlistmaker.mediaLibrary.ui.playList.recycler.PlayListAdapter
-import com.practicum.playlistmaker.playListCreate.domain.models.PlayListCreateData
+import com.practicum.playlistmaker.basePlayList.domain.models.PlayListCreateData
 import com.practicum.playlistmaker.playListScreen.ui.PlayListScreenFragment
 import com.practicum.playlistmaker.utils.debounce
 import kotlinx.coroutines.flow.launchIn

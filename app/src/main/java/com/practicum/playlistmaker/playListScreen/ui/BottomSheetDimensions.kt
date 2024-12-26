@@ -7,12 +7,15 @@ import android.util.DisplayMetrics
 import android.view.View
 import android.view.WindowInsets
 import android.view.WindowManager
+import android.widget.FrameLayout
 import android.widget.LinearLayout
 import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.practicum.playlistmaker.R
 
 class BottomSheetDimensions(private val activity: Activity?) {
 
-    fun setupBottomSheetHeight(
+    fun setupBottomSheetHeightForDialog(
         container: LinearLayout,
         percentage: Float,
     ) {
@@ -42,6 +45,29 @@ class BottomSheetDimensions(private val activity: Activity?) {
         })
     }
 
+    fun setupBottomSheetHeightForDialogFragment(
+        bottomSheetDialog: BottomSheetDialog,
+        percentage: Float,
+    ) {
+        val bottomSheet = bottomSheetDialog.findViewById<View>(com.google.android.material.R.id.design_bottom_sheet) as FrameLayout
+
+        val bottomSheetBehavior: BottomSheetBehavior<FrameLayout> = BottomSheetBehavior
+            .from(bottomSheet)
+            .apply {
+                state = BottomSheetBehavior.STATE_COLLAPSED
+            }
+
+        val layoutParams = bottomSheet.layoutParams
+        layoutParams.height = getWindowHeight()
+        bottomSheet.layoutParams = layoutParams
+
+        val bottomSheetHeight = (layoutParams.height * percentage).toInt()
+
+        bottomSheetBehavior.peekHeight = bottomSheetHeight
+        bottomSheetBehavior.isFitToContents = false
+        bottomSheetBehavior.isHideable = true
+
+    }
 
     private fun getWindowHeight(): Int {
 

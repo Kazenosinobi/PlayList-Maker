@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import com.practicum.playlistmaker.databinding.PlayListBottomSheetItemBinding
 import com.practicum.playlistmaker.mediaLibrary.ui.playList.recycler.PlayListDiffCallback
-import com.practicum.playlistmaker.playListCreate.domain.models.PlayListCreateData
+import com.practicum.playlistmaker.basePlayList.domain.models.PlayListCreateData
 
 class PlayListBottomSheetAdapter(
     private val onClick: (PlayListCreateData) -> Unit = {},

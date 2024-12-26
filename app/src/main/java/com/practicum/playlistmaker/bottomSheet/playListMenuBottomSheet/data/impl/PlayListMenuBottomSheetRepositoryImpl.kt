@@ -5,8 +5,8 @@ import android.content.Intent
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.bottomSheet.playListMenuBottomSheet.domain.api.PlayListMenuBottomSheetRepository
 import com.practicum.playlistmaker.mediaLibrary.data.db.AppDatabase
-import com.practicum.playlistmaker.playListCreate.domain.models.PlayListCreateData
-import com.practicum.playlistmaker.playListCreate.domain.models.mapToPlayListEntity
+import com.practicum.playlistmaker.basePlayList.domain.models.PlayListCreateData
+import com.practicum.playlistmaker.basePlayList.domain.models.mapToPlayListEntity
 
 class PlayListMenuBottomSheetRepositoryImpl(
     private val context: Context,

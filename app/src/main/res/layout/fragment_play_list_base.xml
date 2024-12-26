@@ -7,7 +7,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="?attr/playListCreateBackgroundColor"
     android:orientation="vertical"
-    tools:context=".playListCreate.ui.PlayListCreateFragment">
+    tools:context=".basePlayList.playListCreate.ui.PlayListCreateFragment">
 
     <androidx.appcompat.widget.Toolbar
 
@@ -26,6 +26,7 @@
 
         <TextView
             style="@style/TextViewToolbarStyle"
+            android:id="@+id/textViewTittle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingHorizontal="@dimen/_24dp"

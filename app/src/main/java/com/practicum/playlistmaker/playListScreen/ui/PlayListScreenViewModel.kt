@@ -1,13 +1,17 @@
 package com.practicum.playlistmaker.playListScreen.ui
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.practicum.playlistmaker.playListCreate.domain.models.PlayListCreateData
+import com.practicum.playlistmaker.basePlayList.domain.db.BasePlayListInteractor
+import com.practicum.playlistmaker.basePlayList.domain.models.PlayListCreateData
 import com.practicum.playlistmaker.playListScreen.domain.api.ButtonsPlayListScreenInteractor
 import com.practicum.playlistmaker.playListScreen.domain.db.PlayListScreenInteractor
 import com.practicum.playlistmaker.search.domain.models.Track
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 
 class PlayListScreenViewModel(
@@ -25,7 +29,7 @@ class PlayListScreenViewModel(
     fun getPlayListScreenStateFlow() = playListScreenStateFlow.asStateFlow()
 
     init {
-        loadPlayListById(playListId)
+        loadPlayList()
     }
 
     fun removeTrackFromPlayList(track: Track) {
@@ -44,11 +48,12 @@ class PlayListScreenViewModel(
         }
     }
 
-    private fun loadPlayListById(playListId: Int) {
-        viewModelScope.launch {
-            val currentPlayList = playListScreenInteractor.getPlayListById(playListId)
-            playListScreenStateFlow.emit(PlayListScreenState.Content(currentPlayList))
-            playList = currentPlayList
-        }
+    private fun loadPlayList() {
+        playListScreenInteractor.getPlayListById(playListId)
+            .onEach { playList ->
+                playListScreenStateFlow.emit(PlayListScreenState.Content(playList))
+                this.playList = playList
+            }
+            .launchIn(viewModelScope)
     }
 }

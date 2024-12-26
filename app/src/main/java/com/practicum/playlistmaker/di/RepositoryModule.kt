@@ -10,8 +10,8 @@ import com.practicum.playlistmaker.mediaLibrary.data.impl.FavouriteTracksReposit
 import com.practicum.playlistmaker.mediaLibrary.data.impl.PlayListRepositoryImpl
 import com.practicum.playlistmaker.mediaLibrary.domain.db.FavouriteTracksRepository
 import com.practicum.playlistmaker.mediaLibrary.domain.db.PlayListRepository
-import com.practicum.playlistmaker.playListCreate.data.impl.PlayListCreateRepositoryImpl
-import com.practicum.playlistmaker.playListCreate.domain.db.PlayListCreateRepository
+import com.practicum.playlistmaker.basePlayList.data.impl.BasePlayListRepositoryImpl
+import com.practicum.playlistmaker.basePlayList.domain.db.BasePlayListRepository
 import com.practicum.playlistmaker.playListScreen.data.impl.ButtonsPlayListScreenRepositoryImpl
 import com.practicum.playlistmaker.playListScreen.data.impl.PlayListScreenRepositoryImpl
 import com.practicum.playlistmaker.playListScreen.domain.api.ButtonsPlayListScreenRepository
@@ -50,7 +50,7 @@ val repositoryModule = module {
     }
 
     singleOf(::FavouriteTracksRepositoryImpl).bind<FavouriteTracksRepository>()
-    singleOf(::PlayListCreateRepositoryImpl).bind<PlayListCreateRepository>()
+    singleOf(::BasePlayListRepositoryImpl).bind<BasePlayListRepository>()
     singleOf(::PlayListRepositoryImpl).bind<PlayListRepository>()
     singleOf(::PlayListScreenRepositoryImpl).bind<PlayListScreenRepository>()
     singleOf(::ButtonsPlayListScreenRepositoryImpl).bind<ButtonsPlayListScreenRepository>()

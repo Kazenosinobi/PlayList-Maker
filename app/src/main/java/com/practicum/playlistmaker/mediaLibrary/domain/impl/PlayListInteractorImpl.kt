@@ -2,7 +2,7 @@ package com.practicum.playlistmaker.mediaLibrary.domain.impl
 
 import com.practicum.playlistmaker.mediaLibrary.domain.db.PlayListInteractor
 import com.practicum.playlistmaker.mediaLibrary.domain.db.PlayListRepository
-import com.practicum.playlistmaker.playListCreate.domain.models.PlayListCreateData
+import com.practicum.playlistmaker.basePlayList.domain.models.PlayListCreateData
 import kotlinx.coroutines.flow.Flow
 
 class PlayListInteractorImpl(

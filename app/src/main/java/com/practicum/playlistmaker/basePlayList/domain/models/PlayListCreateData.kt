@@ -1,6 +1,6 @@
-package com.practicum.playlistmaker.playListCreate.domain.models
+package com.practicum.playlistmaker.basePlayList.domain.models
 
-import com.practicum.playlistmaker.playListCreate.data.db.entity.PlayListEntity
+import com.practicum.playlistmaker.basePlayList.data.db.entity.PlayListEntity
 import com.practicum.playlistmaker.search.domain.models.Track
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable

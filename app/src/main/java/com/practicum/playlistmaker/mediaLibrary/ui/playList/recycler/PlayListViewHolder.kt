@@ -1,13 +1,12 @@
 package com.practicum.playlistmaker.mediaLibrary.ui.playList.recycler
 
-import android.util.Log
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.practicum.playlistmaker.R
+import com.practicum.playlistmaker.basePlayList.domain.models.PlayListCreateData
 import com.practicum.playlistmaker.databinding.PlayListItemBinding
-import com.practicum.playlistmaker.playListCreate.domain.models.PlayListCreateData
 
 class PlayListViewHolder(private val binding: PlayListItemBinding) :
     RecyclerView.ViewHolder(binding.root) {
@@ -16,9 +15,8 @@ class PlayListViewHolder(private val binding: PlayListItemBinding) :
         val cornerRadius = binding.root.context.resources.getDimensionPixelSize(R.dimen._8dp)
         with(binding) {
             TextViewName.text = item.nameOfAlbum
-            TextViewTracksCount.text = item.tracks?.let { getTrackCountText(it.size) }
+            TextViewTracksCount.text = getTrackCountText(item.tracks.size)
 
-            Log.d("My log", "${item.image}")
             Glide.with(imageViewAlbum.context)
                 .load(item.image)
                 .placeholder(R.drawable.place_holder)

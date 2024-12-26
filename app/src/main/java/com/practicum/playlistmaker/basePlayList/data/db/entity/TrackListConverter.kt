@@ -1,4 +1,4 @@
-package com.practicum.playlistmaker.playListCreate.data.db.entity
+package com.practicum.playlistmaker.basePlayList.data.db.entity
 
 import androidx.room.TypeConverter
 import com.practicum.playlistmaker.search.domain.models.Track

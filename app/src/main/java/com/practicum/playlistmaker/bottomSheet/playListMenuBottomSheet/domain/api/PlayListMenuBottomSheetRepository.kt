@@ -1,6 +1,6 @@
 package com.practicum.playlistmaker.bottomSheet.playListMenuBottomSheet.domain.api
 
-import com.practicum.playlistmaker.playListCreate.domain.models.PlayListCreateData
+import com.practicum.playlistmaker.basePlayList.domain.models.PlayListCreateData
 
 interface PlayListMenuBottomSheetRepository {
     fun share(playList: PlayListCreateData)

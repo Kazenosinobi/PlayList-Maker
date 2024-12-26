@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import com.practicum.playlistmaker.databinding.PlayListItemBinding
-import com.practicum.playlistmaker.playListCreate.domain.models.PlayListCreateData
+import com.practicum.playlistmaker.basePlayList.domain.models.PlayListCreateData
 
 class PlayListAdapter(
     private val onClick: (PlayListCreateData) -> Unit = {},

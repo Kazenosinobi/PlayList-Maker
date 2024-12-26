@@ -6,20 +6,17 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.os.bundleOf
-import androidx.lifecycle.flowWithLifecycle
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.practicum.playlistmaker.R
+import com.practicum.playlistmaker.basePlayList.domain.models.PlayListCreateData
+import com.practicum.playlistmaker.basePlayList.playListEdit.ui.PlayListEditFragment
 import com.practicum.playlistmaker.databinding.FragmentPlayListMenuBottomSheetBinding
-import com.practicum.playlistmaker.mediaLibrary.ui.playList.PlayListState
-import com.practicum.playlistmaker.playListCreate.domain.models.PlayListCreateData
 import com.practicum.playlistmaker.playListScreen.ui.BottomSheetDimensions
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -49,7 +46,7 @@ class PlayListMenuBottomSheetFragment : BottomSheetDialogFragment() {
 
         initListeners()
         showContent(playList)
-//        setUpBottomSheetHeight()
+        setUpBottomSheetHeight()
     }
 
     private fun initListeners() {
@@ -58,7 +55,7 @@ class PlayListMenuBottomSheetFragment : BottomSheetDialogFragment() {
         }
 
         binding?.textViewEdit?.setOnClickListener {
-
+            startPlayListScreenFragment(playList.playListId.toInt())
         }
 
         binding?.textViewDelete?.setOnClickListener {
@@ -107,9 +104,9 @@ class PlayListMenuBottomSheetFragment : BottomSheetDialogFragment() {
 
     private fun setUpBottomSheetHeight() {
         val bottomSheetDimensions = BottomSheetDimensions(requireActivity())
-        binding?.llBottomSheet?.let { container ->
-            bottomSheetDimensions.setupBottomSheetHeight(
-                container,
+        binding?.llBottomSheet?.let {
+            bottomSheetDimensions.setupBottomSheetHeightForDialogFragment(
+                dialog as BottomSheetDialog,
                 PERCENT_OF_BOTTOM_SHEET_HEIGHT
             )
         }
@@ -131,7 +128,7 @@ class PlayListMenuBottomSheetFragment : BottomSheetDialogFragment() {
     }
 
     private fun startSharing() {
-        if (playList.tracks?.isEmpty() == true) {
+        if (playList.tracks.isEmpty()) {
             Toast.makeText(
                 requireContext(),
                 R.string.no_tracks,
@@ -140,6 +137,14 @@ class PlayListMenuBottomSheetFragment : BottomSheetDialogFragment() {
         } else {
             viewModel.sharePlayList(playList)
         }
+    }
+
+    private fun startPlayListScreenFragment(playListId: Int) {
+        findNavController()
+            .navigate(
+                R.id.action_playListMenuBottomSheetFragment2_to_playListEditFragment,
+                PlayListEditFragment.createArgs(playListId)
+            )
     }
 
     companion object {

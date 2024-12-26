@@ -6,7 +6,7 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.databinding.PlayListBottomSheetItemBinding
-import com.practicum.playlistmaker.playListCreate.domain.models.PlayListCreateData
+import com.practicum.playlistmaker.basePlayList.domain.models.PlayListCreateData
 
 class PlayListBottomSheetViewHolder(private val binding: PlayListBottomSheetItemBinding) :
     RecyclerView.ViewHolder(binding.root) {

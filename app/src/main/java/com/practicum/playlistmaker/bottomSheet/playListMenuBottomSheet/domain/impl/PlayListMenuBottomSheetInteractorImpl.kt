@@ -2,7 +2,7 @@ package com.practicum.playlistmaker.bottomSheet.playListMenuBottomSheet.domain.i
 
 import com.practicum.playlistmaker.bottomSheet.playListMenuBottomSheet.domain.api.PlayListMenuBottomSheetInteractor
 import com.practicum.playlistmaker.bottomSheet.playListMenuBottomSheet.domain.api.PlayListMenuBottomSheetRepository
-import com.practicum.playlistmaker.playListCreate.domain.models.PlayListCreateData
+import com.practicum.playlistmaker.basePlayList.domain.models.PlayListCreateData
 
 class PlayListMenuBottomSheetInteractorImpl(private val repository: PlayListMenuBottomSheetRepository) :
     PlayListMenuBottomSheetInteractor {

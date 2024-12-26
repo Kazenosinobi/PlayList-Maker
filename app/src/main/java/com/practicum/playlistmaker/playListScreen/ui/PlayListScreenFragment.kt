@@ -18,7 +18,7 @@ import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.bottomSheet.playListMenuBottomSheet.ui.PlayListMenuBottomSheetFragment
 import com.practicum.playlistmaker.databinding.FragmentPlayListScreenBinding
 import com.practicum.playlistmaker.media.ui.MediaFragment
-import com.practicum.playlistmaker.playListCreate.domain.models.PlayListCreateData
+import com.practicum.playlistmaker.basePlayList.domain.models.PlayListCreateData
 import com.practicum.playlistmaker.search.domain.models.Track
 import com.practicum.playlistmaker.search.ui.recycler.TrackAdapter
 import com.practicum.playlistmaker.utils.debounce
@@ -200,7 +200,7 @@ class PlayListScreenFragment : Fragment() {
     private fun setUpBottomSheetHeight() {
         val bottomSheetDimensions = BottomSheetDimensions(requireActivity())
         binding?.llBottomSheet?.let {container ->
-            bottomSheetDimensions.setupBottomSheetHeight(
+            bottomSheetDimensions.setupBottomSheetHeightForDialog(
                 container,
                 PERCENT_OF_BOTTOM_SHEET_HEIGHT
             )

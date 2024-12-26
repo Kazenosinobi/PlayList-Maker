@@ -68,6 +68,8 @@
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="no_tracks">This playlist does not have a list of tracks to share</string>
+    <string name="edit">Edit</string>
+    <string name="save">Save</string>
 
     <plurals name="tracks_count">
         <item quantity="one">%d track</item>

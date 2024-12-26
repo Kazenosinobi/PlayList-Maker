@@ -1,8 +1,9 @@
 package com.practicum.playlistmaker.playListScreen.domain.impl
 
-import com.practicum.playlistmaker.playListCreate.domain.models.PlayListCreateData
+import com.practicum.playlistmaker.basePlayList.domain.models.PlayListCreateData
 import com.practicum.playlistmaker.playListScreen.domain.db.PlayListScreenInteractor
 import com.practicum.playlistmaker.playListScreen.domain.db.PlayListScreenRepository
+import kotlinx.coroutines.flow.Flow
 
 class PlayListScreenInteractorImpl(
     private val playListScreenRepository: PlayListScreenRepository,
@@ -12,6 +13,6 @@ class PlayListScreenInteractorImpl(
         playListScreenRepository.updateFavouritePlayList(playList)
     }
 
-    override suspend fun getPlayListById(playListId: Int): PlayListCreateData =
+    override fun getPlayListById(playListId: Int): Flow<PlayListCreateData> =
         playListScreenRepository.getPlayListById(playListId)
 }

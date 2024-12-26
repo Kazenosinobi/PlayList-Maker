@@ -3,7 +3,7 @@ package com.practicum.playlistmaker.playListScreen.data.impl
 import android.content.Context
 import android.content.Intent
 import com.practicum.playlistmaker.R
-import com.practicum.playlistmaker.playListCreate.domain.models.PlayListCreateData
+import com.practicum.playlistmaker.basePlayList.domain.models.PlayListCreateData
 import com.practicum.playlistmaker.playListScreen.domain.api.ButtonsPlayListScreenRepository
 
 class ButtonsPlayListScreenRepositoryImpl(

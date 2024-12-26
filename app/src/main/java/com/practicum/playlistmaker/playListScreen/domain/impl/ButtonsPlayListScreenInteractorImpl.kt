@@ -1,6 +1,6 @@
 package com.practicum.playlistmaker.playListScreen.domain.impl
 
-import com.practicum.playlistmaker.playListCreate.domain.models.PlayListCreateData
+import com.practicum.playlistmaker.basePlayList.domain.models.PlayListCreateData
 import com.practicum.playlistmaker.playListScreen.domain.api.ButtonsPlayListScreenInteractor
 import com.practicum.playlistmaker.playListScreen.domain.api.ButtonsPlayListScreenRepository
 

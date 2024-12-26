@@ -20,7 +20,7 @@ import com.practicum.playlistmaker.core.App
 import com.practicum.playlistmaker.databinding.FragmentPlayListBottomSheetBinding
 import com.practicum.playlistmaker.mediaLibrary.ui.playList.PlayListState
 import com.practicum.playlistmaker.bottomSheet.playListBottomSheet.ui.recycler.PlayListBottomSheetAdapter
-import com.practicum.playlistmaker.playListCreate.domain.models.PlayListCreateData
+import com.practicum.playlistmaker.basePlayList.domain.models.PlayListCreateData
 import com.practicum.playlistmaker.search.domain.models.Track
 import com.practicum.playlistmaker.utils.debounce
 import kotlinx.coroutines.flow.launchIn

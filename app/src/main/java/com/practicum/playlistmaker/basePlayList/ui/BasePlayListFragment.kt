@@ -1,4 +1,4 @@
-package com.practicum.playlistmaker.playListCreate.ui
+package com.practicum.playlistmaker.basePlayList.ui
 
 import android.content.Intent
 import android.graphics.Bitmap
@@ -13,42 +13,44 @@ import android.widget.Toast
 import androidx.activity.addCallback
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.content.ContextCompat
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentContainerView
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.google.android.material.snackbar.Snackbar
 import com.markodevcic.peko.PermissionRequester
 import com.markodevcic.peko.PermissionResult
 import com.practicum.playlistmaker.R
-import com.practicum.playlistmaker.core.App
-import com.practicum.playlistmaker.databinding.FragmentPlayListCreateBinding
+import com.practicum.playlistmaker.databinding.FragmentPlayListBaseBinding
 import kotlinx.coroutines.launch
-import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.io.File
 import java.io.FileOutputStream
 
-class PlayListCreateFragment : Fragment() {
+abstract class BasePlayListFragment : Fragment() {
 
-    private var binding: FragmentPlayListCreateBinding? = null
+    protected var binding: FragmentPlayListBaseBinding? = null
 
-    private val viewModel: PlayListCreateViewModel by viewModel()
+    protected abstract val viewModel: BasePlayListViewModel
 
     private val requester = PermissionRequester.instance()
 
-    private var imagePath: Uri? = null
+    protected var imagePath: Uri? = null
+
+    private val picMedia =
+        registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
+            imagePath = uri
+            if (uri != null) {
+                handleImagePicked(uri)
+            }
+        }
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View? {
-        binding = FragmentPlayListCreateBinding.inflate(inflater, container, false)
+        binding = FragmentPlayListBaseBinding.inflate(inflater, container, false)
         return binding?.root
     }
 
@@ -59,25 +61,34 @@ class PlayListCreateFragment : Fragment() {
         dataCompleteness()
     }
 
-    private val picMedia =
-        registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
-            imagePath = uri
-            if (uri != null) {
+    protected open fun checkBeforeCloseScreen() {}
 
-                binding?.imageViewAddPic?.let { image ->
-                    val cornerRadius =
-                        binding?.root?.context?.resources?.getDimensionPixelSize(R.dimen._8dp)
-                    Glide.with(requireContext())
-                        .load(uri)
-                        .placeholder(R.drawable.place_holder)
-                        .fitCenter()
-                        .transform(cornerRadius?.let { corners -> RoundedCorners(corners) })
-                        .into(image)
-                }
+    protected open fun getPlayList() {}
 
-                saveImageToPrivateStorage(uri)
-            }
+    protected open fun closeScreen() {}
+
+    private fun handleImagePicked(uri: Uri) {
+
+        binding?.imageViewAddPic?.let { image ->
+            val cornerRadius =
+                binding?.root?.context?.resources?.getDimensionPixelSize(R.dimen._8dp)
+            Glide.with(requireContext())
+                .load(uri)
+                .placeholder(R.drawable.place_holder)
+                .fitCenter()
+                .transform(cornerRadius?.let { corners -> RoundedCorners(corners) })
+                .into(image)
         }
+        saveImageToPrivateStorage(uri)
+
+    }
+
+    private fun dataCompleteness() {
+
+        val isNameNotEmpty = !binding?.editTextName?.text.isNullOrBlank()
+        binding?.buttonCreate?.isEnabled = isNameNotEmpty
+
+    }
 
     private fun initListeners() {
 
@@ -86,7 +97,7 @@ class PlayListCreateFragment : Fragment() {
         }
 
         binding?.backButton?.setOnClickListener {
-            canBack()
+            closeScreen()
         }
 
         binding?.editTextName?.doAfterTextChanged {
@@ -94,17 +105,12 @@ class PlayListCreateFragment : Fragment() {
         }
 
         binding?.buttonCreate?.setOnClickListener {
-            showSnackBar()
+            getPlayList()
         }
 
         binding?.imageViewAddPic?.setOnClickListener {
             readMediaImagesPermission()
         }
-    }
-
-    private fun dataCompleteness() {
-        val isNameNotEmpty = !binding?.editTextName?.text.isNullOrBlank()
-        binding?.buttonCreate?.isEnabled = isNameNotEmpty
     }
 
     private fun saveImageToPrivateStorage(uri: Uri) {
@@ -154,60 +160,6 @@ class PlayListCreateFragment : Fragment() {
                     }
                 }
             }
-        }
-    }
-
-    private fun showDialog() {
-        MaterialAlertDialogBuilder(requireContext())
-            .setTitle(R.string.PlayListCreateFragmentDialogTitle)
-            .setMessage(R.string.PlayListCreateFragmentDialogMessage)
-            .setNeutralButton(R.string.Cancel) { dialog, which ->
-
-            }
-            .setPositiveButton(R.string.Complete) { dialog, which ->
-                findNavController().navigateUp()
-            }
-            .show()
-    }
-
-    private fun showSnackBar() {
-        val nameOfAlbum = binding?.editTextName?.text.toString()
-        val descriptionOfAlbum = binding?.editTextDescription?.text.toString()
-        val image = imagePath.toString()
-
-        viewModel.savePlayList(image, nameOfAlbum, descriptionOfAlbum)
-
-        val rootView = requireActivity().findViewById<FragmentContainerView>(R.id.container_view)
-        val message =
-            getString(R.string.play_list_created, binding?.editTextName?.text?.toString())
-        val (textColor, backgroundColor) = if ((requireContext().applicationContext as App).darkTheme) {
-            ContextCompat.getColor(
-                requireContext(),
-                R.color.dark_grey
-            ) to ContextCompat.getColor(requireContext(), R.color.deep_white)
-        } else {
-            ContextCompat.getColor(
-                requireContext(),
-                R.color.deep_white
-            ) to ContextCompat.getColor(requireContext(), R.color.dark_grey)
-        }
-        Snackbar.make(rootView, message, Snackbar.LENGTH_SHORT)
-            .setTextColor(textColor)
-            .setBackgroundTint(backgroundColor)
-            .setAnchorView(requireActivity().findViewById<View>(R.id.bottomNavigationView))
-            .show()
-
-
-        findNavController().navigateUp()
-    }
-
-    private fun canBack() {
-        val isNameSet = binding?.editTextName?.text.isNullOrBlank().not()
-        val isDescriptionSet = binding?.editTextDescription?.text.isNullOrBlank().not()
-        if (imagePath != null || isNameSet || isDescriptionSet) {
-            showDialog()
-        } else {
-            findNavController().navigateUp()
         }
     }
 

@@ -1,8 +1,8 @@
-package com.practicum.playlistmaker.playListCreate.data.db.entity
+package com.practicum.playlistmaker.basePlayList.data.db.entity
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.practicum.playlistmaker.playListCreate.domain.models.PlayListCreateData
+import com.practicum.playlistmaker.basePlayList.domain.models.PlayListCreateData
 import com.practicum.playlistmaker.search.domain.models.Track
 
 @Entity(tableName = "play_list_table")
@@ -15,7 +15,7 @@ data class PlayListEntity(
     val tracks: List<Track>,
 )
 
-fun PlayListEntity.mapToPlayListEntity(): PlayListCreateData {
+fun PlayListEntity.mapToPlayListCreateData(): PlayListCreateData {
     return PlayListCreateData(
         playListId = playListId,
         image = imagePath ?: "",
