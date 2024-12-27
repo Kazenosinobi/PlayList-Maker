@@ -148,6 +148,23 @@
             android:layout_marginBottom="@dimen/_12dp"
             android:background="@drawable/rounder" />
 
+        <ImageView
+            android:id="@+id/imageViewEmpty"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:contentDescription="@string/nothing_was_found"
+            android:src="@drawable/light_mode_nothing"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/textViewEmpty"
+            style="@style/MediaLibraryErrorTextViewStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/track_list_is_empty"
+            android:visibility="gone" />
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rwTracksList"
             android:layout_width="match_parent"

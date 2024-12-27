@@ -5,13 +5,13 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.practicum.playlistmaker.R
-import com.practicum.playlistmaker.basePlayList.domain.models.PlayListCreateData
 import com.practicum.playlistmaker.databinding.PlayListItemBinding
+import com.practicum.playlistmaker.mediaLibrary.domain.models.PlayListData
 
 class PlayListViewHolder(private val binding: PlayListItemBinding) :
     RecyclerView.ViewHolder(binding.root) {
 
-    fun bind(item: PlayListCreateData) {
+    fun bind(item: PlayListData) {
         val cornerRadius = binding.root.context.resources.getDimensionPixelSize(R.dimen._8dp)
         with(binding) {
             TextViewName.text = item.nameOfAlbum

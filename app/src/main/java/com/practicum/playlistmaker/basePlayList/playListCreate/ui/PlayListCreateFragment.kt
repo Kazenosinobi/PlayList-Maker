@@ -1,6 +1,5 @@
 package com.practicum.playlistmaker.basePlayList.playListCreate.ui
 
-import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentContainerView
 import androidx.navigation.fragment.findNavController
@@ -20,10 +19,10 @@ class PlayListCreateFragment : BasePlayListFragment() {
         MaterialAlertDialogBuilder(requireContext())
             .setTitle(R.string.PlayListCreateFragmentDialogTitle)
             .setMessage(R.string.PlayListCreateFragmentDialogMessage)
-            .setNeutralButton(R.string.Cancel) { dialog, which ->
+            .setNeutralButton(R.string.Cancel) { _, _ ->
 
             }
-            .setPositiveButton(R.string.Complete) { dialog, which ->
+            .setPositiveButton(R.string.Complete) { _, _ ->
                 findNavController().navigateUp()
             }
             .show()
@@ -55,7 +54,7 @@ class PlayListCreateFragment : BasePlayListFragment() {
         Snackbar.make(rootView, message, Snackbar.LENGTH_SHORT)
             .setTextColor(textColor)
             .setBackgroundTint(backgroundColor)
-            .setAnchorView(requireActivity().findViewById<View>(R.id.bottomNavigationView))
+            .setAnchorView(requireActivity().findViewById(R.id.bottomNavigationView))
             .show()
 
 

@@ -10,8 +10,8 @@ import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.practicum.playlistmaker.R
-import com.practicum.playlistmaker.basePlayList.domain.models.PlayListCreateData
 import com.practicum.playlistmaker.basePlayList.ui.BasePlayListFragment
+import com.practicum.playlistmaker.mediaLibrary.domain.models.PlayListData
 import com.practicum.playlistmaker.playListScreen.ui.PlayListScreenState
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -54,7 +54,7 @@ class PlayListEditFragment : BasePlayListFragment() {
         findNavController().navigateUp()
     }
 
-    private fun showContent(playList: PlayListCreateData) {
+    private fun showContent(playList: PlayListData) {
         setText(playList.nameOfAlbum.orEmpty(), playList.descriptionOfAlbum)
         setImage(playList.image.orEmpty())
     }
@@ -95,7 +95,6 @@ class PlayListEditFragment : BasePlayListFragment() {
         private const val EXTRA_PLAY_LIST_ID = "extra_play_list_id"
         private const val NAME_OF_FOLDER = "Play list maker album"
         private const val CHILD_PATH = "first_cover.jpg"
-        private const val SCHEME = "package"
 
         fun createArgs(playListId: Int): Bundle {
             val jsonString = Json.encodeToString(playListId)

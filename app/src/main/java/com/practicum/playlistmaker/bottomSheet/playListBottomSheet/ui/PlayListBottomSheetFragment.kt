@@ -16,11 +16,11 @@ import androidx.navigation.fragment.findNavController
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.snackbar.Snackbar
 import com.practicum.playlistmaker.R
+import com.practicum.playlistmaker.bottomSheet.playListBottomSheet.ui.recycler.PlayListBottomSheetAdapter
 import com.practicum.playlistmaker.core.App
 import com.practicum.playlistmaker.databinding.FragmentPlayListBottomSheetBinding
+import com.practicum.playlistmaker.mediaLibrary.domain.models.PlayListData
 import com.practicum.playlistmaker.mediaLibrary.ui.playList.PlayListState
-import com.practicum.playlistmaker.bottomSheet.playListBottomSheet.ui.recycler.PlayListBottomSheetAdapter
-import com.practicum.playlistmaker.basePlayList.domain.models.PlayListCreateData
 import com.practicum.playlistmaker.search.domain.models.Track
 import com.practicum.playlistmaker.utils.debounce
 import kotlinx.coroutines.flow.launchIn
@@ -42,7 +42,7 @@ class PlayListBottomSheetFragment : BottomSheetDialogFragment() {
 
     private var playListBottomSheetAdapter: PlayListBottomSheetAdapter? = null
 
-    private var onPlayListClickDebounce: ((PlayListCreateData) -> Unit)? = null
+    private var onPlayListClickDebounce: ((PlayListData) -> Unit)? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -88,9 +88,9 @@ class PlayListBottomSheetFragment : BottomSheetDialogFragment() {
             false
         ) { playList ->
             val format =
-                if (playList.tracks?.contains(track) == true) R.string.already_added_to_play_list else R.string.added_to_play_list
+                if (playList.tracks.contains(track)) R.string.already_added_to_play_list else R.string.added_to_play_list
             val message = playList.nameOfAlbum ?: ""
-            if (playList.tracks?.contains(track) == true) {
+            if (playList.tracks.contains(track)) {
                 Toast.makeText(requireContext(), getString(format, message), Toast.LENGTH_SHORT)
                     .show()
             } else {
@@ -125,7 +125,7 @@ class PlayListBottomSheetFragment : BottomSheetDialogFragment() {
             .launchIn(viewLifecycleOwner.lifecycleScope)
     }
 
-    private fun showContent(playLists: List<PlayListCreateData>) {
+    private fun showContent(playLists: List<PlayListData>) {
         binding?.let {
             playListBottomSheetAdapter?.submitList(playLists)
             it.rwPlayLists.isVisible = true

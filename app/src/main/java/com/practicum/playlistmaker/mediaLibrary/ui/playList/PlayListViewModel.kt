@@ -21,7 +21,7 @@ class PlayListViewModel(
 
     private fun loadPlayLists() {
 
-        playListInteractor.getFavouritePlayList()
+        playListInteractor.getPlayList()
             .onEach { playLists ->
                 if (playLists.isEmpty()) {
                     playListSharedFlow.emit(PlayListState.Empty)

@@ -11,7 +11,6 @@ import android.widget.FrameLayout
 import android.widget.LinearLayout
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
-import com.practicum.playlistmaker.R
 
 class BottomSheetDimensions(private val activity: Activity?) {
 

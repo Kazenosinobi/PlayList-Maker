@@ -2,22 +2,22 @@ package com.practicum.playlistmaker.bottomSheet.playListMenuBottomSheet.ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.practicum.playlistmaker.bottomSheet.playListMenuBottomSheet.domain.api.PlayListMenuBottomSheetInteractor
-import com.practicum.playlistmaker.basePlayList.domain.models.PlayListCreateData
+import com.practicum.playlistmaker.mediaLibrary.domain.db.PlayListInteractor
+import com.practicum.playlistmaker.mediaLibrary.domain.models.PlayListData
 import kotlinx.coroutines.launch
 
 class PlayListMenuBottomSheetViewModel(
-    private val playListMenuBottomSheetInteractor: PlayListMenuBottomSheetInteractor,
+    private val playListInteractor: PlayListInteractor,
 ) : ViewModel() {
 
-    fun deletePlayList(playList: PlayListCreateData) {
+    fun deletePlayList(playList: PlayListData) {
         viewModelScope.launch {
-            playListMenuBottomSheetInteractor.deletePlayListAtFavouritePlayList(playList)
+            playListInteractor.deletePlayList(playList)
         }
     }
 
-    fun sharePlayList(playList: PlayListCreateData) {
-        playListMenuBottomSheetInteractor.share(playList)
+    fun sharePlayList(playList: PlayListData) {
+        playListInteractor.share(playList)
     }
 
 }

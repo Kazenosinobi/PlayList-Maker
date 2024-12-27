@@ -108,15 +108,19 @@ class SearchFragment : Fragment() {
     }
 
     private fun initAdapters() {
-        trackAdapter = TrackAdapter { track ->
+        trackAdapter = TrackAdapter(
+            onClick = { track ->
             viewModel.addToTrackHistory(track)
             onTrackClickDebounce?.let { it(track) }
         }
-        trackHistoryAdapter = TrackAdapter { track ->
+        )
+        trackHistoryAdapter = TrackAdapter(
+            onClick = { track ->
             viewModel.addToTrackHistory(track)
             onTrackClickDebounce?.let { it(track) }
             viewModel.needToShowHistory()
         }
+        )
 
         binding?.rwTrack?.adapter = trackAdapter
         binding?.rwTrack?.itemAnimator = null

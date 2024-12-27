@@ -13,9 +13,9 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.practicum.playlistmaker.R
-import com.practicum.playlistmaker.basePlayList.domain.models.PlayListCreateData
 import com.practicum.playlistmaker.basePlayList.playListEdit.ui.PlayListEditFragment
 import com.practicum.playlistmaker.databinding.FragmentPlayListMenuBottomSheetBinding
+import com.practicum.playlistmaker.mediaLibrary.domain.models.PlayListData
 import com.practicum.playlistmaker.playListScreen.ui.BottomSheetDimensions
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
@@ -25,7 +25,7 @@ class PlayListMenuBottomSheetFragment : BottomSheetDialogFragment() {
 
     private val playList by lazy {
         val jsonString = requireArguments().getString(EXTRA_PLAY_LIST) ?: ""
-        Json.decodeFromString<PlayListCreateData>(jsonString)
+        Json.decodeFromString<PlayListData>(jsonString)
     }
 
     private val viewModel: PlayListMenuBottomSheetViewModel by viewModel()
@@ -63,12 +63,12 @@ class PlayListMenuBottomSheetFragment : BottomSheetDialogFragment() {
         }
     }
 
-    private fun showContent(playList: PlayListCreateData) {
+    private fun showContent(playList: PlayListData) {
         setText(playList)
         getImageAlbum(playList)
     }
 
-    private fun getImageAlbum(playList: PlayListCreateData) {
+    private fun getImageAlbum(playList: PlayListData) {
         val cornerRadius = resources.getDimensionPixelSize(R.dimen._8dp)
         binding?.let {
 
@@ -81,7 +81,7 @@ class PlayListMenuBottomSheetFragment : BottomSheetDialogFragment() {
         }
     }
 
-    private fun setText(playList: PlayListCreateData) {
+    private fun setText(playList: PlayListData) {
 
         binding?.let {
             it.include.TextViewName.text = playList.nameOfAlbum
@@ -90,10 +90,10 @@ class PlayListMenuBottomSheetFragment : BottomSheetDialogFragment() {
 
     }
 
-    private fun getTotalTracksText(playList: PlayListCreateData): String? {
+    private fun getTotalTracksText(playList: PlayListData): String? {
         val resources = binding?.root?.context?.resources
-        val tracksCount = playList.tracks?.size
-        return tracksCount?.let {
+        val tracksCount = playList.tracks.size
+        return tracksCount.let {
             resources?.getQuantityString(
                 R.plurals.tracks_count,
                 it,
@@ -117,10 +117,10 @@ class PlayListMenuBottomSheetFragment : BottomSheetDialogFragment() {
         val message = playList.nameOfAlbum
         MaterialAlertDialogBuilder(requireContext())
             .setTitle(getString(format, message))
-            .setNeutralButton(R.string.no) { dialog, which ->
+            .setNeutralButton(R.string.no) { _, _ ->
 
             }
-            .setPositiveButton(R.string.yes) { dialog, which ->
+            .setPositiveButton(R.string.yes) { _, _ ->
                 viewModel.deletePlayList(playList)
                 findNavController().popBackStack(R.id.mediaLibraryFragment, false)
             }
@@ -151,7 +151,7 @@ class PlayListMenuBottomSheetFragment : BottomSheetDialogFragment() {
         private const val EXTRA_PLAY_LIST = "extra_play_list"
         private const val PERCENT_OF_BOTTOM_SHEET_HEIGHT = 0.37f
 
-        fun createArgs(playList: PlayListCreateData): Bundle {
+        fun createArgs(playList: PlayListData): Bundle {
             val jsonString = Json.encodeToString(playList)
             return bundleOf(EXTRA_PLAY_LIST to jsonString)
         }

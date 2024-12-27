@@ -11,9 +11,9 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.databinding.FragmentPlayListsBinding
+import com.practicum.playlistmaker.mediaLibrary.domain.models.PlayListData
 import com.practicum.playlistmaker.mediaLibrary.ui.playList.recycler.GridSpacingItemDecoration
 import com.practicum.playlistmaker.mediaLibrary.ui.playList.recycler.PlayListAdapter
-import com.practicum.playlistmaker.basePlayList.domain.models.PlayListCreateData
 import com.practicum.playlistmaker.playListScreen.ui.PlayListScreenFragment
 import com.practicum.playlistmaker.utils.debounce
 import kotlinx.coroutines.flow.launchIn
@@ -28,7 +28,7 @@ class PlayListsFragment : Fragment() {
 
     private var playListAdapter: PlayListAdapter? = null
 
-    private var onPlayListClickDebounce: ((PlayListCreateData) -> Unit)? = null
+    private var onPlayListClickDebounce: ((PlayListData) -> Unit)? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -109,7 +109,7 @@ class PlayListsFragment : Fragment() {
             .launchIn(viewLifecycleOwner.lifecycleScope)
     }
 
-    private fun showContent(playLists: List<PlayListCreateData>) {
+    private fun showContent(playLists: List<PlayListData>) {
         binding?.let {
             playListAdapter?.submitList(playLists)
             it.rwPlayLists.isVisible = true

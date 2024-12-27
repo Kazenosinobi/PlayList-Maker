@@ -2,9 +2,7 @@ package com.practicum.playlistmaker.search.ui.recycler
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.ListAdapter
-import androidx.recyclerview.widget.RecyclerView
 import com.practicum.playlistmaker.databinding.TrackItemBinding
 import com.practicum.playlistmaker.search.domain.models.Track
 
@@ -26,6 +24,9 @@ class TrackAdapter(
         val track = getItem(position)
         holder.bind(track)
         holder.itemView.setOnClickListener { onClick(track) }
-        holder.itemView.setOnClickListener { onLongClickListener(track) }
+        holder.itemView.setOnLongClickListener {
+            onLongClickListener(track)
+            true
+        }
     }
 }

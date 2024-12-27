@@ -1,12 +1,9 @@
 package com.practicum.playlistmaker.playListScreen.ui
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.practicum.playlistmaker.basePlayList.domain.db.BasePlayListInteractor
-import com.practicum.playlistmaker.basePlayList.domain.models.PlayListCreateData
-import com.practicum.playlistmaker.playListScreen.domain.api.ButtonsPlayListScreenInteractor
-import com.practicum.playlistmaker.playListScreen.domain.db.PlayListScreenInteractor
+import com.practicum.playlistmaker.mediaLibrary.domain.db.PlayListInteractor
+import com.practicum.playlistmaker.mediaLibrary.domain.models.PlayListData
 import com.practicum.playlistmaker.search.domain.models.Track
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -16,11 +13,10 @@ import kotlinx.coroutines.launch
 
 class PlayListScreenViewModel(
     private val playListId: Int,
-    private val playListScreenInteractor: PlayListScreenInteractor,
-    private val buttonsPlayListScreenInteractor: ButtonsPlayListScreenInteractor
+    private val playListInteractor: PlayListInteractor,
 ) : ViewModel() {
 
-    var playList: PlayListCreateData? = null
+    var playList: PlayListData? = null
         private set
 
     private val playListScreenStateFlow =
@@ -36,7 +32,7 @@ class PlayListScreenViewModel(
         viewModelScope.launch {
             playList?.removeTrack(track)
                 ?.let {
-                    playListScreenInteractor.updateFavouritePlayList(it)
+                    playListInteractor.updatePlayList(it)
                     playListScreenStateFlow.emit(PlayListScreenState.Content(it))
                 }
         }
@@ -44,12 +40,12 @@ class PlayListScreenViewModel(
 
     fun sharePlayList() {
         viewModelScope.launch {
-            playList?.let { buttonsPlayListScreenInteractor.share(it) }
+            playList?.let { playListInteractor.share(it) }
         }
     }
 
     private fun loadPlayList() {
-        playListScreenInteractor.getPlayListById(playListId)
+        playListInteractor.getPlayListById(playListId)
             .onEach { playList ->
                 playListScreenStateFlow.emit(PlayListScreenState.Content(playList))
                 this.playList = playList

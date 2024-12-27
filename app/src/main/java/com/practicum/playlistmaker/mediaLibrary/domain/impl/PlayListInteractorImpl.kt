@@ -1,19 +1,34 @@
 package com.practicum.playlistmaker.mediaLibrary.domain.impl
 
+import com.practicum.playlistmaker.mediaLibrary.domain.models.PlayListData
 import com.practicum.playlistmaker.mediaLibrary.domain.db.PlayListInteractor
 import com.practicum.playlistmaker.mediaLibrary.domain.db.PlayListRepository
-import com.practicum.playlistmaker.basePlayList.domain.models.PlayListCreateData
 import kotlinx.coroutines.flow.Flow
 
 class PlayListInteractorImpl(
     private val playListRepository: PlayListRepository,
 ) : PlayListInteractor {
 
-    override suspend fun updateFavouritePlayList(playList: PlayListCreateData) {
-        playListRepository.updateFavouritePlayList(playList)
+    override suspend fun addPlayList(playList: PlayListData) {
+        playListRepository.addPlayList(playList)
     }
 
-    override fun getFavouritePlayList(): Flow<List<PlayListCreateData>> =
-        playListRepository.getFavouritePlayList()
+    override suspend fun deletePlayList(playList: PlayListData) {
+        playListRepository.deletePlayList(playList)
+    }
+
+    override suspend fun updatePlayList(playList: PlayListData) {
+        playListRepository.updatePlayList(playList)
+    }
+
+    override fun getPlayList(): Flow<List<PlayListData>> = playListRepository.getPlayList()
+
+
+    override fun getPlayListById(playListId: Int): Flow<PlayListData> =
+        playListRepository.getPlayListById(playListId)
+
+    override fun share(playList: PlayListData) {
+        playListRepository.share(playList)
+    }
 
 }

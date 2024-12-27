@@ -1,12 +1,12 @@
-package com.practicum.playlistmaker.basePlayList.domain.models
+package com.practicum.playlistmaker.mediaLibrary.domain.models
 
-import com.practicum.playlistmaker.basePlayList.data.db.entity.PlayListEntity
+import com.practicum.playlistmaker.mediaLibrary.data.db.entity.PlayListEntity
 import com.practicum.playlistmaker.search.domain.models.Track
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class PlayListCreateData(
+data class PlayListData(
     @SerialName("playListId")
     val playListId: Long,
     @SerialName("image")
@@ -18,13 +18,16 @@ data class PlayListCreateData(
     @SerialName("tracks")
     val tracks: List<Track>
 ) {
-    fun addTrack(track: Track): PlayListCreateData {
+    fun addTrack(track: Track): PlayListData {
         return this.copy(
-            tracks = this.tracks.plus(track),
+            tracks = buildList {
+                this.add(track)
+                this.addAll(this@PlayListData.tracks)
+            },
         )
     }
 
-    fun removeTrack(track: Track): PlayListCreateData {
+    fun removeTrack(track: Track): PlayListData {
         return this.copy(
             tracks = this.tracks.minus(track),
         )
@@ -40,7 +43,7 @@ data class PlayListCreateData(
     }
 }
 
-fun PlayListCreateData.mapToPlayListEntity(): PlayListEntity {
+fun PlayListData.mapToPlayListEntity(): PlayListEntity {
     return PlayListEntity(
         playListId = playListId,
         playListName = nameOfAlbum,

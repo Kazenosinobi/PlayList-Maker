@@ -18,7 +18,7 @@ import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.bottomSheet.playListMenuBottomSheet.ui.PlayListMenuBottomSheetFragment
 import com.practicum.playlistmaker.databinding.FragmentPlayListScreenBinding
 import com.practicum.playlistmaker.media.ui.MediaFragment
-import com.practicum.playlistmaker.basePlayList.domain.models.PlayListCreateData
+import com.practicum.playlistmaker.mediaLibrary.domain.models.PlayListData
 import com.practicum.playlistmaker.search.domain.models.Track
 import com.practicum.playlistmaker.search.ui.recycler.TrackAdapter
 import com.practicum.playlistmaker.utils.debounce
@@ -63,6 +63,7 @@ class PlayListScreenFragment : Fragment() {
         initListeners()
         observeFlow()
         setUpBottomSheetHeight()
+
     }
 
     override fun onDestroyView() {
@@ -114,7 +115,7 @@ class PlayListScreenFragment : Fragment() {
             )
     }
 
-    private fun startPlayListMenuBottomSheetFragment(playList: PlayListCreateData) {
+    private fun startPlayListMenuBottomSheetFragment(playList: PlayListData) {
         findNavController()
             .navigate(
                 R.id.action_playListScreenFragment_to_playListMenuBottomSheetFragment2,
@@ -134,13 +135,22 @@ class PlayListScreenFragment : Fragment() {
             .launchIn(viewLifecycleOwner.lifecycleScope)
     }
 
-    private fun showContent(playList: PlayListCreateData) {
+    private fun showContent(playList: PlayListData) {
         trackAdapter?.submitList(playList.tracks)
         setText(playList)
         getImageAlbum(playList)
+        if (playList.tracks.isEmpty()) {
+            binding?.rwTracksList?.isVisible = false
+            binding?.imageViewEmpty?.isVisible = true
+            binding?.textViewEmpty?.isVisible = true
+        } else {
+            binding?.rwTracksList?.isVisible = true
+            binding?.imageViewEmpty?.isVisible = false
+            binding?.textViewEmpty?.isVisible = false
+        }
     }
 
-    private fun getImageAlbum(playList: PlayListCreateData) {
+    private fun getImageAlbum(playList: PlayListData) {
         val cornerRadius = resources.getDimensionPixelSize(R.dimen._8dp)
         binding?.let {
             Glide.with(this)
@@ -151,7 +161,7 @@ class PlayListScreenFragment : Fragment() {
         }
     }
 
-    private fun setText(playList: PlayListCreateData) {
+    private fun setText(playList: PlayListData) {
         binding?.let {
             with(it) {
                 textViewAlbumName.text = playList.nameOfAlbum
@@ -162,21 +172,18 @@ class PlayListScreenFragment : Fragment() {
         }
     }
 
-    private fun getDescription(playList: PlayListCreateData): String {
-        return playList.descriptionOfAlbum.takeIf {
-            it.isNullOrBlank().not()
-        } ?: run {
+    private fun getDescription(playList: PlayListData): String {
+        val description = playList.descriptionOfAlbum
             binding.let {
-                it?.textViewDescription?.isVisible = false
-                EMPTY_STRING
+                it?.textViewDescription?.isVisible = !description.isNullOrBlank()
             }
-        }
+        return description.orEmpty()
     }
 
-    private fun getTotalDurationText(playList: PlayListCreateData): String? {
+    private fun getTotalDurationText(playList: PlayListData): String? {
         val resources = binding?.root?.context?.resources
-        val totalDuration = playList.tracks?.let { playList.getTotalDuration(it).toInt() }
-        return totalDuration?.let {
+        val totalDuration = playList.tracks.let { playList.getTotalDuration(it).toInt() }
+        return totalDuration.let {
             resources?.getQuantityString(
                 R.plurals.minutes_count,
                 it,
@@ -185,10 +192,10 @@ class PlayListScreenFragment : Fragment() {
         }
     }
 
-    private fun getTotalTracksText(playList: PlayListCreateData): String? {
+    private fun getTotalTracksText(playList: PlayListData): String? {
         val resources = binding?.root?.context?.resources
-        val tracksCount = playList.tracks?.size
-        return tracksCount?.let {
+        val tracksCount = playList.tracks.size
+        return tracksCount.let {
             resources?.getQuantityString(
                 R.plurals.tracks_count,
                 it,
@@ -210,10 +217,10 @@ class PlayListScreenFragment : Fragment() {
     private fun showDeleteTrackDialog(track: Track) {
         MaterialAlertDialogBuilder(requireContext())
             .setTitle(R.string.want_to_delete_a_track)
-            .setNeutralButton(R.string.no) { dialog, which ->
+            .setNeutralButton(R.string.no) { _, _ ->
 
             }
-            .setPositiveButton(R.string.yes) { dialog, which ->
+            .setPositiveButton(R.string.yes) { _, _ ->
                 viewModel.removeTrackFromPlayList(track)
             }
             .show()
@@ -234,7 +241,6 @@ class PlayListScreenFragment : Fragment() {
     companion object {
         private const val CLICK_DEBOUNCE_DELAY = 100L
         private const val PERCENT_OF_BOTTOM_SHEET_HEIGHT = 0.37f
-        private const val EMPTY_STRING = ""
         private const val EXTRA_PLAY_LIST_ID = "extra_play_list_id"
 
         fun createArgs(playListId: Int): Bundle {

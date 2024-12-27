@@ -1,4 +1,4 @@
-package com.practicum.playlistmaker.basePlayList.data.db.dao
+package com.practicum.playlistmaker.mediaLibrary.data.db.dao
 
 import androidx.room.Dao
 import androidx.room.Delete
@@ -6,7 +6,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
-import com.practicum.playlistmaker.basePlayList.data.db.entity.PlayListEntity
+import com.practicum.playlistmaker.mediaLibrary.data.db.entity.PlayListEntity
 import kotlinx.coroutines.flow.Flow
 
 @Dao

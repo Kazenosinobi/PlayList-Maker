@@ -47,6 +47,7 @@
     <string name="new_playlist">New playlist</string>
     <string name="not_create_playlist">You are not create\nno one playlists</string>
     <string name="media_library_is_empty">Your media library is empty</string>
+    <string name="track_list_is_empty">No tracks have been added \nto the playlist</string>
     <string name="favourite_tracks">Favourite tracks</string>
     <string name="play_lists">Playlists</string>
     <string name="new_play_list">New playlist</string>

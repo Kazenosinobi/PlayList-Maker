@@ -2,17 +2,17 @@ package com.practicum.playlistmaker.basePlayList.ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.practicum.playlistmaker.basePlayList.domain.db.BasePlayListInteractor
-import com.practicum.playlistmaker.basePlayList.domain.models.PlayListCreateData
+import com.practicum.playlistmaker.mediaLibrary.domain.db.PlayListInteractor
+import com.practicum.playlistmaker.mediaLibrary.domain.models.PlayListData
 import kotlinx.coroutines.launch
 
 abstract class BasePlayListViewModel(
-    private val basePlayListInteractor: BasePlayListInteractor
+    private val playListInteractor: PlayListInteractor
 ) : ViewModel() {
 
     fun savePlayList(image: String?, nameOfAlbum: String?, descriptionOfAlbum: String?) {
 
-        val data = PlayListCreateData(
+        val data = PlayListData(
             playListId = 0,
             image,
             nameOfAlbum,
@@ -20,7 +20,7 @@ abstract class BasePlayListViewModel(
             tracks = emptyList()
         )
         viewModelScope.launch {
-            basePlayListInteractor.addPlayListToFavouritePlayList(data)
+            playListInteractor.addPlayList(data)
         }
     }
 }

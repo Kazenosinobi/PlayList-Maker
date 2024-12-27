@@ -3,8 +3,8 @@ package com.practicum.playlistmaker.bottomSheet.playListBottomSheet.ui
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.practicum.playlistmaker.mediaLibrary.domain.db.PlayListInteractor
+import com.practicum.playlistmaker.mediaLibrary.domain.models.PlayListData
 import com.practicum.playlistmaker.mediaLibrary.ui.playList.PlayListState
-import com.practicum.playlistmaker.basePlayList.domain.models.PlayListCreateData
 import com.practicum.playlistmaker.search.domain.models.Track
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
@@ -23,16 +23,16 @@ class PlayListBottomSheetViewModel(
         loadPlayLists()
     }
 
-    fun addTrackToPlayList(track: Track, playList: PlayListCreateData) {
+    fun addTrackToPlayList(track: Track, playList: PlayListData) {
         viewModelScope.launch {
-            playListInteractor.updateFavouritePlayList(playList.addTrack(track))
+            playListInteractor.updatePlayList(playList.addTrack(track))
             playListSharedFlow.emit(PlayListState.Content(listOf(playList.addTrack(track))))
         }
     }
 
     private fun loadPlayLists() {
 
-        playListInteractor.getFavouritePlayList()
+        playListInteractor.getPlayList()
             .onEach { tracks ->
                 if (tracks.isEmpty()) {
                     playListSharedFlow.emit(PlayListState.Empty)
