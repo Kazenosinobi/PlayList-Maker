@@ -9,7 +9,7 @@ import com.practicum.playlistmaker.mediaLibrary.data.db.dao.PlayListDao
 import com.practicum.playlistmaker.mediaLibrary.data.db.entity.PlayListEntity
 import com.practicum.playlistmaker.mediaLibrary.data.db.entity.TrackListConverter
 
-@Database(version = 13, entities = [TrackEntity::class, PlayListEntity::class])
+@Database(version = 14, entities = [TrackEntity::class, PlayListEntity::class])
 @TypeConverters(TrackListConverter::class)
 abstract class AppDatabase : RoomDatabase() {
 

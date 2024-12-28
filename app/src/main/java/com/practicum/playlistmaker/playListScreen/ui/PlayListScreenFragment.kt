@@ -8,11 +8,14 @@ import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.setFragmentResultListener
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.bottomSheet.playListMenuBottomSheet.ui.PlayListMenuBottomSheetFragment
@@ -153,10 +156,10 @@ class PlayListScreenFragment : Fragment() {
     private fun getImageAlbum(playList: PlayListData) {
         val cornerRadius = resources.getDimensionPixelSize(R.dimen._8dp)
         binding?.let {
-            Glide.with(this)
+            Glide.with(requireContext())
                 .load(playList.image)
                 .placeholder(R.drawable.place_holder)
-                .transform(RoundedCorners(cornerRadius))
+                .apply(RequestOptions().transform(CenterCrop(), RoundedCorners(cornerRadius)))
                 .into(it.imageViewAlbum)
         }
     }
@@ -175,7 +178,7 @@ class PlayListScreenFragment : Fragment() {
     private fun getDescription(playList: PlayListData): String {
         val description = playList.descriptionOfAlbum
             binding.let {
-                it?.textViewDescription?.isVisible = !description.isNullOrBlank()
+                it?.textViewDescription?.isVisible = description.isNullOrBlank().not()
             }
         return description.orEmpty()
     }

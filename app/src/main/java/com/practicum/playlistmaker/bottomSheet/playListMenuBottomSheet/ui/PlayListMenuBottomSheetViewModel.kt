@@ -10,9 +10,9 @@ class PlayListMenuBottomSheetViewModel(
     private val playListInteractor: PlayListInteractor,
 ) : ViewModel() {
 
-    fun deletePlayList(playList: PlayListData) {
+    fun deletePlayList(playListId: Int) {
         viewModelScope.launch {
-            playListInteractor.deletePlayList(playList)
+            playListInteractor.deletePlayList(playListId)
         }
     }
 

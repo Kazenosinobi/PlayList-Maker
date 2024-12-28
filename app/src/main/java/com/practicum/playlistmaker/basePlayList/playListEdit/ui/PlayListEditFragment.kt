@@ -8,7 +8,9 @@ import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.bumptech.glide.request.RequestOptions
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.basePlayList.ui.BasePlayListFragment
 import com.practicum.playlistmaker.mediaLibrary.domain.models.PlayListData
@@ -43,7 +45,7 @@ class PlayListEditFragment : BasePlayListFragment() {
         val nameOfAlbum = binding?.editTextName?.text.toString()
         val descriptionOfAlbum = binding?.editTextDescription?.text.toString()
         val imagePath = File(requireActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES), NAME_OF_FOLDER)
-        val image = File(imagePath, CHILD_PATH)
+        val image = File(imagePath, super.imagePath?.lastPathSegment ?: FILE_NAME)
 
         viewModel.updatePlayList(image.toString(), nameOfAlbum, descriptionOfAlbum)
 
@@ -67,14 +69,18 @@ class PlayListEditFragment : BasePlayListFragment() {
     }
 
     private fun setImage(url: String) {
-        val cornerRadius =
-            binding?.root?.context?.resources?.getDimensionPixelSize(R.dimen._8dp)
+        val cornerRadius = resources.getDimensionPixelSize(R.dimen._8dp)
         binding?.imageViewAddPic?.let {
             Glide.with(requireContext())
                 .load(url)
                 .placeholder(R.drawable.place_holder)
                 .fitCenter()
-                .transform(cornerRadius?.let { corners -> RoundedCorners(corners) })
+                .apply(
+                    RequestOptions().transform(
+                        CenterCrop(),
+                        RoundedCorners(cornerRadius)
+                    )
+                )
                 .into(it)
         }
     }
@@ -94,7 +100,7 @@ class PlayListEditFragment : BasePlayListFragment() {
     companion object {
         private const val EXTRA_PLAY_LIST_ID = "extra_play_list_id"
         private const val NAME_OF_FOLDER = "Play list maker album"
-        private const val CHILD_PATH = "first_cover.jpg"
+        private const val FILE_NAME = "image"
 
         fun createArgs(playListId: Int): Bundle {
             val jsonString = Json.encodeToString(playListId)

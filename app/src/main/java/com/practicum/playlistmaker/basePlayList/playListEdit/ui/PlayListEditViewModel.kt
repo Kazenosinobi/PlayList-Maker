@@ -1,5 +1,7 @@
 package com.practicum.playlistmaker.basePlayList.playListEdit.ui
 
+import android.util.Log
+import androidx.core.net.toUri
 import androidx.lifecycle.viewModelScope
 import com.practicum.playlistmaker.basePlayList.ui.BasePlayListViewModel
 import com.practicum.playlistmaker.mediaLibrary.domain.db.PlayListInteractor
@@ -57,7 +59,11 @@ class PlayListEditViewModel(
         nameOfAlbum: String?,
         descriptionOfAlbum: String?
     ): PlayListData? {
-
+        Log.d("My log", "editPlayList: ${image.toString()}")
+        Log.d("My log", "editPlayList: ${playList?.image.toString()}")
+        Log.d("My log", "editPlayList: ${playList?.image?.equals(image)}")
+        Log.d("My log", "editPlayList: ${playList?.image?.hashCode()}")
+        Log.d("My log", "editPlayList: ${image?.hashCode()}")
         return playList?.copy(
             image = image,
             nameOfAlbum = nameOfAlbum,

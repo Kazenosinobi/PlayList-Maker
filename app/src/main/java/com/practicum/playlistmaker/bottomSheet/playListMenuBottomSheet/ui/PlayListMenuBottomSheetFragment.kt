@@ -4,11 +4,15 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.FrameLayout
 import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.bumptech.glide.request.RequestOptions
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -60,6 +64,7 @@ class PlayListMenuBottomSheetFragment : BottomSheetDialogFragment() {
 
         binding?.textViewDelete?.setOnClickListener {
             showDeletePlayListDialog()
+            dialog?.hide()
         }
     }
 
@@ -75,7 +80,12 @@ class PlayListMenuBottomSheetFragment : BottomSheetDialogFragment() {
             Glide.with(this)
                 .load(playList.image)
                 .placeholder(R.drawable.place_holder)
-                .transform(RoundedCorners(cornerRadius))
+                .apply(
+                    RequestOptions().transform(
+                        CenterCrop(),
+                        RoundedCorners(cornerRadius)
+                    )
+                )
                 .into(it.include.imageViewAlbum)
 
         }
@@ -107,7 +117,7 @@ class PlayListMenuBottomSheetFragment : BottomSheetDialogFragment() {
         binding?.llBottomSheet?.let {
             bottomSheetDimensions.setupBottomSheetHeightForDialogFragment(
                 dialog as BottomSheetDialog,
-                PERCENT_OF_BOTTOM_SHEET_HEIGHT
+                PERCENT_OF_BOTTOM_SHEET_HEIGHT,
             )
         }
     }
@@ -116,12 +126,13 @@ class PlayListMenuBottomSheetFragment : BottomSheetDialogFragment() {
         val format = R.string.want_to_delete_a_play_list
         val message = playList.nameOfAlbum
         MaterialAlertDialogBuilder(requireContext())
-            .setTitle(getString(format, message))
+            .setTitle(R.string.delete_play_list)
+            .setMessage(getString(format, message))
             .setNeutralButton(R.string.no) { _, _ ->
 
             }
             .setPositiveButton(R.string.yes) { _, _ ->
-                viewModel.deletePlayList(playList)
+                viewModel.deletePlayList(playList.playListId.toInt())
                 findNavController().popBackStack(R.id.mediaLibraryFragment, false)
             }
             .show()
@@ -134,6 +145,7 @@ class PlayListMenuBottomSheetFragment : BottomSheetDialogFragment() {
                 R.string.no_tracks,
                 Toast.LENGTH_SHORT
             ).show()
+            findNavController().navigateUp()
         } else {
             viewModel.sharePlayList(playList)
         }

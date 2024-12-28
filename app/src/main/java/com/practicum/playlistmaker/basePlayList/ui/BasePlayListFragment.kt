@@ -4,6 +4,7 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.os.Environment
 import android.view.LayoutInflater
@@ -18,7 +19,9 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.bumptech.glide.request.RequestOptions
 import com.markodevcic.peko.PermissionRequester
 import com.markodevcic.peko.PermissionResult
 import com.practicum.playlistmaker.R
@@ -61,22 +64,25 @@ abstract class BasePlayListFragment : Fragment() {
         dataCompleteness()
     }
 
-    protected open fun checkBeforeCloseScreen() {}
+    protected open fun checkBeforeCloseScreen() = Unit
 
-    protected open fun getPlayList() {}
+    protected open fun getPlayList() = Unit
 
-    protected open fun closeScreen() {}
+    protected open fun closeScreen() = Unit
 
     private fun handleImagePicked(uri: Uri) {
 
         binding?.imageViewAddPic?.let { image ->
-            val cornerRadius =
-                binding?.root?.context?.resources?.getDimensionPixelSize(R.dimen._8dp)
+            val cornerRadius = resources.getDimensionPixelSize(R.dimen._8dp)
             Glide.with(requireContext())
                 .load(uri)
                 .placeholder(R.drawable.place_holder)
-                .fitCenter()
-                .transform(cornerRadius?.let { corners -> RoundedCorners(corners) })
+                .apply(
+                    RequestOptions().transform(
+                        CenterCrop(),
+                        RoundedCorners(cornerRadius)
+                    )
+                )
                 .into(image)
         }
         saveImageToPrivateStorage(uri)
@@ -121,7 +127,7 @@ abstract class BasePlayListFragment : Fragment() {
         if (!filePath.exists()) {
             filePath.mkdirs()
         }
-        val file = File(filePath, CHILD_PATH)
+        val file = File(filePath, uri.lastPathSegment ?: FILE_NAME)
         val inputStream = requireActivity().contentResolver.openInputStream(uri)
         val outputStream = FileOutputStream(file)
         BitmapFactory
@@ -165,7 +171,7 @@ abstract class BasePlayListFragment : Fragment() {
 
     private companion object {
         private const val NAME_OF_FOLDER = "Play list maker album"
-        private const val CHILD_PATH = "first_cover.jpg"
         private const val SCHEME = "package"
+        private const val FILE_NAME = "image"
     }
 }

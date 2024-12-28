@@ -15,8 +15,8 @@ interface PlayListDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun addPlayList(playList: PlayListEntity)
 
-    @Delete
-    suspend fun deletePlayList(playList: PlayListEntity)
+    @Query("DELETE FROM play_list_table WHERE playListId = :playListId")
+    suspend fun deletePlayList(playListId: Int)
 
     @Update
     suspend fun updatePlayList(playList: PlayListEntity)

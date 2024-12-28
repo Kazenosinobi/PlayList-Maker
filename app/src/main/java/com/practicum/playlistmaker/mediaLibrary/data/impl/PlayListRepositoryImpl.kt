@@ -21,8 +21,8 @@ class PlayListRepositoryImpl(
         appDatabase.playListDao().addPlayList(playList.mapToPlayListEntity())
     }
 
-    override suspend fun deletePlayList(playList: PlayListData) {
-        appDatabase.playListDao().deletePlayList(playList.mapToPlayListEntity())
+    override suspend fun deletePlayList(playListId: Int) {
+        appDatabase.playListDao().deletePlayList(playListId)
     }
 
     override suspend fun updatePlayList(playList: PlayListData) {
