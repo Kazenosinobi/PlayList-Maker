@@ -11,9 +11,10 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.databinding.FragmentPlayListsBinding
+import com.practicum.playlistmaker.mediaLibrary.domain.models.PlayListData
 import com.practicum.playlistmaker.mediaLibrary.ui.playList.recycler.GridSpacingItemDecoration
 import com.practicum.playlistmaker.mediaLibrary.ui.playList.recycler.PlayListAdapter
-import com.practicum.playlistmaker.playListCreate.domain.models.PlayListCreateData
+import com.practicum.playlistmaker.playListScreen.ui.PlayListScreenFragment
 import com.practicum.playlistmaker.utils.debounce
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -27,7 +28,7 @@ class PlayListsFragment : Fragment() {
 
     private var playListAdapter: PlayListAdapter? = null
 
-    private var onPlayListClickDebounce: ((PlayListCreateData) -> Unit)? = null
+    private var onPlayListClickDebounce: ((PlayListData) -> Unit)? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -46,6 +47,11 @@ class PlayListsFragment : Fragment() {
         initClickDebounce()
         observeFlow()
         albumImageDecoration()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        playListAdapter = null
     }
 
     private fun initListeners() {
@@ -67,7 +73,7 @@ class PlayListsFragment : Fragment() {
             viewLifecycleOwner.lifecycleScope,
             false
         ) { playList ->
-
+            startPlayListScreenFragment(playList.playListId.toInt())
         }
     }
 
@@ -78,13 +84,21 @@ class PlayListsFragment : Fragment() {
             )
     }
 
+    private fun startPlayListScreenFragment(playListId: Int) {
+        findNavController()
+            .navigate(
+                R.id.action_mediaLibraryFragment_to_playListScreenFragment,
+                PlayListScreenFragment.createArgs(playListId)
+            )
+    }
+
     private fun observeFlow() {
         viewModel.getPlayListSharedFlow()
             .flowWithLifecycle(viewLifecycleOwner.lifecycle)
             .onEach { playListState ->
                 when (playListState) {
                     is PlayListState.Content -> {
-                        showContent(playListState.tracks)
+                        showContent(playListState.playLists)
                     }
 
                     PlayListState.Empty -> {
@@ -95,7 +109,7 @@ class PlayListsFragment : Fragment() {
             .launchIn(viewLifecycleOwner.lifecycleScope)
     }
 
-    private fun showContent(playLists: List<PlayListCreateData>) {
+    private fun showContent(playLists: List<PlayListData>) {
         binding?.let {
             playListAdapter?.submitList(playLists)
             it.rwPlayLists.isVisible = true

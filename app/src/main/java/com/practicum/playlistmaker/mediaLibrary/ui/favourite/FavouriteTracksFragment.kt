@@ -47,9 +47,11 @@ class FavouriteTracksFragment : Fragment() {
     }
 
     private fun initAdapters() {
-        favouriteTrackAdapter = TrackAdapter { track ->
+        favouriteTrackAdapter = TrackAdapter(
+            onClick = { track ->
             onTrackClickDebounce?.let { it(track) }
         }
+        )
 
         binding?.rwFavouriteTracks?.adapter = favouriteTrackAdapter
     }

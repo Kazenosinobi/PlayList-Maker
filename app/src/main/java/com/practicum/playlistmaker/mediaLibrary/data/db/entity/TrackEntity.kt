@@ -11,7 +11,7 @@ data class TrackEntity(
     val trackId: Int,
     val trackName: String,
     val artistName: String,
-    val trackTime: String?,
+    val trackTime: Long,
     val coverArtworkMini: String?,
     val coverArtworkMaxi: String?,
     val collectionName: String?,
@@ -28,7 +28,7 @@ fun TrackEntity.mapToTrack(): Track {
     return Track(
         trackName = this.trackName,
         artistName = this.artistName,
-        trackTime = this.trackTime,
+        trackTimeMillis = this.trackTime,
         coverArtworkMini = this.coverArtworkMini,
         trackId = this.trackId,
         collectionName = this.collectionName,

@@ -30,7 +30,7 @@
         android:layout_height="wrap_content"
         android:drawableEnd="@drawable/share"
         android:foreground="?android:attr/selectableItemBackground"
-        android:text="@string/share" />
+        android:text="@string/share_application" />
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/MTVSupport"

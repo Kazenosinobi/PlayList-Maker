@@ -59,6 +59,7 @@
         <item name="bottomNavigationColorItemInactive">@color/deep_white</item>
         <item name="bottomNavigationColorItemActive">@color/blue</item>
         <item name="separatorColor">@color/white</item>
+        <item name="PlayListFragmentBackgroundColor">@color/white</item>
 
         <item name="colorPrimaryDark">@color/dark_grey</item>
         <item name="colorAccent">@color/blue</item>

@@ -25,6 +25,9 @@
         <action
             android:id="@+id/action_mediaLibraryFragment_to_mediaFragment"
             app:destination="@id/mediaFragment" />
+        <action
+            android:id="@+id/action_mediaLibraryFragment_to_playListScreenFragment"
+            app:destination="@id/playListScreenFragment" />
     </fragment>
     <fragment
         android:id="@+id/settingsFragment"
@@ -33,7 +36,7 @@
         tools:layout="@layout/fragment_settings"/>
     <fragment
         android:id="@+id/playListCreateFragment"
-        android:name="com.practicum.playlistmaker.playListCreate.ui.PlayListCreateFragment"
+        android:name="com.practicum.playlistmaker.basePlayList.playListCreate.ui.PlayListCreateFragment"
         android:label="PlayListCreateFragment" >
         <action
             android:id="@+id/action_playListCreateFragment_to_mediaLibraryFragment"
@@ -41,7 +44,7 @@
     </fragment>
     <dialog
         android:id="@+id/playListBottomSheetFragment"
-        android:name="com.practicum.playlistmaker.playListBottomSheet.ui.PlayListBottomSheetFragment"
+        android:name="com.practicum.playlistmaker.bottomSheet.playListBottomSheet.ui.PlayListBottomSheetFragment"
         android:label="fragment_play_list_bottom_sheet"
         tools:layout="@layout/fragment_play_list_bottom_sheet" >
         <action
@@ -57,4 +60,29 @@
             android:id="@+id/action_mediaFragment_to_playListBottomSheetFragment"
             app:destination="@id/playListBottomSheetFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/playListScreenFragment"
+        android:name="com.practicum.playlistmaker.playListScreen.ui.PlayListScreenFragment"
+        android:label="fragment_play_list_screen"
+        tools:layout="@layout/fragment_play_list_screen" >
+        <action
+            android:id="@+id/action_playListScreenFragment_to_mediaFragment"
+            app:destination="@id/mediaFragment" />
+        <action
+            android:id="@+id/action_playListScreenFragment_to_playListMenuBottomSheetFragment2"
+            app:destination="@id/playListMenuBottomSheetFragment2" />
+    </fragment>
+    <dialog
+        android:id="@+id/playListMenuBottomSheetFragment2"
+        android:name="com.practicum.playlistmaker.bottomSheet.playListMenuBottomSheet.ui.PlayListMenuBottomSheetFragment"
+        android:label="fragment_play_list_menu_bottom_sheet"
+        tools:layout="@layout/fragment_play_list_menu_bottom_sheet" >
+        <action
+            android:id="@+id/action_playListMenuBottomSheetFragment2_to_playListEditFragment"
+            app:destination="@id/playListEditFragment" />
+    </dialog>
+    <fragment
+        android:id="@+id/playListEditFragment"
+        android:name="com.practicum.playlistmaker.basePlayList.playListEdit.ui.PlayListEditFragment"
+        android:label="PlayListEditFragment" />
 </navigation>

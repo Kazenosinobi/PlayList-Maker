@@ -1,10 +1,10 @@
 package com.practicum.playlistmaker.mediaLibrary.ui.playList
 
-import com.practicum.playlistmaker.playListCreate.domain.models.PlayListCreateData
+import com.practicum.playlistmaker.mediaLibrary.domain.models.PlayListData
 
 sealed interface PlayListState {
 
-    data class Content(val tracks: List<PlayListCreateData>) : PlayListState
+    data class Content(val playLists: List<PlayListData>) : PlayListState
     data object Empty : PlayListState
 
 }

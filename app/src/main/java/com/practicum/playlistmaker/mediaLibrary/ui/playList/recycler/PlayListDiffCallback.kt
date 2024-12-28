@@ -1,19 +1,19 @@
 package com.practicum.playlistmaker.mediaLibrary.ui.playList.recycler
 
 import androidx.recyclerview.widget.DiffUtil
-import com.practicum.playlistmaker.playListCreate.domain.models.PlayListCreateData
+import com.practicum.playlistmaker.mediaLibrary.domain.models.PlayListData
 
-class PlayListDiffCallback : DiffUtil.ItemCallback<PlayListCreateData>() {
+class PlayListDiffCallback : DiffUtil.ItemCallback<PlayListData>() {
     override fun areItemsTheSame(
-        oldItem: PlayListCreateData,
-        newItem: PlayListCreateData
+        oldItem: PlayListData,
+        newItem: PlayListData
     ): Boolean {
         return oldItem.playListId == newItem.playListId
     }
 
     override fun areContentsTheSame(
-        oldItem: PlayListCreateData,
-        newItem: PlayListCreateData
+        oldItem: PlayListData,
+        newItem: PlayListData
     ): Boolean {
         return oldItem == newItem
     }

@@ -3,8 +3,6 @@ package com.practicum.playlistmaker.search.data.dto
 import com.practicum.playlistmaker.search.domain.models.Track
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import java.text.SimpleDateFormat
-import java.util.Locale
 
 @Serializable
 data class TrackDto(
@@ -29,8 +27,6 @@ data class TrackDto(
     @SerialName("previewUrl")
     val previewUrl: String?,
 ) {
-    fun getTrackTime(): String? =
-        SimpleDateFormat("mm:ss", Locale.getDefault()).format(trackTimeMillis)
 
     fun getCoverArtwork() = artworkUrl100?.replaceAfterLast('/', "512x512bb.jpg")
 
@@ -46,7 +42,7 @@ fun TrackDto.mapToTrack(): Track {
     return Track(
         trackName = this.trackName,
         artistName = this.artistName,
-        trackTime = this.getTrackTime(),
+        trackTimeMillis = this.trackTimeMillis,
         coverArtworkMini = this.artworkUrl100,
         trackId = this.trackId,
         collectionName = this.collectionName,

@@ -4,11 +4,11 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import com.practicum.playlistmaker.databinding.PlayListItemBinding
-import com.practicum.playlistmaker.playListCreate.domain.models.PlayListCreateData
+import com.practicum.playlistmaker.mediaLibrary.domain.models.PlayListData
 
 class PlayListAdapter(
-    private val onClick: (PlayListCreateData) -> Unit = {},
-) : ListAdapter<PlayListCreateData, PlayListViewHolder>(PlayListDiffCallback()) {
+    private val onClick: (PlayListData) -> Unit = {},
+) : ListAdapter<PlayListData, PlayListViewHolder>(PlayListDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PlayListViewHolder {
         val binding = PlayListItemBinding.inflate(
