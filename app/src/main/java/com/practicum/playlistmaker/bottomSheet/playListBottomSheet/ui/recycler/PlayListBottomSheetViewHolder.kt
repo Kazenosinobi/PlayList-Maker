@@ -15,7 +15,7 @@ class PlayListBottomSheetViewHolder(private val binding: PlayListBottomSheetItem
         val cornerRadius = binding.root.context.resources.getDimensionPixelSize(R.dimen._4dp)
         with(binding) {
             TextViewName.text = item.nameOfAlbum
-            TextViewTracksCount.text = getTrackCountText(item.tracks.size)
+            TextViewTracksCount.text = getTrackCountText(item.countTracks)
 
             Glide.with(imageViewAlbum.context)
                 .load(item.image)

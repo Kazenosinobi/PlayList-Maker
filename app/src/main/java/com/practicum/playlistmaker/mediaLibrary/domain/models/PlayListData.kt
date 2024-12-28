@@ -15,21 +15,25 @@ data class PlayListData(
     val nameOfAlbum: String?,
     @SerialName("descriptionOfAlbum")
     val descriptionOfAlbum: String?,
-    @SerialName("tracks")
-    val tracks: List<Track>
+    @SerialName("tracksId")
+    val tracksId: List<Int>,
+    @SerialName("countTracks")
+    val countTracks: Int,
 ) {
-    fun addTrack(track: Track): PlayListData {
+    fun addTrackId(trackId: Int): PlayListData {
         return this.copy(
-            tracks = buildList {
-                this.add(track)
-                this.addAll(this@PlayListData.tracks)
+            tracksId = buildList {
+                this.add(trackId)
+                this.addAll(this@PlayListData.tracksId)
             },
+            countTracks = this.countTracks + 1
         )
     }
 
     fun removeTrack(track: Track): PlayListData {
         return this.copy(
-            tracks = this.tracks.minus(track),
+            tracksId = this.tracksId.minus(track.trackId),
+            countTracks = this.countTracks - 1
         )
     }
 
@@ -49,6 +53,7 @@ fun PlayListData.mapToPlayListEntity(): PlayListEntity {
         playListName = nameOfAlbum,
         playListDescription = descriptionOfAlbum,
         imagePath = image,
-        tracks = tracks,
+        tracksId = tracksId,
+        countTracks = countTracks
     )
 }

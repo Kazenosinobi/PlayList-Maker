@@ -87,15 +87,17 @@ class PlayListBottomSheetFragment : BottomSheetDialogFragment() {
             viewLifecycleOwner.lifecycleScope,
             false
         ) { playList ->
-            val format =
-                if (playList.tracks.contains(track)) R.string.already_added_to_play_list else R.string.added_to_play_list
             val message = playList.nameOfAlbum ?: ""
-            if (playList.tracks.contains(track)) {
-                Toast.makeText(requireContext(), getString(format, message), Toast.LENGTH_SHORT)
+            if (playList.tracksId.contains(track.trackId)) {
+                Toast.makeText(
+                    requireContext(),
+                    getString(R.string.already_added_to_play_list, message),
+                    Toast.LENGTH_SHORT
+                )
                     .show()
             } else {
                 viewModel.addTrackToPlayList(track, playList)
-                showSnackBar(format, message)
+                showSnackBar(R.string.added_to_play_list, message)
                 dialog?.cancel()
             }
         }
@@ -109,7 +111,7 @@ class PlayListBottomSheetFragment : BottomSheetDialogFragment() {
     }
 
     private fun observeFlow() {
-        viewModel.getPlayListSharedFlow()
+        viewModel.getPlayListStateFlow()
             .flowWithLifecycle(viewLifecycleOwner.lifecycle)
             .onEach { playListState ->
                 when (playListState) {

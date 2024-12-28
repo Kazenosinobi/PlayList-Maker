@@ -30,11 +30,7 @@ class PlayListScreenViewModel(
 
     fun removeTrackFromPlayList(track: Track) {
         viewModelScope.launch {
-            playList?.removeTrack(track)
-                ?.let {
-                    playListInteractor.updatePlayList(it)
-                    playListScreenStateFlow.emit(PlayListScreenState.Content(it))
-                }
+            playList?.let { playListInteractor.removeTrackFromCurrentPlayList(track, it) }
         }
     }
 
@@ -47,9 +43,15 @@ class PlayListScreenViewModel(
     private fun loadPlayList() {
         playListInteractor.getPlayListById(playListId)
             .onEach { playList ->
-                playListScreenStateFlow.emit(PlayListScreenState.Content(playList))
                 this.playList = playList
+                playListInteractor.getTracksForCurrentPlayListFlow(playList.tracksId)
+                    .onEach { tracks ->
+                        playListScreenStateFlow.emit(PlayListScreenState.Content(playList, tracks))
+                    }
+                    .launchIn(viewModelScope)
             }
             .launchIn(viewModelScope)
+
+
     }
 }

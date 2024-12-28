@@ -6,8 +6,8 @@ import com.practicum.playlistmaker.mediaLibrary.domain.db.PlayListInteractor
 import com.practicum.playlistmaker.mediaLibrary.domain.models.PlayListData
 import com.practicum.playlistmaker.mediaLibrary.ui.playList.PlayListState
 import com.practicum.playlistmaker.search.domain.models.Track
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
@@ -16,8 +16,8 @@ class PlayListBottomSheetViewModel(
     private val playListInteractor: PlayListInteractor,
 ) : ViewModel() {
 
-    private val playListSharedFlow = MutableSharedFlow<PlayListState>(replay = REPLAY_COUNT)
-    fun getPlayListSharedFlow() = playListSharedFlow.asSharedFlow()
+    private val playListStateFlow = MutableStateFlow<PlayListState>(PlayListState.Empty)
+    fun getPlayListStateFlow() = playListStateFlow.asStateFlow()
 
     init {
         loadPlayLists()
@@ -25,26 +25,21 @@ class PlayListBottomSheetViewModel(
 
     fun addTrackToPlayList(track: Track, playList: PlayListData) {
         viewModelScope.launch {
-            playListInteractor.updatePlayList(playList.addTrack(track))
-            playListSharedFlow.emit(PlayListState.Content(listOf(playList.addTrack(track))))
+            playListInteractor.addTrackToPlayList(track, playList)
         }
     }
 
     private fun loadPlayLists() {
 
         playListInteractor.getPlayList()
-            .onEach { tracks ->
-                if (tracks.isEmpty()) {
-                    playListSharedFlow.emit(PlayListState.Empty)
+            .onEach { playLists ->
+                if (playLists.isEmpty()) {
+                    playListStateFlow.emit(PlayListState.Empty)
                 } else {
-                    playListSharedFlow.emit(PlayListState.Content(tracks))
+                    playListStateFlow.emit(PlayListState.Content(playLists))
                 }
             }
             .launchIn(viewModelScope)
-    }
-
-    private companion object {
-        private const val REPLAY_COUNT = 1
     }
 
 }

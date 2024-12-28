@@ -1,6 +1,7 @@
 package com.practicum.playlistmaker.search.domain.models
 
 import com.practicum.playlistmaker.mediaLibrary.data.db.entity.TrackEntity
+import com.practicum.playlistmaker.mediaLibrary.data.db.entity.TrackForPlayListEntity
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import java.text.SimpleDateFormat
@@ -39,6 +40,23 @@ data class Track(
 
 fun Track.mapToTrackEntity(): TrackEntity {
     return TrackEntity(
+        trackName = this.trackName,
+        artistName = this.artistName,
+        trackTime = this.trackTimeMillis,
+        coverArtworkMini = this.coverArtworkMini,
+        trackId = this.trackId,
+        collectionName = this.collectionName,
+        releaseYear = this.releaseYear,
+        primaryGenreName = this.primaryGenreName,
+        country = this.country,
+        coverArtworkMaxi = this.coverArtworkMaxi,
+        trackUrl = this.trackUrl,
+        addedDate = System.currentTimeMillis(),
+    )
+}
+
+fun Track.mapToTrackForPlayListEntity(): TrackForPlayListEntity {
+    return TrackForPlayListEntity(
         trackName = this.trackName,
         artistName = this.artistName,
         trackTime = this.trackTimeMillis,

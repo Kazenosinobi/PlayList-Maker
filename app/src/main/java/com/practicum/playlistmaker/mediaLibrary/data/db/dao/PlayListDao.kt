@@ -1,7 +1,6 @@
 package com.practicum.playlistmaker.mediaLibrary.data.db.dao
 
 import androidx.room.Dao
-import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
@@ -21,9 +20,9 @@ interface PlayListDao {
     @Update
     suspend fun updatePlayList(playList: PlayListEntity)
 
-    @Query("SELECT playListId, playListName, playListDescription, imagePath, tracks FROM play_list_table")
+    @Query("SELECT * FROM play_list_table")
     fun getPlayList(): Flow<List<PlayListEntity>>
 
-    @Query("SELECT playListId, playListName, playListDescription, imagePath, tracks FROM play_list_table WHERE playListId = :playListId")
+    @Query("SELECT * FROM play_list_table WHERE playListId = :playListId")
     fun getPlayListById(playListId: Int): Flow<PlayListEntity>
 }

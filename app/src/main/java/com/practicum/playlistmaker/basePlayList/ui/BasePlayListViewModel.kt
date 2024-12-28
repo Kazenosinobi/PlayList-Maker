@@ -17,10 +17,14 @@ abstract class BasePlayListViewModel(
             image,
             nameOfAlbum,
             descriptionOfAlbum,
-            tracks = emptyList()
+            tracksId = emptyList(),
+            countTracks = 0,
         )
+
         viewModelScope.launch {
+
             playListInteractor.addPlayList(data)
+
         }
     }
 }

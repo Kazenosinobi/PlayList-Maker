@@ -1,7 +1,6 @@
 package com.practicum.playlistmaker.mediaLibrary.data.db.entity
 
 import androidx.room.TypeConverter
-import com.practicum.playlistmaker.search.domain.models.Track
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 
@@ -10,12 +9,12 @@ class TrackListConverter {
     private val json = Json
 
     @TypeConverter
-    fun fromTrackList(tracks: List<Track>): String {
-        return json.encodeToString(tracks)
+    fun fromTrackIdList(tracksId: List<Int>): String {
+        return json.encodeToString(tracksId)
     }
 
     @TypeConverter
-    fun toTrackList(tracksJson: String): List<Track> {
+    fun toTrackIdList(tracksJson: String): List<Int> {
         return json.decodeFromString(tracksJson)
     }
 }

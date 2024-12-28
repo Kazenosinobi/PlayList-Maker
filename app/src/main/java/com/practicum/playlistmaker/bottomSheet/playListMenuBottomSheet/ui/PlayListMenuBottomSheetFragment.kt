@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.FrameLayout
 import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.navigation.fragment.findNavController
@@ -12,7 +11,6 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
-import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -100,16 +98,14 @@ class PlayListMenuBottomSheetFragment : BottomSheetDialogFragment() {
 
     }
 
-    private fun getTotalTracksText(playList: PlayListData): String? {
-        val resources = binding?.root?.context?.resources
-        val tracksCount = playList.tracks.size
-        return tracksCount.let {
-            resources?.getQuantityString(
-                R.plurals.tracks_count,
-                it,
-                tracksCount
-            )
-        }
+    private fun getTotalTracksText(playList: PlayListData): String {
+        val tracksCount = playList.countTracks
+        return resources.getQuantityString(
+            R.plurals.tracks_count,
+            tracksCount,
+            tracksCount
+        )
+
     }
 
     private fun setUpBottomSheetHeight() {
@@ -139,7 +135,7 @@ class PlayListMenuBottomSheetFragment : BottomSheetDialogFragment() {
     }
 
     private fun startSharing() {
-        if (playList.tracks.isEmpty()) {
+        if (playList.tracksId.isEmpty()) {
             Toast.makeText(
                 requireContext(),
                 R.string.no_tracks,

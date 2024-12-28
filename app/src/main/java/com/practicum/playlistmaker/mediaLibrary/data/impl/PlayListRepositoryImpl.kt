@@ -5,9 +5,12 @@ import android.content.Intent
 import com.practicum.playlistmaker.R
 import com.practicum.playlistmaker.mediaLibrary.data.db.AppDatabase
 import com.practicum.playlistmaker.mediaLibrary.data.db.entity.mapToPlayListCreateData
+import com.practicum.playlistmaker.mediaLibrary.data.db.entity.mapToTrack
 import com.practicum.playlistmaker.mediaLibrary.domain.db.PlayListRepository
 import com.practicum.playlistmaker.mediaLibrary.domain.models.PlayListData
 import com.practicum.playlistmaker.mediaLibrary.domain.models.mapToPlayListEntity
+import com.practicum.playlistmaker.search.domain.models.Track
+import com.practicum.playlistmaker.search.domain.models.mapToTrackForPlayListEntity
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
@@ -16,6 +19,21 @@ class PlayListRepositoryImpl(
     private val context: Context,
     private val appDatabase: AppDatabase,
 ) : PlayListRepository {
+    override suspend fun addTrackToPlayList(track: Track, playList: PlayListData) {
+        appDatabase.trackForPlayListDao().addTrack(track.mapToTrackForPlayListEntity())
+        appDatabase.playListDao()
+            .updatePlayList(playList.addTrackId(track.trackId).mapToPlayListEntity())
+    }
+
+    override suspend fun removeTrackFromCurrentPlayList(track: Track, playList: PlayListData) {
+        val newPlayList = playList.removeTrack(track)
+        appDatabase.playListDao().updatePlayList(newPlayList.mapToPlayListEntity())
+        if (isNeedToDeleteTrackFromDB(track.trackId)) {
+            appDatabase.trackForPlayListDao()
+                .deleteTrackFromDB(track.mapToTrackForPlayListEntity())
+        }
+
+    }
 
     override suspend fun addPlayList(playList: PlayListData) {
         appDatabase.playListDao().addPlayList(playList.mapToPlayListEntity())
@@ -44,7 +62,7 @@ class PlayListRepositoryImpl(
             }
             .catch { }
 
-    override fun share(playList: PlayListData) {
+    override suspend fun share(playList: PlayListData) {
         val message = formatPlaylistMessage(playList)
         val intent = Intent(Intent.ACTION_SEND).apply {
             type = "text/plain"
@@ -55,21 +73,58 @@ class PlayListRepositoryImpl(
         context.startActivity(chooser)
     }
 
-    private fun formatPlaylistMessage(playList: PlayListData): String {
-        val tracksCountText = playList.tracks.let {
+    override fun getTracksForCurrentPlayListFlow(tracksId: List<Int>): Flow<List<Track>> =
+        appDatabase.trackForPlayListDao().getTracksFromDBFlow()
+            .map { tracks ->
+                tracks.filter { track ->
+                    tracksId.contains(track.trackId)
+                }
+                    .map { track ->
+                        track.mapToTrack()
+                    }
+            }
+
+    private suspend fun getTracksForCurrentPlayList(tracksId: List<Int>): List<Track> {
+        return appDatabase.trackForPlayListDao().getTracksFromDB()
+            .filter { track ->
+                tracksId.contains(track.trackId)
+            }
+            .map { track ->
+                track.mapToTrack()
+            }
+    }
+
+
+    private suspend fun isNeedToDeleteTrackFromDB(trackId: Int): Boolean {
+        val tracksId = mutableListOf<Int>()
+        appDatabase.playListDao().getPlayList()
+            .collect { playLists ->
+                playLists.map { playList ->
+                    tracksId.addAll(playList.tracksId)
+                }
+            }
+        return tracksId.contains(trackId).not()
+    }
+
+    private suspend fun formatPlaylistMessage(playList: PlayListData): String {
+        val tracksCountText = playList.tracksId.let {
             context.resources.getQuantityString(
                 R.plurals.tracks_count,
                 it.size,
-                playList.tracks.size
+                playList.tracksId.size
             )
         }
 
-        val tracksInfo = playList.tracks.mapIndexed { index, track ->
+        val tracks = getTracksForCurrentPlayList(playList.tracksId)
+        val tracksInfo = tracks.mapIndexed { index, track ->
             val durationMinutes = track.trackTimeMillis / MILLIS_IN_MINUTE
-            val durationSeconds = (track.trackTimeMillis % MILLIS_IN_MINUTE) / MILLIS_IN_SECOND
-            val formattedDuration = String.format("%d:%02d", durationMinutes, durationSeconds)
+            val durationSeconds =
+                (track.trackTimeMillis % MILLIS_IN_MINUTE) / MILLIS_IN_SECOND
+            val formattedDuration =
+                String.format("%d:%02d", durationMinutes, durationSeconds)
             "${index + 1}. ${track.artistName} - ${track.trackName} ($formattedDuration)"
         }.joinToString("\n")
+
 
         return buildString {
             append(playList.nameOfAlbum).append("\n")

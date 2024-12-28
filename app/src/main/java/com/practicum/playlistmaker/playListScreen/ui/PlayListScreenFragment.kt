@@ -8,7 +8,6 @@ import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.setFragmentResultListener
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -131,18 +130,20 @@ class PlayListScreenFragment : Fragment() {
             .flowWithLifecycle(viewLifecycleOwner.lifecycle)
             .onEach { playListScreenState ->
                 when (playListScreenState) {
-                    is PlayListScreenState.Content -> showContent(playListScreenState.playList)
+                    is PlayListScreenState.Content -> showContent(
+                        playListScreenState.playList, playListScreenState.tracks
+                    )
                     PlayListScreenState.Empty -> Unit
                 }
             }
             .launchIn(viewLifecycleOwner.lifecycleScope)
     }
 
-    private fun showContent(playList: PlayListData) {
-        trackAdapter?.submitList(playList.tracks)
-        setText(playList)
+    private fun showContent(playList: PlayListData, tracks: List<Track>) {
+        trackAdapter?.submitList(tracks)
+        setText(playList, tracks)
         getImageAlbum(playList)
-        if (playList.tracks.isEmpty()) {
+        if (tracks.isEmpty()) {
             binding?.rwTracksList?.isVisible = false
             binding?.imageViewEmpty?.isVisible = true
             binding?.textViewEmpty?.isVisible = true
@@ -164,13 +165,13 @@ class PlayListScreenFragment : Fragment() {
         }
     }
 
-    private fun setText(playList: PlayListData) {
+    private fun setText(playList: PlayListData, tracks: List<Track>) {
         binding?.let {
             with(it) {
                 textViewAlbumName.text = playList.nameOfAlbum
                 textViewDescription.text = getDescription(playList)
-                textViewTotalDuration.text = getTotalDurationText(playList)
-                textViewTotalTracks.text = getTotalTracksText(playList)
+                textViewTotalDuration.text = getTotalDurationText(playList, tracks)
+                textViewTotalTracks.text = getTotalTracksText(tracks)
             }
         }
     }
@@ -183,28 +184,23 @@ class PlayListScreenFragment : Fragment() {
         return description.orEmpty()
     }
 
-    private fun getTotalDurationText(playList: PlayListData): String? {
-        val resources = binding?.root?.context?.resources
-        val totalDuration = playList.tracks.let { playList.getTotalDuration(it).toInt() }
-        return totalDuration.let {
-            resources?.getQuantityString(
-                R.plurals.minutes_count,
-                it,
-                totalDuration
-            )
-        }
-    }
+    private fun getTotalDurationText(playList: PlayListData, tracks: List<Track>): String {
 
-    private fun getTotalTracksText(playList: PlayListData): String? {
-        val resources = binding?.root?.context?.resources
-        val tracksCount = playList.tracks.size
-        return tracksCount.let {
-            resources?.getQuantityString(
-                R.plurals.tracks_count,
-                it,
-                tracksCount
+        val totalDuration = playList.getTotalDuration(tracks).toInt()
+        return resources.getQuantityString(
+            R.plurals.minutes_count,
+            totalDuration,
+            totalDuration
             )
         }
+
+    private fun getTotalTracksText(tracks: List<Track>): String {
+        val tracksCount = tracks.size
+        return resources.getQuantityString(
+            R.plurals.tracks_count,
+            tracksCount,
+            tracksCount
+            )
     }
 
     private fun setUpBottomSheetHeight() {

@@ -17,7 +17,9 @@ class PlayListMenuBottomSheetViewModel(
     }
 
     fun sharePlayList(playList: PlayListData) {
-        playListInteractor.share(playList)
+        viewModelScope.launch {
+            playListInteractor.share(playList)
+        }
     }
 
 }
