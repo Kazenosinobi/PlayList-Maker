@@ -6,8 +6,9 @@ import com.practicum.playlistmaker.search.domain.api.TracksInteractor
 import com.practicum.playlistmaker.search.domain.models.Track
 import com.practicum.playlistmaker.search.domain.models.ViewState
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.onStart
@@ -17,19 +18,27 @@ class SearchViewModel(
     private val tracksInteractor: TracksInteractor,
 ) : ViewModel() {
 
-    private val viewStateSharedFlow = MutableSharedFlow<ViewState>(replay = REPLAY_COUNT)
-    fun getViewStateSharedFlow() = viewStateSharedFlow.asSharedFlow()
+    private val viewStateFlow = MutableStateFlow<ViewState>(ViewState.Initial)
+    fun getViewStateFlow() = viewStateFlow.asStateFlow()
 
     private var searchJob: Job? = null
     private var lastSearchQuery: String? = null
+
+    fun triggerLastSearch() {
+            searchInternal()
+    }
 
     fun search(text: String?) {
         if (text.isNullOrBlank() || text == lastSearchQuery) return
 
         lastSearchQuery = text
-        searchJob = tracksInteractor.searchTracks(text.trim())
-            .onStart { viewStateSharedFlow.emit(ViewState.Loading) }
-            .onEach { viewStateSharedFlow.emit(it) }
+        searchInternal()
+    }
+
+    private fun searchInternal() {
+        searchJob = tracksInteractor.searchTracks(lastSearchQuery?.trim() ?: "")
+            .onStart { viewStateFlow.emit(ViewState.Loading) }
+            .onEach { viewStateFlow.emit(it) }
             .launchIn(viewModelScope)
     }
 
@@ -46,11 +55,12 @@ class SearchViewModel(
         searchJob?.cancel()
         lastSearchQuery = null
         viewModelScope.launch {
-            viewStateSharedFlow.emit(
-                ViewState.History(
-                    tracksInteractor.getSearchHistory().toList()
-                )
-            )
+            val history = tracksInteractor.getSearchHistory().toList()
+            if (history.isEmpty()) {
+                viewStateFlow.emit(ViewState.Initial)
+            } else {
+                viewStateFlow.emit(ViewState.History(history))
+            }
         }
     }
 

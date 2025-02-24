@@ -34,8 +34,8 @@ data class Track(
     @SerialName("isFavorite")
     val isFavorite: Boolean = false,
 ) {
-    fun getTrackTime(): String? =
-        SimpleDateFormat("mm:ss", Locale.getDefault()).format(trackTimeMillis)
+    fun getTrackTime(): String =
+        SimpleDateFormat("mm:ss", Locale.getDefault()).format(trackTimeMillis) ?: ""
 }
 
 fun Track.mapToTrackEntity(): TrackEntity {

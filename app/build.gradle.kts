@@ -37,6 +37,10 @@ android {
     }
     buildFeatures {
         viewBinding = true
+        compose = true
+    }
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.5.1"
     }
 }
 
@@ -67,6 +71,7 @@ dependencies {
     androidTestImplementation(libs.androidx.espresso.core)
 
     implementation (libs.koin.android)
+    implementation(libs.koin.androidx.compose)
 
     implementation (libs.androidx.fragment.ktx)
     implementation (libs.androidx.viewpager2)
@@ -79,4 +84,18 @@ dependencies {
     implementation(libs.androidx.room.runtime)
     kapt(libs.androidx.room.compiler)
     implementation(libs.androidx.room.ktx)
+
+    implementation(libs.androidx.activity.compose)
+    implementation(platform(libs.androidx.compose.bom))
+    androidTestImplementation(platform(libs.androidx.compose.bom))
+
+    implementation (libs.androidx.ui)
+    implementation (libs.androidx.material)
+    implementation (libs.compose.material3)
+
+    implementation(libs.androidx.ui.tooling.preview)
+    debugImplementation(libs.androidx.ui.tooling)
+
+    implementation(libs.coil.compose)
+
 }

@@ -6,4 +6,5 @@ sealed class ViewState {
     data object EmptyError : ViewState()
     data object NetworkError : ViewState()
     data object Loading : ViewState()
+    data object Initial : ViewState()
 }
